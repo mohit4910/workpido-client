@@ -268,9 +268,9 @@ const page = () => {
           />
           <Box className="p-4 pr-10">
             <p className="font-light text-sm italic">
-              “On Kwork, I got a book ready for publication in three
+              {`“On Kwork, I got a book ready for publication in three
               days—something no agency could ever do. From now on, I'll only be
-              turning to Kwork for all the services I need.”
+              turning to Kwork for all the services I need.”`}
             </p>
             <p className="bold">Alexandra, Publisher</p>
           </Box>
@@ -288,9 +288,9 @@ const page = () => {
           />
           <Box className="p-4 pr-10">
             <p className="font-light text-sm italic">
-              “In my line of work, speed is everything. Workpido's clearly
+              {`“In my line of work, speed is everything. Workpido's clearly
               defined deadlines give me the peace of mind I need to complete
-              projects on time.”
+              projects on time.”`}
             </p>
             <p className="bold">John, Director of IT at Mintrocket</p>
           </Box>
@@ -302,12 +302,12 @@ const page = () => {
         >
           <Box className="p-4 pl-10">
             <p className="font-light text-sm italic">
-              “We often need a little extra help at the agency sometimes, and
+              {`“We often need a little extra help at the agency sometimes, and
               when we do, I know I can rely on Kwork. Taking on big projects is
               no longer a headache when Workpido's skilled freelancers have my
-              back.”
+              back.”`}
             </p>
-            <p className="bold">Alex, CEO of SMM Agency Fol'ga</p>
+            <p className="bold">{"Alex, CEO of SMM Agency Fol'ga"}</p>
           </Box>
           <Image
             src="https://cdn.kwork.com/images/for-sellers/dmitri-pad@2x.jpg"
