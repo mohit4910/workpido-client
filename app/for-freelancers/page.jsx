@@ -16,7 +16,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import React, { useState } from "react";
+import React from "react";
 
 const page = () => {
   return (
@@ -231,7 +231,7 @@ const page = () => {
             fontWeight={600}
             color={"white"}
             bg={"brand.primary"}
-            href={"#"}
+            href={"/how-to-earn"}
             _hover={{
               bg: "green.300",
             }}
