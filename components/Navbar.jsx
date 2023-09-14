@@ -145,7 +145,7 @@ const DesktopNav = () => {
       justify={"space-between"}
       w={"full"}
       spacing={4}
-      overflowX="clip"
+      overflowX="hidden"
     >
       {NAV_ITEMS.map((navItem, i) => (
         <Box

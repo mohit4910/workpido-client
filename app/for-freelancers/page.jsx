@@ -23,7 +23,7 @@ const page = () => {
     <main className="flex flex-col items-center justify-between min-h-screen">
       {/* Banner */}
       <Flex
-        className="relative"
+        className="relative max-h-[720px]"
         bgImage="url(https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)"
         h={{ base: "60vh", md: "90vh" }}
         w={"full"}
@@ -38,11 +38,11 @@ const page = () => {
           <Heading className="mb-2 md:text-5xl md:mb-4">
             Do Work You Enjoy
           </Heading>
-          <Text className="mb-4 text-white md:text-xl md:mb-6">
+          <Text className="mb-4 px-4 text-center md:p-0 text-white md:text-xl md:mb-6">
             Thousands of buyers are ready to pay for your skills
           </Text>
           <Button
-            className="mt-4 w-full md:w-1/2 px-4 py-6 text-sm"
+            className="mt-4 w-3/4 md:w-1/2 px-4 py-6 text-sm"
             as={"a"}
             display={"inline-flex"}
             color={"white"}
