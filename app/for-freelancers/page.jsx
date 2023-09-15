@@ -16,6 +16,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
+
+// import required modules
+import { EffectCards } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+
 import React from "react";
 
 const page = () => {
@@ -74,78 +89,186 @@ const page = () => {
       </Flex>
       {/* Freelance Gallery */}
       <Flex justify="center" flexWrap="wrap" className="bg-white p-6">
-        <h2 className="text-center text-3xl font-bold mb-3 w-full py-3">
+        <h2 className="text-center text-base md:text-3xl font-bold mb-3 w-full py-3">
           Join Our Evergrowing Freelance Community
         </h2>
-        <ZoomableImage
-          src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="services"
-          caption="I'm a Link Builder"
-        />
-        <ZoomableImage
-          src="https://images.pexels.com/photos/2240772/pexels-photo-2240772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="services"
-          caption="I'm a Voice Actor"
-        />
-        <ZoomableImage
-          src="https://images.pexels.com/photos/1520760/pexels-photo-1520760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="services"
-          caption="I'm a Web Developer"
-        />
-        <ZoomableImage
-          src="https://images.pexels.com/photos/2345293/pexels-photo-2345293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="services"
-          caption="I'm a Dance Instructor"
-        />
-        <ZoomableImage
-          src="https://images.pexels.com/photos/3119215/pexels-photo-3119215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="services"
-          caption="I'm a Designer"
-        />
-        <ZoomableImage
-          src="https://images.pexels.com/photos/2531552/pexels-photo-2531552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="services"
-          caption="I'm a Video Editor"
-        />
-        <ZoomableImage
-          src="https://images.pexels.com/photos/2748242/pexels-photo-2748242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt="services"
-          caption="I'm a Actor"
-        />
-        <Flex
-          direction="column"
-          align="center"
-          justify="center"
-          borderRadius="sm"
-          overflow="hidden"
-          objectFit="contain"
-          position="relative"
-          width="280px"
-          height="280px"
-          className="m-1 bg-neutral-100"
-        >
-          <Image
-            width="80px"
-            height="80px"
-            src="https://cdn.kwork.com/images/for-sellers/heart.svg"
-            alt=""
-          />
-          <h3 className="m-2 text-center text-2xl">{"What's Your Skill?"}</h3>
-          <Button
-            as={"a"}
-            display={"inline-flex"}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"brand.primary"}
-            href={"#"}
-            _hover={{
-              bg: "green.300",
-            }}
+        {/* Mobile view */}
+        <Flex className="relative h-96 justify-center align-center md:hidden">
+          <Swiper
+            effect={"cards"}
+            grabCursor={true}
+            modules={[EffectCards]}
+            className="mySwiper w-72 h-72"
           >
-            Start Earning
-          </Button>
+            <SwiperSlide>
+              {" "}
+              <ZoomableImage
+                src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="services"
+                caption="I'm a Link Builder"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <ZoomableImage
+                src="https://images.pexels.com/photos/2240772/pexels-photo-2240772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="services"
+                caption="I'm a Voice Actor"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <ZoomableImage
+                src="https://images.pexels.com/photos/1520760/pexels-photo-1520760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="services"
+                caption="I'm a Web Developer"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <ZoomableImage
+                src="https://images.pexels.com/photos/2345293/pexels-photo-2345293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="services"
+                caption="I'm a Dance Instructor"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <ZoomableImage
+                src="https://images.pexels.com/photos/3119215/pexels-photo-3119215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="services"
+                caption="I'm a Designer"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <ZoomableImage
+                src="https://images.pexels.com/photos/2531552/pexels-photo-2531552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="services"
+                caption="I'm a Video Editor"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <ZoomableImage
+                src="https://images.pexels.com/photos/2748242/pexels-photo-2748242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="services"
+                caption="I'm a Actor"
+              />
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <Flex
+                direction="column"
+                align="center"
+                justify="center"
+                borderRadius="sm"
+                overflow="hidden"
+                objectFit="contain"
+                position="relative"
+                width="280px"
+                height="280px"
+                className="m-1 bg-neutral-100"
+              >
+                <Image
+                  width="80px"
+                  height="80px"
+                  src="https://cdn.kwork.com/images/for-sellers/heart.svg"
+                  alt=""
+                />
+                <h3 className="m-2 text-center text-2xl">
+                  {"What's Your Skill?"}
+                </h3>
+                <Button
+                  as={"a"}
+                  display={"inline-flex"}
+                  fontSize={"sm"}
+                  fontWeight={600}
+                  color={"white"}
+                  bg={"brand.primary"}
+                  href={"#"}
+                  _hover={{
+                    bg: "green.300",
+                  }}
+                >
+                  Start Earning
+                </Button>
+              </Flex>
+            </SwiperSlide>
+          </Swiper>
         </Flex>
+        {/* Desktop View */}
+        <Box className="hidden justify-center md:flex md:flex-wrap">
+          <ZoomableImage
+            src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="services"
+            caption="I'm a Link Builder"
+          />
+          <ZoomableImage
+            src="https://images.pexels.com/photos/2240772/pexels-photo-2240772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="services"
+            caption="I'm a Voice Actor"
+          />
+          <ZoomableImage
+            src="https://images.pexels.com/photos/1520760/pexels-photo-1520760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="services"
+            caption="I'm a Web Developer"
+          />
+          <ZoomableImage
+            src="https://images.pexels.com/photos/2345293/pexels-photo-2345293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="services"
+            caption="I'm a Dance Instructor"
+          />
+          <ZoomableImage
+            src="https://images.pexels.com/photos/3119215/pexels-photo-3119215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="services"
+            caption="I'm a Designer"
+          />
+          <ZoomableImage
+            src="https://images.pexels.com/photos/2531552/pexels-photo-2531552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="services"
+            caption="I'm a Video Editor"
+          />
+          <ZoomableImage
+            src="https://images.pexels.com/photos/2748242/pexels-photo-2748242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            alt="services"
+            caption="I'm a Actor"
+          />
+          <Flex
+            direction="column"
+            align="center"
+            justify="center"
+            borderRadius="sm"
+            overflow="hidden"
+            objectFit="contain"
+            position="relative"
+            width="280px"
+            height="280px"
+            className="m-1 bg-neutral-100"
+          >
+            <Image
+              width="80px"
+              height="80px"
+              src="https://cdn.kwork.com/images/for-sellers/heart.svg"
+              alt=""
+            />
+            <h3 className="m-2 text-center text-2xl">{"What's Your Skill?"}</h3>
+            <Button
+              as={"a"}
+              display={"inline-flex"}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"brand.primary"}
+              href={"#"}
+              _hover={{
+                bg: "green.300",
+              }}
+            >
+              Start Earning
+            </Button>
+          </Flex>
+        </Box>
       </Flex>
       {/* How to Sell? */}
       <Flex align="center" justify="space-around" flexWrap="wrap">
