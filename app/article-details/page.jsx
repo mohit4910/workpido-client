@@ -1,5 +1,6 @@
 "use client";
 
+import GigCard from "@/components/GigCard";
 import {
   Accordion,
   AccordionButton,
@@ -15,6 +16,7 @@ import {
   List,
   ListIcon,
   ListItem,
+  Stack,
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -197,12 +199,12 @@ const page = () => {
           </h2>
           <AccordionPanel pb={4}>
             <List>
-              <ListItem>
+              <ListItem className="my-3">
                 <ListIcon as={FaUserCircle} color="black" />
                 <span className="font-bold">Ashish P.</span>
                 <Text>Excellent Work</Text>
               </ListItem>
-              <ListItem>
+              <ListItem className="my-3">
                 <ListIcon as={FaUserCircle} color="black" />
                 <span className="font-bold">Adarsh P.</span>
                 <Text>
@@ -218,9 +220,53 @@ const page = () => {
         </AccordionItem>
       </Accordion>
       {/* Other Works of the Seller */}
-      <Text className="font-bold p-5 center text-xl">Other Works</Text>
+      <Flex className="flex-col w-screen md:w-10/12 mx-auto  p-4 my-4 bg-[#f6f6f6]">
+        <Box className="mb-8">
+          <Text fontSize={26} fontWeight={600}>
+            Other Works of this Seller
+          </Text>
+          <Stack spacing={8} className=" overflow-x-auto">
+            <Flex justify={"space-around"} gap={2}>
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+            </Flex>
+          </Stack>
+        </Box>
+      </Flex>
       {/* Similar Works */}
-      <Text className="font-bold center p-5 text-xl">Similar Works Works</Text>
+      <Flex className="flex-col w-screen md:w-10/12 mx-auto  p-4 my-4 bg-[#f6f6f6]">
+        <Box className="mb-8">
+          <Text fontSize={26} fontWeight={600}>
+            Similar Providers
+          </Text>
+          <Stack spacing={8} className=" overflow-x-auto">
+            <Flex justify={"space-around"} gap={2}>
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+              <GigCard />
+            </Flex>
+          </Stack>
+        </Box>
+      </Flex>
       {/* Social Handles */}
       <Box className="bg-white mx-auto w-screen md:w-3/4 p-5">
         <Heading className="text-center">Share on your Social Media</Heading>
