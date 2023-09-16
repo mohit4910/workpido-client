@@ -2,14 +2,15 @@
 import { Image } from "@chakra-ui/next-js";
 // import Image from "next/image";
 import {
+  Avatar,
   Box,
   Center,
   Heading,
-  Text,
   Stack,
-  Avatar,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import ImageSlider from "./ImageSlider";
 
 export default function GigCard() {
@@ -48,40 +49,42 @@ export default function GigCard() {
           /> */}
           <ImageSlider />
         </Box>
-        <Stack borderBottom={"1px"} pb={2}>
-          <Text
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            color={useColorModeValue("gray.700", "white")}
-            fontSize={"sm"}
-            fontFamily={"body"}
-          >
-            {
-              "I'll build HTML, CSS, Bootstrap pixel perfect and responsive website"
-            }
-          </Text>
-          <Text
-            align={"right"}
-            fontSize={"xs"}
-            color="brand.primary"
-            // fontWeight={"bold"}
-            textTransform={"uppercase"}
-          >
-            Starting at <span className="text-lg font-bold">$100</span>
-          </Text>
-        </Stack>
+        <Link href={"/article-details"}>
+          <Stack borderBottom={"1px"} pb={2}>
+            <Text
+              // eslint-disable-next-line react-hooks/rules-of-hooks
+              color={useColorModeValue("gray.700", "white")}
+              fontSize={"sm"}
+              fontFamily={"body"}
+            >
+              {
+                "I'll build HTML, CSS, Bootstrap pixel perfect and responsive website"
+              }
+            </Text>
+            <Text
+              align={"right"}
+              fontSize={"xs"}
+              color="brand.primary"
+              // fontWeight={"bold"}
+              textTransform={"uppercase"}
+            >
+              Starting at <span className="text-lg font-bold">$100</span>
+            </Text>
+          </Stack>
 
-        <Stack mt={4} direction={"row"} spacing={2} align={"center"}>
-          <Avatar
-            size={"sm"}
-            src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-          />
-          <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-            <Text fontSize={"xs"}>geekguyadarsh</Text>
-            {/* <Text color={"gray.500"} fontSize={"xs"}>
+          <Stack mt={4} direction={"row"} spacing={2} align={"center"}>
+            <Avatar
+              size={"sm"}
+              src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+            />
+            <Stack direction={"column"} spacing={0} fontSize={"sm"}>
+              <Text fontSize={"xs"}>geekguyadarsh</Text>
+              {/* <Text color={"gray.500"} fontSize={"xs"}>
               Developer
             </Text> */}
+            </Stack>
           </Stack>
-        </Stack>
+        </Link>
       </Box>
     </Center>
   );

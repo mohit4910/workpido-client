@@ -1,6 +1,7 @@
 "use client";
 
 import GigCard from "@/components/GigCard";
+import ImageSlider from "@/components/ImageSlider";
 import {
   Accordion,
   AccordionButton,
@@ -54,21 +55,19 @@ const page = () => {
             bg: "green.300",
           }}
         >
-          Order for $10
+          Order for $100
         </Button>
       </Flex>
       {/* Article Details */}
       <Box className="bg-white mx-auto w-screen md:w-3/4">
         {/* Article Image */}
-        <Image
-          className="w-screen h-1/4"
-          src="https://www.w3schools.com/css/paris.jpg"
-          alt=""
-        />
+        <ImageSlider className="w-screen h-1/4" />
         {/* Article Text */}
         <Box className="p-5 overflow-hidden">
           <Text className="font-bold text-lg my-3">
-            I will write your articles at an affordable price
+            {
+              "I'll build HTML, CSS, Bootstrap pixel perfect and responsive website"
+            }
           </Text>
           {/* Article Description */}
           <Text className="hidden md:block font-bold text-lg my-3">
@@ -89,7 +88,7 @@ const page = () => {
             content is expected and quick turn around time. The buyer needs to
             provide the following File providing information related to the
             topic. File that provides relevant information about your company.
-            Files that can offer guidance when writing the articles
+            Files that can offer guidance when creating the website
           </Text>
           <Text className="font-bold my-3">Service includes:</Text>
           <List>
@@ -116,7 +115,7 @@ const page = () => {
           </List>
           <Text className="my-3">
             <span className="font-bold">Delivery: </span>
-            <span>2 days</span>
+            <span>1 month</span>
           </Text>
         </Box>
         {/* Article Ordering */}
@@ -125,7 +124,7 @@ const page = () => {
           <Flex className="items-center justify-evenly">
             <List className="flex items-center justify-end md:pr-5 md:justify-evenly w-full text-xs">
               <ListItem className="hidden md:inline-block">
-                <ListIcon as={BsClockHistory} color="black" />1 day delivery
+                <ListIcon as={BsClockHistory} color="black" />1 Month delivery
               </ListItem>
               <ListItem className="hidden md:inline-block">
                 <ListIcon as={GiCheckMark} color="black" />
@@ -163,7 +162,7 @@ const page = () => {
                 bg: "green.300",
               }}
             >
-              Order for $10
+              Order for $100
             </Button>
           </Flex>
         </Flex>
@@ -220,56 +219,62 @@ const page = () => {
         </AccordionItem>
       </Accordion>
       {/* Other Works of the Seller */}
-      <Flex className="flex-col w-screen md:w-10/12 mx-auto  p-4 my-4 bg-[#f6f6f6]">
-        <Box className="mb-8">
-          <Text fontSize={26} fontWeight={600}>
-            Other Works of this Seller
-          </Text>
-          <Stack spacing={8} className=" overflow-x-auto">
-            <Flex justify={"space-around"} gap={2}>
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-            </Flex>
-          </Stack>
-        </Box>
+      <Flex className="flex-col object-contain w-screen md:w-10/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
+        <Text fontSize={26} fontWeight={600}>
+          Other Works from the Seller
+        </Text>
+        <Stack spacing={8}>
+          <Flex
+            justify={"flex-start"}
+            gap={10}
+            className="overflow-x-scroll p-3"
+          >
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+          </Flex>
+        </Stack>
       </Flex>
       {/* Similar Works */}
-      <Flex className="flex-col w-screen md:w-10/12 mx-auto  p-4 my-4 bg-[#f6f6f6]">
-        <Box className="mb-8">
-          <Text fontSize={26} fontWeight={600}>
-            Similar Providers
-          </Text>
-          <Stack spacing={8} className=" overflow-x-auto">
-            <Flex justify={"space-around"} gap={2}>
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-            </Flex>
-          </Stack>
-        </Box>
+      <Flex className="flex-col object-contain w-screen md:w-10/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
+        <Text fontSize={26} fontWeight={600}>
+          Similar Works
+        </Text>
+        <Stack spacing={8}>
+          <Flex
+            justify={"flex-start"}
+            gap={10}
+            className="overflow-x-scroll p-3"
+          >
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+            <GigCard />
+          </Flex>
+        </Stack>
       </Flex>
       {/* Social Handles */}
       <Box className="bg-white mx-auto w-screen md:w-3/4 p-5">
-        <Heading className="text-center">Share on your Social Media</Heading>
+        <Heading className="text-center mb-5">
+          Share on your Social Media
+        </Heading>
         <Flex className="items-center justify-center mx-auto gap-3">
           <Image
             height={"50px"}
