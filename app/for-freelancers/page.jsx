@@ -24,7 +24,7 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 
 // import required modules
-import { EffectCards } from "swiper/modules";
+import { EffectCards, Navigation, Pagination } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css/navigation";
@@ -35,7 +35,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <main className="flex flex-col items-center justify-between min-h-screen">
+    <main className="flex flex-col overflow-hidden items-center justify-between min-h-screen">
       {/* Banner */}
       <Flex
         className="relative max-h-[720px]"
@@ -272,19 +272,94 @@ const page = () => {
       </Flex>
       {/* How to Sell? */}
       <Flex align="center" justify="space-around" flexWrap="wrap">
-        <div className="w-full m-3 p-2">
+        <Box className="w-full m-3 p-2">
           <h4 className="text-center text-2xl">
             How to sell your services in the Catalog
           </h4>
           <p className="text-center mb-3 py-3">
             List your services for free and start earning today
           </p>
-        </div>
+        </Box>
+        {/* Mobile View */}
+        <Flex className="relative h-96 justify-center align-center md:hidden">
+          <Swiper
+            pagination={{
+              type: "progressbar",
+            }}
+            navigation={true}
+            modules={[Pagination, Navigation]}
+            className="mySwiper w-screen"
+          >
+            <SwiperSlide>
+              {" "}
+              <Flex
+                justify="center"
+                align="center"
+                direction="column"
+                className="p-10 my-14"
+              >
+                <Image
+                  src="https://cdn.kwork.com/images/for-sellers/kwork-step-1.svg"
+                  alt=""
+                />
+                <h6 className="text-center text-xl font-bold mb-1">
+                  1. Create a Work
+                </h6>
+                <p className="text-center text-base">
+                  Get started by signing up and listing your services in under 5
+                  minutes.
+                </p>
+              </Flex>
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <Flex
+                justify="center"
+                align="center"
+                direction="column"
+                className="p-10 my-14"
+              >
+                <Image
+                  src="https://cdn.kwork.com/images/for-sellers/kwork-step-2.svg"
+                  alt=""
+                />
+                <h6 className="text-center text-xl font-bold mb-1">
+                  2. Receive your first order.
+                </h6>
+                <p className="text-center text-base">
+                  Get instantly notified when a buyer orders your work.
+                </p>
+              </Flex>
+            </SwiperSlide>
+            <SwiperSlide>
+              {" "}
+              <Flex
+                justify="center"
+                align="center"
+                direction="column"
+                className="p-10 my-14"
+              >
+                <Image
+                  src="https://cdn.kwork.com/images/for-sellers/kwork-step-3-en.svg"
+                  alt=""
+                />
+                <h6 className="text-center text-xl font-bold mb-1">
+                  3. Deliver and get paid
+                </h6>
+                <p className="text-center text-base">
+                  Complete and deliver the order before the deadline. We
+                  guarantee timely payments for every successful order.
+                </p>
+              </Flex>
+            </SwiperSlide>
+          </Swiper>
+        </Flex>
+        {/* Desktop View */}
         <Flex
           justify="center"
           align="center"
           direction="column"
-          className="w-1/3 p-4"
+          className="hidden md:flex w-1/3 p-4"
         >
           <Image
             src="https://cdn.kwork.com/images/for-sellers/kwork-step-1.svg"
@@ -300,7 +375,7 @@ const page = () => {
           justify="center"
           align="center"
           direction="column"
-          className="w-1/3 p-4"
+          className="hidden md:flex w-1/3 p-4"
         >
           <Image
             src="https://cdn.kwork.com/images/for-sellers/kwork-step-2.svg"
@@ -315,7 +390,7 @@ const page = () => {
           justify="center"
           align="center"
           direction="column"
-          className="w-1/3 p-4"
+          className="hidden md:flex w-1/3 p-4"
         >
           <Image
             src="https://cdn.kwork.com/images/for-sellers/kwork-step-3-en.svg"
@@ -334,7 +409,7 @@ const page = () => {
         justify="space-between"
         className="p-4 pb-0 md:mx-5 md:mt-5"
       >
-        <Box>
+        <Box className="text-center md:text-start">
           <p className="text-sm font-bold mt-3">
             A free get-started course for freelancers
           </p>
@@ -381,7 +456,7 @@ const page = () => {
         <Flex
           justify="space-evenly"
           align="center"
-          className="bg-stone-100 md:w-1/2"
+          className="bg-stone-100 lg:w-1/2 flex-col sm:flex-row text-center py-5 md:text-start md:py-0"
         >
           <Image
             src="https://cdn.kwork.com/images/for-sellers/olesya-pad@2x.jpg"
@@ -401,7 +476,7 @@ const page = () => {
         <Flex
           justify="space-evenly"
           align="center"
-          className=" bg-stone-100 md:w-1/2"
+          className=" bg-stone-100 lg:w-1/2 flex-col sm:flex-row text-center py-5 md:text-start md:py-0"
         >
           <Image
             src="https://cdn.kwork.com/images/for-sellers/ivan-pad@2x.jpg"
@@ -421,7 +496,7 @@ const page = () => {
         <Flex
           justify="space-evenly"
           align="center"
-          className=" bg-stone-100 md:w-1/2"
+          className="bg-stone-100 lg:w-1/2 flex-col sm:flex-row text-center py-5 md:text-start md:py-0"
         >
           <Box className="p-4 pl-10">
             <p className="font-light text-sm italic">
@@ -442,7 +517,7 @@ const page = () => {
         <Flex
           justify="space-evenly"
           align="center"
-          className=" bg-stone-100 md:w-1/2"
+          className=" bg-stone-100 lg:w-1/2 flex-col sm:flex-row text-center py-5 md:text-start md:py-0"
         >
           <Box className="p-4 pl-10">
             <p className="font-light text-sm italic">

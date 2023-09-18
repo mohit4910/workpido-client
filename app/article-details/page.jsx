@@ -326,7 +326,6 @@ const page = () => {
             </Box>
           </Flex>
           {/* Seller Contact Card */}
-
           <SellerCard />
           {/* Social Handles */}
           <Box className="bg-white w-full mt-3 p-5">
