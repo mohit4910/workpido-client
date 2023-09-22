@@ -65,7 +65,7 @@ const page = () => {
           </ListItem>
         </List>
         {/* Learning Catalog */}
-        <List className="articles">
+        <List>
           <ListItem>
             <Flex
               align="center"
