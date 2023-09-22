@@ -34,7 +34,7 @@ const page = () => {
       <Flex
         flexDirection="column"
         align="center"
-        className="my-0 py-[8vh] px-[5vw] mx-auto w-screen lg:w-3/4"
+        className="my-0 py-[4vh] px-[5vw] mx-auto w-screen lg:w-3/4"
       >
         <Box className="p-3">
           <Text>
