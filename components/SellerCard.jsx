@@ -28,9 +28,8 @@ const SellerCard = () => {
           </Stack>
         </Stack>
         <Button
-          className="my-2 ml-1 mr-2 w-full px-4 py-2 text-base"
+          className="my-2 ml-1 mr-2 w-full px-4 py-8 text-base flex flex-col"
           as={"a"}
-          display={"inline-flex"}
           color={"white"}
           bg={"brand.primary"}
           href={"#"}
@@ -39,6 +38,9 @@ const SellerCard = () => {
           }}
         >
           Contact Seller
+          <Text className="text-xs text-white font-light my-1">
+            Or order a custom work
+          </Text>
         </Button>
       </CardHeader>
       <CardBody>

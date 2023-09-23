@@ -71,7 +71,6 @@ export default function GigCard() {
               Starting at <span className="text-lg font-bold">$100</span>
             </Text>
           </Stack>
-
           <Stack mt={4} direction={"row"} spacing={2} align={"center"}>
             <Avatar
               size={"sm"}

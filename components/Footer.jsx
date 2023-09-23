@@ -3,11 +3,11 @@
 import {
   Box,
   Container,
+  Flex,
   SimpleGrid,
   Stack,
-  Text,
-  Flex,
   Tag,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
@@ -63,11 +63,11 @@ export default function Footer() {
                 New
               </Tag>
             </Stack>
-            <Box as="a" href={"#"}>
+            <Box as="a" href={"/how-to-earn"}>
               Tutorials
             </Box>
-            <Box as="a" href={"#"}>
-              Pricing
+            <Box as="a" href={"/for-freelancers"}>
+              For Freelancers
             </Box>
             <Box as="a" href={"#"}>
               Releases
@@ -96,17 +96,17 @@ export default function Footer() {
             <Box as="a" href={"#"}>
               Cookies Policy
             </Box>
-            <Box as="a" href={"#"}>
+            <Box as="a" href={"/privacy"}>
               Privacy Policy
             </Box>
-            <Box as="a" href={"#"}>
+            <Box as="a" href={"/terms-of-service"}>
               Terms of Service
             </Box>
-            <Box as="a" href={"#"}>
-              Law Enforcement
+            <Box as="a" href={"/prohibited-services"}>
+              Prohibited Services
             </Box>
-            <Box as="a" href={"#"}>
-              Status
+            <Box as="a" href={"/buyer-protection"}>
+              Buyer Protection Program
             </Box>
           </Stack>
           <Stack align={"flex-start"}>
