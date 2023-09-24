@@ -1,9 +1,7 @@
 "use client";
 
 import GigCard from "@/components/GigCard";
-import ImageSlider from "@/components/ImageSlider";
 import SellerCard from "@/components/SellerCard";
-import Stats from "@/components/Stats";
 import ZoomableImage from "@/components/ZoomableImage";
 import {
   Accordion,
@@ -26,29 +24,55 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { useState } from "react";
-import { BsClockHistory, BsFillCartPlusFill } from "react-icons/bs";
-import { FaSquareFacebook, FaUserCircle, FaXTwitter } from "react-icons/fa";
-import { GiCheckMark } from "react-icons/gi";
+import { BsFillTelephoneFill } from "react-icons/bs";
+import { FaUserCircle } from "react-icons/fa";
+import { ImEyeBlocked, ImLocation } from "react-icons/im";
+import { PiClockCountdownBold } from "react-icons/pi";
+import { RiRadioButtonLine } from "react-icons/ri";
 
 const page = () => {
   return (
     <main className="relative overflow-x-hidden min-h-screen">
-      <Flex className="w-full flex-col lg:flex-row">
+      {/* Seller Details */}
+      <Flex className="w-full flex-col md:flex-row">
         {/* Main Content */}
-        <Flex className=" mx-auto w-screen md:w-11/12 md:my-10 lg:w-[65%]">
+        <Flex className=" mx-auto w-screen md:my-10 md:w-[65%] flex-col md:flex-row">
           {/* User Card */}
-          <Box className="bg-white w-1/3">
+          <Flex className="flex-col bg-white px-2 md:w-1/3 w-fill gap-2">
             <ZoomableImage src="https://avatars0.githubusercontent.com/u/1164541?v=4" />
-          </Box>
+            <Text className="md:block font-bold text-2xl my-3">
+              geekguyadarsh
+            </Text>
+            <Flex className="items-center gap-1">
+              <BsFillTelephoneFill color="gray" />
+              <Text>Phone Verified</Text>
+            </Flex>
+            <Flex className="items-center gap-1">
+              <ImLocation color="gray" />
+              <Text>India</Text>
+            </Flex>
+            <Flex className="items-center gap-1">
+              <PiClockCountdownBold color="gray" />
+              <Text>Joined September 2023</Text>
+            </Flex>
+            <Flex className="items-center gap-1">
+              <RiRadioButtonLine color="green" />
+              <Text>Online</Text>
+            </Flex>
+            <Flex className="items-center gap-1 hover:cursor-pointer">
+              <ImEyeBlocked color="red" />
+              <Text>Block this Seller</Text>
+            </Flex>
+          </Flex>
           {/* User Details */}
-          <Box className="bg-white w-2/3 flex-2">
+          <Box className="bg-white md:w-2/3 w-fill flex-2">
             <Box className="p-5 overflow-hidden">
               {/*Seller Full Name */}
               <Heading className="font-semibold text-emerald-600 text-3xl my-3">
                 {"Adarsh Prakash"}
               </Heading>
               {/*Seller Profession */}
-              <Text className="hidden md:block font-bold text-lg my-3">
+              <Text className="md:block font-bold text-lg my-3">
                 Web Developer
               </Text>
               {/* About the Seller */}
@@ -65,11 +89,20 @@ const page = () => {
           </Box>
         </Flex>
         {/* SideBar - Only visible on large displays */}
-        <Box className="w-full lg:w-[30%]  mx-auto my-10">
+        <Box className="w-full md:w-[30%]  mx-auto my-10">
           {/* Seller Contact Card */}
           <SellerCard className="bg-transparent" />
         </Box>
       </Flex>
+      {/* TODO: */}
+      {/* <Flex className="w-full flex-col md:flex-row">
+      <Box className="bg-white w-1/4">
+            <ZoomableImage src="https://avatars0.githubusercontent.com/u/1164541?v=4" />
+            <Text className="md:block font-bold text-2xl my-3">
+              geekguyadarsh
+            </Text>
+          </Box>
+      </Flex> */}
       {/* Portfolio */}
       <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
         <Text className="font-bold text-lg lg:text-2xl  my-3">Portfolio</Text>
