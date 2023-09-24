@@ -38,11 +38,20 @@ const page = () => {
         {/* Main Content */}
         <Flex className=" mx-auto w-screen md:my-10 md:w-[65%] flex-col md:flex-row">
           {/* User Card */}
-          <Flex className="flex-col bg-white px-2 md:w-1/3 w-fill gap-2">
+          <Flex className="flex-col items-center md:items-start bg-white px-2 md:w-1/3 w-full gap-2">
             <ZoomableImage src="https://avatars0.githubusercontent.com/u/1164541?v=4" />
-            <Text className="md:block font-bold text-2xl my-3">
-              geekguyadarsh
-            </Text>
+            <Box className="my-3 text-center md:text-left">
+              <Text className="md:block font-bold text-2xl my-2">
+                geekguyadarsh
+              </Text>
+              <Heading className="font-bold md:hidden text-emerald-600 text-4xl my-2">
+                {"Adarsh Prakash"}
+              </Heading>
+              {/*Seller Profession */}
+              <Text className="md:hidden font-bold text-xl  my-2">
+                Web Developer
+              </Text>
+            </Box>
             <Flex className="items-center gap-1">
               <BsFillTelephoneFill color="gray" />
               <Text>Phone Verified</Text>
@@ -65,14 +74,14 @@ const page = () => {
             </Flex>
           </Flex>
           {/* User Details */}
-          <Box className="bg-white md:w-2/3 w-fill flex-2">
+          <Box className="bg-white md:w-2/3 w-full flex-2">
             <Box className="p-5 overflow-hidden">
               {/*Seller Full Name */}
-              <Heading className="font-semibold text-emerald-600 text-3xl my-3">
+              <Heading className="hidden md:block font-semibold text-emerald-600 text-4xl text-center md:text-left my-3">
                 {"Adarsh Prakash"}
               </Heading>
               {/*Seller Profession */}
-              <Text className="md:block font-bold text-lg my-3">
+              <Text className=" hidden md:block font-bold text-xl text-center md:text-left my-3">
                 Web Developer
               </Text>
               {/* About the Seller */}
@@ -85,6 +94,22 @@ const page = () => {
                 least the buyer should be able to provide all the necessary
                 guidelines to avoid misunderstandings and revisions.
               </Text>
+              <Box>
+                <Text className="md:block font-bold text-lg my-3">Skills</Text>
+                {/* About the Seller */}
+                <Flex className="gap-2 flex-wrap">
+                  <span className="p-1 m-1 border rounded">React.js</span>
+                  <span className="p-1 m-1 border rounded">Next.js</span>
+                  <span className="p-1 m-1 border rounded">HTML</span>
+                  <span className="p-1 m-1 border rounded">CSS</span>
+                  <span className="p-1 m-1 border rounded">JavaScript</span>
+                  <span className="p-1 m-1 border rounded">React.js</span>
+                  <span className="p-1 m-1 border rounded">Next.js</span>
+                  <span className="p-1 m-1 border rounded">HTML</span>
+                  <span className="p-1 m-1 border rounded">CSS</span>
+                  <span className="p-1 m-1 border rounded">JavaScript</span>
+                </Flex>
+              </Box>
             </Box>
           </Box>
         </Flex>
@@ -94,15 +119,6 @@ const page = () => {
           <SellerCard className="bg-transparent" />
         </Box>
       </Flex>
-      {/* TODO: */}
-      {/* <Flex className="w-full flex-col md:flex-row">
-      <Box className="bg-white w-1/4">
-            <ZoomableImage src="https://avatars0.githubusercontent.com/u/1164541?v=4" />
-            <Text className="md:block font-bold text-2xl my-3">
-              geekguyadarsh
-            </Text>
-          </Box>
-      </Flex> */}
       {/* Portfolio */}
       <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
         <Text className="font-bold text-lg lg:text-2xl  my-3">Portfolio</Text>
@@ -200,10 +216,10 @@ const page = () => {
         flexDirection="column"
         align="center"
         justify="center"
-        className="py-10 px-3 w-full mt-4"
+        className="md:py-10 md:px-3 z-50 w-screen fixed bottom-0 left-0 right-0 md:relative md:w-full md:mt-4"
       >
         <Button
-          className="my-5 w-10/12 md:w-1/3 px-2 py-10 text-lg flex flex-col"
+          className="md:my-5  w-full md:w-1/3 px-2 py-10 text-lg flex flex-col"
           as={"a"}
           color={"white"}
           bg={"brand.primary"}
