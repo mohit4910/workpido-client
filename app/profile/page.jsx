@@ -1,5 +1,6 @@
 "use client";
 
+import ContactSeller from "@/components/ContactSeller";
 import GigCard from "@/components/GigCard";
 import SellerCard from "@/components/SellerCard";
 import ZoomableImage from "@/components/ZoomableImage";
@@ -216,23 +217,10 @@ const page = () => {
         flexDirection="column"
         align="center"
         justify="center"
+        bg={"brand.primary"}
         className="md:py-10 md:px-3 z-50 w-screen fixed bottom-0 left-0 right-0 md:relative md:w-full md:mt-4"
       >
-        <Button
-          className="md:my-5  w-full md:w-1/3 px-2 py-10 text-lg flex flex-col"
-          as={"a"}
-          color={"white"}
-          bg={"brand.primary"}
-          href={"#"}
-          _hover={{
-            bg: "green.300",
-          }}
-        >
-          Contact Me
-          <Text className="text-xs text-white font-light my-1">
-            Or order a custom work
-          </Text>
-        </Button>
+        <ContactSeller className="md:my-5  w-full md:w-1/3 px-2 py-10 text-lg" />
       </Flex>
     </main>
   );

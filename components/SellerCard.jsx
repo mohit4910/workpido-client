@@ -15,6 +15,7 @@ import Link from "next/link";
 
 import React from "react";
 import { BsStarFill } from "react-icons/bs";
+import ContactSeller from "./ContactSeller";
 
 const SellerCard = () => {
   return (
@@ -32,21 +33,9 @@ const SellerCard = () => {
             </Stack>
           </Stack>
         </Link>
-        <Button
-          className="my-2 ml-1 mr-2 w-full px-4 py-8 text-base flex flex-col"
-          as={"a"}
-          color={"white"}
-          bg={"brand.primary"}
-          href={"#"}
-          _hover={{
-            bg: "green.300",
-          }}
-        >
-          Contact Seller
-          <Text className="text-xs text-white font-light my-1">
-            Or order a custom work
-          </Text>
-        </Button>
+        <Box className="pr-6 pl-1">
+          <ContactSeller />
+        </Box>
       </CardHeader>
       <CardBody>
         <Stack divider={<StackDivider />} spacing="4">
