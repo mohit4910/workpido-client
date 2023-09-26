@@ -2,53 +2,62 @@
 
 import OrderCard from "@/components/OrderCard";
 import {
-  Box,
-  Button,
   Flex,
   Heading,
-  Image,
-  List,
-  ListIcon,
-  ListItem,
-  Text,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
+
 import React from "react";
 import { GiCheckMark } from "react-icons/gi";
 
 const page = () => {
   return (
-    <main className="flex flex-col bg-white items-center justify-evenly min-h-screen">
+    <main className="flex flex-col items-center justify-evenly min-h-screen">
       {/* Banner */}
-      <Flex
-        flexDirection="column"
-        align="center"
-        bgImage="url(https://images.pexels.com/photos/8062289/pexels-photo-8062289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
-        className="w-full"
-      >
-        <Flex
-          flexDirection="column"
-          align="center"
-          bgColor="#0000009c"
-          className="px-10 py-14 w-full"
-        >
-          <Heading className="mb-3 text-white text-4xl font-normal">
-            My Orders
-          </Heading>
-        </Flex>
+      <Flex flexDirection="column" className="px-5 py-3 w-full">
+        <Heading className="mb-3 text-white text-3xl font-medium">
+          My Orders
+        </Heading>
       </Flex>
-      {/* Main Content */}
-      <Flex
-        flexDirection="column"
-        align="center"
-        className="pt-10 w-screen gap-3 lg:w-3/4"
-      >
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
-      </Flex>
+      {/* TabBar */}
+      <Tabs className="my-5 w-screen lg:w-3/4">
+        <TabList>
+          <Tab _selected={{ color: "brand.primary" }}>Completed</Tab>
+          <Tab _selected={{ color: "brand.primary" }}>Canceled</Tab>
+          <Tab _selected={{ color: "brand.primary" }}>All</Tab>
+        </TabList>
+        <TabPanels>
+          {/* Completed */}
+          <TabPanel className="px-0 flex w-screen lg:w-3/4 items-center flex-col gap-3">
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+          </TabPanel>
+          {/* Canceled */}
+          <TabPanel>
+            <OrderCard />
+            <OrderCard />
+          </TabPanel>
+          {/* All */}
+          <TabPanel>
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </main>
   );
 };
