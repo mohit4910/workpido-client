@@ -5,22 +5,22 @@ import { MdOutlineStickyNote2 } from "react-icons/md";
 
 const OrderCard = () => {
   return (
-    <Flex className="w-[95%] mx-auto bg-white shadow-lg border rounded-lg shadow-stone-400/40 px-3 py-2 flex-col gap-2">
+    <Flex className="w-[95%] mx-auto bg-white shadow-lg lg:rounded-none border rounded-lg shadow-stone-400/40 px-3 py-2 flex-col lg:flex-row gap-2">
       {/* Name */}
-      <Flex className="w-fit">
+      <Flex className="w-fit lg:items-center lg:w-2/6">
         I will create responsive websites in Next.js
       </Flex>
       {/* Status */}
-      <Flex className="w-full gap-2 items-end flex-col">
+      <Flex className="w-full lg:w-1/6 gap-2 items-end flex-col lg:order-last">
         <Text className="text-xs text-neutral-500">August 15, 2023</Text>
         <Box className="py-1 px-2 border border-brand-primary rounded-md bg-brand-primary">
           <Text className="text-xs text-white font-medium">Completed</Text>
         </Box>
       </Flex>
       {/* Details */}
-      <Flex className="items-center">
+      <Flex className="items-center justify-evenly lg:w-3/6">
         {/* Buyer */}
-        <Box className="items-center w-1/3">
+        <Box className="items-center w-1/2 lg:px-2">
           <Link href={"/profile"}>
             <Stack my={4} direction={"row"} spacing={1} align={"center"}>
               <Avatar
@@ -41,11 +41,11 @@ const OrderCard = () => {
         </Box>
       </Flex>
       {/* Review - only visible on smaller displays */}
-      <Box className="border border-gray-700 rounded-md w-3/4 text-center my-1 py-1 mx-auto">
+      <Flex className="lg:w-1/6 lg:border-none lg:items-center justify-center border border-gray-700 rounded-md w-3/4 text-center my-1 py-1 mx-auto">
         <Link href="#">
           <Text className="font-medium">Read the Review</Text>
         </Link>
-      </Box>
+      </Flex>
     </Flex>
   );
 };
