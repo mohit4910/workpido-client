@@ -1,0 +1,53 @@
+import { Avatar, Box, Flex, Stack, Text } from "@chakra-ui/react";
+import Link from "next/link";
+import React from "react";
+import { MdOutlineStickyNote2 } from "react-icons/md";
+
+const OrderCard = () => {
+  return (
+    <Flex className="w-[95%] mx-auto bg-white shadow-lg border rounded-lg shadow-stone-400/40 px-3 py-2 flex-col gap-2">
+      {/* Name */}
+      <Flex className="w-fit">
+        I will create responsive websites in Next.js
+      </Flex>
+      {/* Status */}
+      <Flex className="w-full gap-2 items-end flex-col">
+        <Text className="text-xs text-neutral-500">August 15, 2023</Text>
+        <Box className="py-1 px-2 border border-brand-primary rounded-md bg-brand-primary">
+          <Text className="text-xs text-white font-medium">Completed</Text>
+        </Box>
+      </Flex>
+      {/* Details */}
+      <Flex className="items-center">
+        {/* Buyer */}
+        <Box className="items-center w-1/3">
+          <Link href={"/profile"}>
+            <Stack my={4} direction={"row"} spacing={1} align={"center"}>
+              <Avatar
+                size={"sm"}
+                src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+              />
+              <Text fontSize={"xs"}>geekguyadarsh</Text>
+            </Stack>
+          </Link>
+        </Box>
+        {/* Note */}
+        <Flex className="w-1/3 items-center justify-center">
+          <MdOutlineStickyNote2 />
+        </Flex>
+        {/* Price */}
+        <Box className="w-1/3 items-center">
+          <Text className="text-center">{`$16`}</Text>
+        </Box>
+      </Flex>
+      {/* Review - only visible on smaller displays */}
+      <Box className="border border-gray-700 rounded-md w-3/4 text-center my-1 py-1 mx-auto">
+        <Link href="#">
+          <Text className="font-medium">Read the Review</Text>
+        </Link>
+      </Box>
+    </Flex>
+  );
+};
+
+export default OrderCard;

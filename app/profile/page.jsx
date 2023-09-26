@@ -218,9 +218,9 @@ const page = () => {
         align="center"
         justify="center"
         bg={"brand.primary"}
-        className="md:py-10 md:px-3 z-50 w-screen md:bg-[#f6f6f6] fixed bottom-0 left-0 right-0 md:relative md:w-full md:mt-4"
+        className="md:py-10 md:px-3 z-50 w-screen md:w-1/3 md:bg-[#f6f6f6] fixed bottom-0 left-0 right-0 md:relative md:mx-auto md:mt-4"
       >
-        <ContactSeller className="md:my-5  w-full md:w-1/3 px-2 py-10 text-lg" />
+        <ContactSeller className="md:my-5 w-full px-2 py-10 text-lg" />
       </Flex>
     </main>
   );
