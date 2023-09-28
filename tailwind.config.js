@@ -32,6 +32,7 @@ module.exports = {
       neutral: colors.trueGray,
       gray: colors.coolGray,
       slate: colors.blueGray,
+      red: colors.red,
       brand: {
         border: "#e2e2e2",
         primary: "#04b70a",
