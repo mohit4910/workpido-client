@@ -25,6 +25,8 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import logo from "../assets/logo.png";
+import AppModal from "./AppModal";
+import SignupModal from "./SignupModal";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -89,20 +91,8 @@ export default function WithSubnavigation() {
           >
             Sign In
           </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"brand.primary"}
-            href={"#"}
-            _hover={{
-              bg: "green.300",
-            }}
-          >
-            Sign Up
-          </Button>
+          <SignupModal />
+
           <Button
             as={"a"}
             fontSize={"sm"}

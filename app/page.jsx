@@ -3,10 +3,11 @@
 import AboutUs from "@/components/AboutUs";
 import Features from "@/components/Features";
 import Stats from "@/components/Stats";
+import { API } from "@/lib/api";
 import { Flex, Image, Text, Box } from "@chakra-ui/react";
 // import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ZoomableImage = ({ src, alt }) => {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -85,6 +86,14 @@ const Catalog = () => (
 );
 
 export default function Home() {
+  const getData = async () => {
+    let res = await API.getGigs();
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <main className="flex flex-col items-center justify-between min-h-screen p-4 mb-10">
       <div className="mb-8">
