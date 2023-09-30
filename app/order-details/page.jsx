@@ -1,6 +1,7 @@
 "use client";
 
 import ImageSlider from "@/components/ImageSlider";
+import Message from "@/components/Message";
 import SellerCard from "@/components/SellerCard";
 import {
   Accordion,
@@ -171,7 +172,43 @@ const page = () => {
             </Flex>
           </Flex>
           {/* Order Updates */}
-          <Flex className="w-full bg-indigo-600">Order Info</Flex>
+          <Flex className="w-full flex-col bg-white p-5 gap-5">
+            <Text className="bg-[#f8f8f8] p-2 -mx-5 text-neutral-700 sticky top-0">
+              August 15
+            </Text>
+            <Message />
+            <Message />
+            <Message />
+            <Message />
+            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
+              August 16
+            </Text>
+            <Message />
+            <Message />
+            <Message />
+            <Message />
+            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
+              August 17
+            </Text>
+            <Message />
+            <Message />
+            <Message />
+            <Message />
+            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
+              August 18
+            </Text>
+            <Message />
+            <Message />
+            <Message />
+            <Message />
+            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
+              August 21
+            </Text>
+            <Message />
+            <Message />
+            <Message />
+            <Message />
+          </Flex>
         </Flex>
         {/* SideBar - Comes Down on smaller displays */}
         <Box className="w-full order-last md:w-[30%] my-10 mx-3 md:mx-0">
