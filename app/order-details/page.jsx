@@ -71,9 +71,9 @@ const page = () => {
 
   return (
     <main className="relative min-h-screen">
-      <Flex className="mx-auto w-screen md:w-10/12 flex-col md:flex-row">
+      <Flex className="w-[98%] md:w-[95%] lg:w-10/12 flex-col md:flex-row items-center md:items-start mx-auto">
         {/* Main Content */}
-        <Flex className="mx-auto w-screen md:w-10/12 md:my-10 lg:w-8/12 flex-col gap-6">
+        <Flex className="md:mx-3 lg:mx-auto w-[98%] md:w-10/12 md:my-10 lg:w-8/12 flex-col gap-6">
           {/* Order Info */}
           <Flex className="w-full flex-col bg-white p-5 gap-5">
             {/* order heading */}
@@ -211,7 +211,7 @@ const page = () => {
           </Flex>
         </Flex>
         {/* SideBar - Comes Down on smaller displays */}
-        <Box className="w-full order-last md:w-[30%] my-10 mx-3 md:mx-0">
+        <Box className="w-[96%] order-last md:w-[30%] my-10 mx-3 md:mx-0">
           <Flex className="bg-white flex-col px-3">
             {/* Order Details */}
             <List className="flex flex-col gap-4 border-y py-4">
@@ -265,8 +265,7 @@ const page = () => {
                       active={<StepNumber />}
                     />
                   </StepIndicator>
-
-                  <Box flexShrink="0">
+                  <Box overflowX={"hidden"}>
                     <StepTitle>{step.title}</StepTitle>
                   </Box>
                   <StepSeparator />
