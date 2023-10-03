@@ -3,7 +3,6 @@
 import GigCard from "@/components/GigCard";
 import ImageSlider from "@/components/ImageSlider";
 import SellerCard from "@/components/SellerCard";
-import Stats from "@/components/Stats";
 import {
   Accordion,
   AccordionButton,
@@ -24,10 +23,15 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useState } from "react";
-import { BsClockHistory, BsFillCartPlusFill } from "react-icons/bs";
-import { FaSquareFacebook, FaUserCircle, FaXTwitter } from "react-icons/fa";
+import React from "react";
+
+import { AiFillEyeInvisible } from "react-icons/ai";
+
+import { BsClockHistory, BsFillCartPlusFill, BsStarFill } from "react-icons/bs";
+import { FaUserCircle } from "react-icons/fa";
+import { FiHeart } from "react-icons/fi";
 import { GiCheckMark } from "react-icons/gi";
+import { MdReportProblem } from "react-icons/md";
 
 const page = () => {
   return (
@@ -66,17 +70,68 @@ const page = () => {
         <Box className=" mx-auto w-screen md:w-10/12 md:my-10 lg:w-8/12">
           {/* Article Details */}
           <Box className="bg-white w-full">
-            {/* Article Image */}
-            <ImageSlider className="w-full h-1/4" />
-            {/* Article Text */}
-            <Box className="p-5 overflow-hidden">
-              <Text className="font-bold text-lg my-3">
+            {/* Article Heading */}
+            <Flex className="flex-col gap-3 mb-2 p-5">
+              <Text className="font-bold w-fill text-xl md:text-2xl">
                 {
                   "I'll build HTML, CSS, Bootstrap pixel perfect and responsive website"
                 }
               </Text>
+              <Flex className="flex-col gap-2 md:gap-0 md:flex-row md:justify-between items-start md:items-center">
+                {/* Abstract */}
+                <Flex className="items-center gap-3">
+                  <Link href={"/profile"}>
+                    <Stack direction={"row"} spacing={2} align={"center"}>
+                      <Avatar
+                        size={"sm"}
+                        src={
+                          "https://avatars0.githubusercontent.com/u/1164541?v=4"
+                        }
+                      />
+                      <Stack direction={"column"} spacing={0} fontSize={"sm"}>
+                        <Text
+                          fontSize={"sm"}
+                          className=" hover:text-indigo-600"
+                        >
+                          geekguyadarsh
+                        </Text>
+                      </Stack>
+                    </Stack>
+                  </Link>
+                  <Flex align={"center"} className="gap-1">
+                    <BsStarFill className="text-yellow-500 font-semibold" />
+                    <Text
+                      fontSize="md"
+                      className="text-yellow-500 font-semibold"
+                    >
+                      3.4
+                    </Text>
+                  </Flex>
+                  <Text className="text-sm text-neutral-600">2 reviews</Text>
+                </Flex>
+                {/* Buttons */}
+                <Flex className="gap-2">
+                  <FiHeart
+                    size={"35px"}
+                    className="border-2 border-neutral-400 px-2 rounded cursor-pointer hover:border-black"
+                  />
+                  <AiFillEyeInvisible
+                    size={"35px"}
+                    className="border-2 border-neutral-400 px-2 rounded cursor-pointer hover:border-black"
+                  />
+                  <MdReportProblem
+                    size={"35px"}
+                    className="border-2 border-neutral-400 px-2 rounded cursor-pointer hover:border-black"
+                  />
+                </Flex>
+              </Flex>
+            </Flex>
+            {/* Article Image */}
+            <ImageSlider className="w-full h-1/4" />
+            {/* Article Text */}
+            <Box className="p-5 overflow-hidden">
               {/* Article Description */}
-              <Text className="hidden md:block font-bold text-lg my-3">
+              <Text className="block font-bold text-lg my-3">
                 Work Overview
               </Text>
               <Text className="my-3">

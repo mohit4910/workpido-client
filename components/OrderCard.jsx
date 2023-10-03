@@ -19,8 +19,14 @@ const OrderCard = () => {
   return (
     <Flex className="w-[95%] mx-auto bg-white shadow-lg lg:rounded-none border rounded-lg shadow-stone-400/40 px-3 py-2 flex-col lg:flex-row gap-2">
       {/* Name */}
-      <Flex className="w-fit lg:items-center lg:w-2/6">
-        {orderDetails.artileName}
+
+      <Flex className="w-full lg:items-center lg:w-2/6">
+        <Link
+          href={"/order-details"}
+          className="hover:text-indigo-600 items-center"
+        >
+          {orderDetails.artileName}
+        </Link>
       </Flex>
       {/* Status */}
       <Flex className="w-full lg:w-1/6 gap-2 items-end flex-col lg:order-last">
@@ -60,7 +66,7 @@ const OrderCard = () => {
       </Flex>
       {/* Review - only visible on smaller displays */}
       <Flex className="lg:w-1/6 lg:border-none lg:items-center justify-center border border-gray-700 rounded-md w-3/4 text-center my-1 py-1 mx-auto">
-        <Link href="#">
+        <Link href="/order-details">
           <Text className="font-medium">Read the Review</Text>
         </Link>
       </Flex>
