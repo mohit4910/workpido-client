@@ -13,12 +13,18 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-export default function AppModal({ title, btnText = "Open Modal", children }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export default function AppModal({
+  title,
+  btnText = "Open Modal",
+  children,
+  isOpen,
+  setIsOpen,
+}) {
+  const { onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Button
+      {/* <Button
         onClick={onOpen}
         cursor={"pointer"}
         display={{ base: "none", md: "inline-flex" }}
@@ -30,12 +36,14 @@ export default function AppModal({ title, btnText = "Open Modal", children }) {
         }}
       >
         {btnText}
-      </Button>
+      </Button> */}
 
       <Modal
         blockScrollOnMount={false}
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={() => {
+          setIsOpen(false);
+        }}
         size={"sm"}
         isCentered
       >

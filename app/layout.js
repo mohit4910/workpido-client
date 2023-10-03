@@ -4,6 +4,8 @@ import { Providers } from "./providers";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import { Poppins } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const inter = Poppins({
   subsets: ["latin"],
@@ -18,6 +20,7 @@ export default function RootLayout({ children }) {
         <title>Workpido</title>
       </head>
       <body>
+        <ToastContainer />
         <Providers>
           <WithSubnavigation />
           {children}
