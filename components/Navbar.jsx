@@ -27,6 +27,7 @@ import Image from "next/image";
 import logo from "../assets/logo.png";
 import AppModal from "./AppModal";
 import SignupModal from "./SignupModal";
+import SigninModal from "./SigninModal";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -82,15 +83,7 @@ export default function WithSubnavigation() {
           direction={"row"}
           spacing={6}
         >
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"#"}
-          >
-            Sign In
-          </Button>
+          <SigninModal />
           <SignupModal />
 
           <Button

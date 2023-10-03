@@ -8,39 +8,36 @@ import { API } from "@/lib/api";
 import Input from "./Input";
 
 const SignupSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Required"),
-  username: Yup.string().required("Required"),
-  password: Yup.string().required("Required"),
+  identifier: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string().required("Password is required"),
 });
 
-const SignupModal = () => {
+const SigninModal = () => {
   const router = useRouter();
 
   const handleSubmit = (values, { setSubmitting, setFieldError }) => {
-    // Call your API here to handle form submission
-
-    // Example API call (you should replace this with your actual API call)
-    API.signup(values)
+    API.login(values)
       .then((response) => {
-        // Handle success, e.g., redirect to a new page
-        alert("Signup successful");
-        // router.push("/dashboard");
+        alert("Signin successful");
+        console.log("hehehe", response);
+        localStorage.setItem("token", response.jwt);
+        localStorage.setItem("user", JSON.stringify(response.user));
       })
       .catch((error) => {
-        // Handle error, e.g., display error message
-        alert("Signup failed");
+        toast("Signup failed", error);
 
         setFieldError("error", "An error occurred. Please try again.");
       })
       .finally(() => {
         setSubmitting(false);
+        console.log("response");
       });
   };
 
   return (
-    <AppModal title="Sign Up" btnText="Sign Up">
+    <AppModal title="Login" btnText="Login">
       <Formik
-        initialValues={{ email: "", username: "", password: "" }}
+        initialValues={{ identifier: "", password: "" }}
         validationSchema={SignupSchema}
         onSubmit={handleSubmit}
       >
@@ -54,31 +51,19 @@ const SignupModal = () => {
         }) => (
           <Form>
             <Stack spacing={4} px={1}>
-              {console.log(values)}
               <Input.Free
                 type="email"
-                name="email"
+                name="identifier"
                 placeholder="Email"
                 label="Email"
-                value={values.email}
+                value={values.identifier}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                touched={touched.email}
-                error={errors.email}
+                touched={touched.identifier}
+                error={errors.identifier}
                 isRequired
               />
-              <Input.Free
-                type="text"
-                name="username"
-                placeholder="Username"
-                label="Username"
-                value={values.username}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                touched={touched.username}
-                error={errors.username}
-                isRequired
-              />
+
               <Input.Free
                 type="password"
                 name="password"
@@ -97,9 +82,11 @@ const SignupModal = () => {
                 fontWeight={400}
                 textColor={"white"}
                 type="submit"
+                mt={4}
                 isLoading={isSubmitting}
+                disabled={errors}
               >
-                Sign Up
+                Login
               </Button>
               <ErrorMessage name="error" component="div" />
             </Stack>
@@ -110,4 +97,4 @@ const SignupModal = () => {
   );
 };
 
-export default SignupModal;
+export default SigninModal;

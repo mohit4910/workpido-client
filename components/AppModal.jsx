@@ -43,7 +43,7 @@ export default function AppModal({ title, btnText = "Open Modal", children }) {
         <ModalContent>
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
+          <ModalBody py={4}>{children}</ModalBody>
 
           <ModalFooter>
             {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
