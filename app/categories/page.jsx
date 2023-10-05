@@ -7,7 +7,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <main className="flex flex-col min-h-screen p-4 mb-10 bg-[#f6f6f6]">
+    <main className="flex flex-col min-h-screen p-4 mb-10 bg-[#f6f6f6] lg:container lg:mx-auto">
       <div className="mb-8">
         <Text fontSize={26} fontWeight={600}>
           Logo Design
@@ -32,7 +32,7 @@ const page = () => {
             <Text>$100</Text>
             <Text>$100</Text>
           </Box>
-          <Flex justify={"space-around"} gap={2} flexWrap={"wrap"}>
+          <Flex justify={"space-around"} gap={3} flexWrap={"wrap"}>
             <GigCard />
             <GigCard />
             <GigCard />

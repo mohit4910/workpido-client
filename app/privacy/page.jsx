@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Button,
   Flex,
   Heading,
   ListItem,
@@ -24,7 +23,7 @@ const page = () => {
       <Flex
         flexDirection="column"
         align="center"
-        className="my-0 py-[4vh] px-[5vw] mx-auto w-screen bg-white lg:w-3/4"
+        className="my-0 py-[4vh] px-[5vw] mx-auto w-screen bg-white lg:w-3/4 lg:container"
       >
         <Heading className="text-center my-5">Privacy Policy</Heading>
         <Text>

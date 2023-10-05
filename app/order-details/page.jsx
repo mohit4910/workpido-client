@@ -1,8 +1,6 @@
 "use client";
 
-import ImageSlider from "@/components/ImageSlider";
 import Message from "@/components/Message";
-import SellerCard from "@/components/SellerCard";
 import {
   Accordion,
   AccordionButton,
@@ -13,15 +11,11 @@ import {
   Box,
   Button,
   Flex,
-  Heading,
-  Image,
-  Input,
   List,
   ListIcon,
   ListItem,
   Stack,
   Step,
-  StepDescription,
   StepIcon,
   StepIndicator,
   StepNumber,
@@ -29,29 +23,16 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
   Textarea,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
   useSteps,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 
-import { AiFillEyeInvisible } from "react-icons/ai";
-
-import { BsClockHistory, BsFillCartPlusFill, BsStarFill } from "react-icons/bs";
 import { FaQuestion, FaUserCircle } from "react-icons/fa";
-import { FiHeart } from "react-icons/fi";
 import { GiCheckMark } from "react-icons/gi";
 import { LuFileStack } from "react-icons/lu";
-import { MdReportProblem } from "react-icons/md";
 import { TbWriting } from "react-icons/tb";
 
 const page = () => {
@@ -71,7 +52,7 @@ const page = () => {
 
   return (
     <main className="relative min-h-screen">
-      <Flex className="w-[98%] md:w-[95%] lg:w-10/12 flex-col md:flex-row items-center md:items-start mx-auto">
+      <Flex className="w-[98%] md:w-[95%] md:container lg:w-10/12 flex-col md:flex-row items-center md:items-start mx-auto">
         {/* Main Content */}
         <Flex className="md:mx-3 lg:mx-auto w-[98%] md:w-10/12 md:my-10 lg:w-8/12 flex-col gap-6">
           {/* Order Info */}

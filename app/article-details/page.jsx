@@ -35,7 +35,7 @@ import { MdReportProblem } from "react-icons/md";
 
 const page = () => {
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-screen lg:mx-auto lg:container">
       {/* Order Button Mobile-only */}
       <Flex className="bg-white z-50 md:hidden w-screen justify-evenly fixed bottom-0 left-0 right-0">
         <Button

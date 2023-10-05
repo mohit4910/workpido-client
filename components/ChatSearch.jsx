@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 
 const ChatSearch = () => {
   return (
-    <Box className="border my-3 md:my-auto md:h-[18%]">
+    <Box className="border my-3 md:my-4 md:h-[18%] max-h-24">
       <Flex className="space-around items-center gap-3">
         <Input
           className="p-3 border border-neutral-400 outline-none placeholder:text-stone-500"
