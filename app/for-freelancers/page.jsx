@@ -43,6 +43,7 @@ const page = () => {
         h={{ base: "60vh", md: "90vh" }}
         w={"full"}
         justify="center"
+        bgSize={"cover"}
       >
         <Flex
           flexDirection="column"
@@ -88,7 +89,11 @@ const page = () => {
         </Flex>
       </Flex>
       {/* Freelance Gallery */}
-      <Flex justify="center" flexWrap="wrap" className="bg-white p-6">
+      <Flex
+        justify="center"
+        flexWrap="wrap"
+        className="bg-white p-6  md:container"
+      >
         <h2 className="text-center text-base md:text-3xl font-bold mb-3 w-full py-3">
           Join Our Evergrowing Freelance Community
         </h2>
@@ -198,7 +203,7 @@ const page = () => {
           </Swiper>
         </Flex>
         {/* Desktop View */}
-        <Box className="hidden justify-center md:flex md:flex-wrap">
+        <Box className="hidden justify-start md:flex md:flex-wrap">
           <ZoomableImage
             src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt="services"
@@ -271,7 +276,12 @@ const page = () => {
         </Box>
       </Flex>
       {/* How to Sell? */}
-      <Flex align="center" justify="space-around" flexWrap="wrap">
+      <Flex
+        align="center"
+        justify="space-around"
+        flexWrap="wrap"
+        className=" md:container"
+      >
         <Box className="w-full m-3 p-2">
           <h4 className="text-center text-2xl">
             How to sell your services in the Catalog
@@ -407,7 +417,7 @@ const page = () => {
       <Flex
         align="center"
         justify="space-between"
-        className="p-4 pb-0 md:mx-5 md:mt-5"
+        className="p-4 pb-0 md:mx-5 md:mt-5 md:container"
       >
         <Box className="text-center md:text-start">
           <p className="text-sm font-bold mt-3">
@@ -441,14 +451,14 @@ const page = () => {
           src="https://images.pexels.com/photos/9489771/pexels-photo-9489771.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt=""
           clipPath={"polygon(40% 0, 100% 0%, 100% 100%, 0% 100%)"}
-          className="hidden md:inline md:w-2/5 h-96"
+          className="hidden md:inline md:w-2/5 h-96 object-cover"
         />
       </Flex>
       {/* Buyer Testimonials */}
       <Flex
         justify="space-evenly"
         flexWrap="wrap"
-        className="bg-white pt-4 pb-3 md:m-3"
+        className="bg-white pt-4 pb-3 md:m-3 md:container"
       >
         <h4 className="text-center w-full font-bold text-2xl pt-5 pb-2 mb-5">
           Buyer Testimonials
@@ -462,7 +472,7 @@ const page = () => {
             src="https://cdn.kwork.com/images/for-sellers/olesya-pad@2x.jpg"
             alt=""
             clipPath={"polygon(0% 0%, 100% 0, 68% 50%, 100% 100%, 0% 100%)"}
-            className="w-80 h-72"
+            className="w-80 h-72 object-cover"
           />
           <Box className="p-4 pr-10">
             <p className="font-light text-sm italic">
@@ -482,7 +492,7 @@ const page = () => {
             src="https://cdn.kwork.com/images/for-sellers/ivan-pad@2x.jpg"
             alt=""
             clipPath={"polygon(0% 0%, 100% 0, 68% 50%, 100% 100%, 0% 100%)"}
-            className="w-80 h-72"
+            className="w-80 h-72 object-cover"
           />
           <Box className="p-4 pr-10">
             <p className="font-light text-sm italic">
@@ -511,7 +521,7 @@ const page = () => {
             src="https://cdn.kwork.com/images/for-sellers/dmitri-pad@2x.jpg"
             alt=""
             clipPath={"polygon(0 0, 100% 0%, 100% 100%, 0 100%, 32% 50%)"}
-            className="w-80 h-72"
+            className="w-80 h-72 object-cover"
           />
         </Flex>
         <Flex
@@ -530,17 +540,17 @@ const page = () => {
             src="https://cdn.kwork.com/images/for-sellers/maria-pad@2x.jpg"
             alt=""
             clipPath={"polygon(0 0, 100% 0%, 100% 100%, 0 100%, 32% 50%)"}
-            className="w-80 h-72"
+            className="w-80 h-72 object-cover"
           />
         </Flex>
       </Flex>
       {/*FAQs*/}
-      <Box className="w-full">
+      <Box className="w-full md:container">
         <h4 className="text-center font-bold text-2xl p-4">FAQ</h4>
         <Accordion allowToggle className="md:grid md:grid-cols-2 md:gap-1">
-          <AccordionItem className=" bg-white md:m-2 p-3">
+          <AccordionItem className="h-fit bg-white md:m-2 p-3 hover:border-l-4 hover:border-l-sky-500">
             <h2>
-              <AccordionButton>
+              <AccordionButton _hover={{ color: "black" }}>
                 <Box as="span" flex="1" textAlign="left">
                   How do I start earning on Workpido?
                 </Box>
@@ -553,9 +563,9 @@ const page = () => {
               earnings will start rolling in!
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem className="md:m-2 bg-white p-3">
+          <AccordionItem className="md:m-2 h-fit bg-white p-3 hover:border-l-4 hover:border-l-sky-500">
             <h2>
-              <AccordionButton>
+              <AccordionButton _hover={{ color: "black" }}>
                 <Box as="span" flex="1" textAlign="left">
                   Do I have to pay anytthing to use Workpido?
                 </Box>
@@ -569,9 +579,9 @@ const page = () => {
               you want. Easy, no?
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem className="md:m-2 bg-white p-3 ">
+          <AccordionItem className="md:m-2 h-fit bg-white p-3 hover:border-l-4 hover:border-l-sky-500">
             <h2>
-              <AccordionButton>
+              <AccordionButton _hover={{ color: "black" }}>
                 <Box as="span" flex="1" textAlign="left">
                   How much time do I need to dedicate?
                 </Box>
@@ -587,9 +597,9 @@ const page = () => {
               lifestyle, goals, and personal circumstances.
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem className="md:m-2 bg-white p-3 ">
+          <AccordionItem className="md:m-2 h-fit bg-white p-3 hover:border-l-4 hover:border-l-sky-500">
             <h2>
-              <AccordionButton>
+              <AccordionButton _hover={{ color: "black" }}>
                 <Box as="span" flex="1" textAlign="left">
                   How much can I earn?
                 </Box>
@@ -603,9 +613,9 @@ const page = () => {
               to several thousand dollars!
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem className="md:m-2 bg-white p-3">
+          <AccordionItem className="md:m-2 h-fit bg-white p-3 hover:border-l-4 hover:border-l-sky-500">
             <h2>
-              <AccordionButton>
+              <AccordionButton _hover={{ color: "black" }}>
                 <Box as="span" flex="1" textAlign="left">
                   How do I get paid for my work?
                 </Box>
@@ -628,7 +638,7 @@ const page = () => {
         flexDirection="column"
         align="center"
         justify="center"
-        className="py-10 px-3 w-full bg-white mt-3"
+        className="py-10 px-3 w-full bg-white mt-3 md:container"
       >
         <h4 className="text-2xl mt-5 text-center font-bold">
           Start Your Freelance Journey on Workpido Today

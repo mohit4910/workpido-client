@@ -19,19 +19,43 @@ const page = () => {
   return (
     <main className="flex flex-col items-center justify-start min-h-screen">
       {/* Banner */}
-      <Flex flexDirection="column" className="px-5 py-3 w-full">
-        <Heading className="mb- text-3xl font-medium">My Orders</Heading>
+      <Flex flexDirection="column" className="px-5 py-3 w-[95%]  lg:container">
+        <Heading className="text-3xl font-medium">My Orders</Heading>
       </Flex>
       {/* TabBar */}
-      <Tabs className="my-5 w-screen lg:w-[95%]">
-        <TabList className="font-semibold text-md">
-          <Tab _selected={{ color: "brand.primary" }}>Completed</Tab>
-          <Tab _selected={{ color: "brand.primary" }}>Canceled</Tab>
-          <Tab _selected={{ color: "brand.primary" }}>All</Tab>
+      <Tabs className="my-5 w-screen md:w-[95%] lg:w-[95%]  lg:container">
+        <TabList
+          borderBottom={"5px solid transparent"}
+          className="font-semibold text-md"
+        >
+          <Tab
+            _selected={{
+              color: "brand.primary",
+              borderBottomColor: "brand.primary",
+            }}
+          >
+            Completed
+          </Tab>
+          <Tab
+            _selected={{
+              color: "brand.primary",
+              borderBottomColor: "brand.primary",
+            }}
+          >
+            Canceled
+          </Tab>
+          <Tab
+            _selected={{
+              color: "brand.primary",
+              borderBottomColor: "brand.primary",
+            }}
+          >
+            All
+          </Tab>
         </TabList>
         <TabPanels>
           {/* Completed */}
-          <TabPanel className="px-0 flex w-screen lg:w-full items-center flex-col gap-3 lg:gap-0">
+          <TabPanel className="px-0 flex w-screen md:w-full items-center flex-col gap-3 lg:gap-0">
             {/* Table Heading - Only for large displays */}
             <Flex className="hidden lg:flex w-[95%] mx-auto bg-white font-medium shadow-lg border lg:rounded-none rounded-lg shadow-stone-400/40 px-3 py-2 gap-2">
               <Flex className="items-center w-2/6">Article Name</Flex>
@@ -66,7 +90,7 @@ const page = () => {
             <OrderCard />
           </TabPanel>
           {/* Canceled */}
-          <TabPanel className="px-0 flex w-screen lg:w-full items-center flex-col gap-3 lg:gap-0">
+          <TabPanel className="px-0 flex w-screen md:w-full items-center flex-col gap-3 lg:gap-0">
             {/* Table Heading - Only for large displays */}
             <Flex className="hidden lg:flex w-[95%] mx-auto bg-white font-medium shadow-lg border lg:rounded-none rounded-lg shadow-stone-400/40 px-3 py-2 gap-2">
               <Flex className="items-center w-2/6">Article Name</Flex>
@@ -98,7 +122,7 @@ const page = () => {
             <OrderCard />
           </TabPanel>
           {/* All */}
-          <TabPanel className="px-0 flex w-screen lg:w-full items-center flex-col gap-3 lg:gap-0">
+          <TabPanel className="px-0 flex w-screen md:w-full items-center flex-col gap-3 lg:gap-0">
             {/* Table Heading - Only for large displays */}
             <Flex className="hidden lg:flex w-[95%] mx-auto bg-white font-medium shadow-lg border lg:rounded-none rounded-lg shadow-stone-400/40 px-3 py-2 gap-2">
               <Flex className="items-center w-2/6">Article Name</Flex>

@@ -6,54 +6,22 @@ import SellerStats from "@/components/SellerStats";
 import Stats from "@/components/Stats";
 
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Avatar,
   Box,
   Button,
   Flex,
   Heading,
   Image,
   List,
-  ListIcon,
   ListItem,
-  Stack,
-  Step,
-  StepDescription,
-  StepIcon,
-  StepIndicator,
-  StepNumber,
-  StepSeparator,
-  StepStatus,
-  StepTitle,
-  Stepper,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
   Text,
-  Textarea,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-  useSteps,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 
-import { FaQuestion, FaUserCircle } from "react-icons/fa";
-import { GiCheckMark } from "react-icons/gi";
-import { LuFileStack } from "react-icons/lu";
-import { TbWriting } from "react-icons/tb";
-
 const page = () => {
   return (
     <main className="relative min-h-screen">
-      <Flex className="w-[98%] md:w-[95%] lg:w-11/12 flex-col md:flex-row items-center md:items-start mx-auto">
+      <Flex className="w-[98%] md:w-[95%] lg:w-11/12 flex-col md:flex-row items-center md:items-start mx-auto lg:container">
         {/* Main Content */}
         {/* SideBar - Comes Down on smaller displays */}
         <Flex

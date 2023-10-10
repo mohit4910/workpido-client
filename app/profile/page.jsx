@@ -23,8 +23,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { ImEyeBlocked, ImLocation } from "react-icons/im";
@@ -33,7 +32,7 @@ import { RiRadioButtonLine } from "react-icons/ri";
 
 const page = () => {
   return (
-    <main className="relative overflow-x-hidden min-h-screen">
+    <main className="relative mx-auto lg:container overflow-x-hidden min-h-screen">
       {/* Seller Details */}
       <Flex className="w-full flex-col md:flex-row">
         {/* Main Content */}

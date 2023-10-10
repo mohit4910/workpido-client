@@ -23,6 +23,7 @@ const page = () => {
         align="center"
         bgImage="url(https://images.pexels.com/photos/8062289/pexels-photo-8062289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
         className="w-full"
+        bgSize={"cover"}
       >
         <Flex
           flexDirection="column"
@@ -39,7 +40,11 @@ const page = () => {
         </Flex>
       </Flex>
       {/* Main Content */}
-      <Flex flexDirection="column" align="center" className="pt-10 lg:w-3/4">
+      <Flex
+        flexDirection="column"
+        align="center"
+        className="pt-10 md:container lg:w-3/4"
+      >
         {/* Introduction */}
         <Heading className="font-normal mb-2 text-3xl">
           Start Learning and Earning Today!

@@ -25,6 +25,7 @@ const page = () => {
         w={"full"}
         justify="center"
         align="center"
+        bgSize={"cover"}
       >
         <Heading className="mb-2 md:text-3xl md:mb-4 text-white text-center">
           Buyer Protection Program
@@ -34,7 +35,7 @@ const page = () => {
       <Flex
         flexDirection="column"
         align="center"
-        className="my-0 py-[4vh] px-[5vw] mx-auto w-screen lg:w-3/4"
+        className="my-0 py-[4vh] px-[5vw] mx-auto w-screen lg:w-3/4 lg:container"
       >
         <Box className="p-3">
           <Text>
@@ -303,7 +304,7 @@ const page = () => {
         flexDirection="column"
         align="center"
         justify="center"
-        className=" bg-[#06703f3e] w-screen p-10 lg:w-3/4"
+        className=" bg-[#06703f3e] w-screen p-10 lg:w-3/4 lg:container"
       >
         <Text>Have any questions? Get in touch!</Text>
         <Button

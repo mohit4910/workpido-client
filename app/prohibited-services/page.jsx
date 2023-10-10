@@ -13,7 +13,6 @@ import {
   Tr,
   UnorderedList,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import React from "react";
 
 const page = () => {
@@ -22,7 +21,7 @@ const page = () => {
       <Flex
         flexDirection="column"
         align="center"
-        className="my-0 py-[4vh] px-[5vw] mx-auto w-screen bg-white lg:w-3/4"
+        className="my-0 py-[4vh] px-[5vw] mx-auto w-screen bg-white lg:w-3/4 lg:container"
       >
         <Box>
           <Heading className="text-3xl font-medium mt-4 mb-2">
