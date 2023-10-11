@@ -9,6 +9,7 @@ import {
   Flex,
   Heading,
   Image,
+  Input,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
@@ -17,6 +18,7 @@ import { API } from "@/lib/api";
 // import Image from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { BsSearch } from "react-icons/bs";
 
 const ZoomableImage = ({ src, alt }) => {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -41,8 +43,8 @@ const ZoomableImage = ({ src, alt }) => {
         <Image
           src={src}
           alt={alt}
-          width="230px"
-          height="150px"
+          width="280px"
+          height="180px"
           objectFit="cover"
           transform="scale(1.0)"
           // objectFit="contain"
@@ -58,7 +60,13 @@ const ZoomableImage = ({ src, alt }) => {
 };
 
 const Catalog = () => (
-  <Flex justify="space-around" flexWrap="wrap" columnGap={5} rowGap={10}>
+  <Flex
+    justify="space-around"
+    flexWrap="wrap"
+    columnGap={6}
+    rowGap={10}
+    className="mx-auto max-w-[1196px]"
+  >
     <ZoomableImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
       alt="services"
@@ -67,28 +75,21 @@ const Catalog = () => (
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
       alt="services"
     />
+    <ZoomableImage src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/programming_guest.webp?ver=1615534237" />
     <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/design_guest.webp?ver=1615534203"
       alt="services"
     />
     <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/writing-translations_guest.webp?ver=1615534286"
       alt="services"
     />
     <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/audio-video_guest.webp?ver=1615534330"
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/audio-video_guest.webp?ver=1615534330"
       alt="services"
     />
     <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
-      alt="services"
-    />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
-      alt="services"
-    />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/business_guest.webp?ver=1615534340"
       alt="services"
     />
   </Flex>
@@ -108,37 +109,44 @@ export default function Home() {
       {/* Banner */}
       <Flex
         className="relative max-h-[720px]"
-        bgImage="url(https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)"
-        h={{ base: "60vh", md: "90vh" }}
+        bgImage="url(https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=600)"
+        h={{ base: "60vh", md: "85vh" }}
         w={"full"}
         justify="center"
         bgSize={"cover"}
       >
         <Flex
           flexDirection="column"
-          align="center"
+          align="flex-start"
           justify="center"
-          className="text-white"
+          className="text-white w-full px-8 container"
         >
-          <Heading className="mb-2 md:text-5xl md:mb-4">
-            Do Work You Enjoy
-          </Heading>
-          <Text className="mb-4 px-4 text-center md:p-0 text-white md:text-xl md:mb-6">
-            Thousands of buyers are ready to pay for your skills
+          <Text className="mb-3 font-semibold md:text-4xl md:mb-4 mx-auto md:mx-0">
+            Buy affordable freelance services on the go
           </Text>
-          <Button
-            className="mt-4 w-3/4 md:w-1/2 px-4 py-6 text-sm"
-            as={"a"}
-            display={"inline-flex"}
-            color={"white"}
-            bg={"brand.primary"}
-            href={"#"}
-            _hover={{
-              bg: "green.300",
-            }}
-          >
-            Start Earning
-          </Button>
+          <Flex className="flex-col items-center justify-center md:justify-start mx-auto md:mx-0 md:gap-0 md:flex-row gap-2">
+            <Flex className="border text-black bg-white gap-0 items-center">
+              <BsSearch size={"20px"} className="m-3" />
+              <Input
+                type="text"
+                placeholder={`Try "social media design"`}
+                className="border-none h-full outline-none text-base"
+              />
+            </Flex>
+            <Button
+              className="px-4 py-6 text-sm w-full md:w-1/4"
+              as={"a"}
+              display={"inline-flex"}
+              color={"white"}
+              bg={"brand.primary"}
+              href={"#"}
+              _hover={{
+                bg: "green.300",
+              }}
+            >
+              Search
+            </Button>
+          </Flex>
         </Flex>
         <Flex
           background={"rgba(255, 255, 255)"}
@@ -158,7 +166,6 @@ export default function Home() {
               alt=""
             />
           </Tooltip>
-
           <Tooltip
             hasArrow
             label="Top Companies uses Workpido to get work done"
@@ -217,8 +224,13 @@ export default function Home() {
           </Tooltip>
         </Flex>
       </Flex>
-      <div className="mb-8 py-4">
-        <Text fontSize={24} fontWeight={"semibold"} mb={8}>
+      {/* Main Content */}
+      <Flex
+        flexDirection={"column"}
+        alignItems={"center"}
+        className="mb-8 py-4 lg:container"
+      >
+        <Text fontSize={24} fontWeight={"semibold"} mb={8} ml={4}>
           {"Explore Kwork's Evergrowing Catalog"}
         </Text>
         <Catalog />
@@ -254,7 +266,7 @@ export default function Home() {
           </Button>
         </Flex>
         <AboutUs />
-      </div>
+      </Flex>
     </main>
   );
 }
