@@ -24,7 +24,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo-w.png";
 import AppModal from "./AppModal";
 import SignupModal from "./SignupModal";
 import SigninModal from "./SigninModal";
@@ -35,8 +35,8 @@ export default function WithSubnavigation() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
-        color={useColorModeValue("gray.600", "white")}
+        bg={"#333333"}
+        color={"#fff"}
         minH={"60px"}
         py={{ base: 2 }}
         px={{ base: 4 }}
@@ -60,17 +60,20 @@ export default function WithSubnavigation() {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Box as={"a"} href="/">
+          <Flex as={"a"} href="/" alignItems={"center"}>
             <Image
               // textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
               color={useColorModeValue("gray.800", "white")}
               src={logo}
               // className="h-auto w-30"
-              height={50}
+              height={32}
               alt={"workpido"}
             />
-          </Box>
+            <span className="ml-0.5 text-2xl font-bold tracking-wider text-white">
+              ORKPIDO
+            </span>
+          </Flex>
 
           {/* <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
@@ -92,6 +95,7 @@ export default function WithSubnavigation() {
             fontWeight={400}
             variant={"link"}
             href={"/for-freelancers"}
+            color="white"
           >
             Are you a freelancer?
           </Button>
@@ -100,8 +104,9 @@ export default function WithSubnavigation() {
       <Flex
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
-        minH={"60px"}
-        py={{ base: 2 }}
+        // minH={"60px"}
+        py={1}
+        // py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle={"solid"}
@@ -127,7 +132,6 @@ const DesktopNav = () => {
       direction={"row"}
       justify={"space-between"}
       w={"full"}
-      spacing={4}
       overflowX="hidden"
     >
       {NAV_ITEMS.map((navItem, i) => (
@@ -136,29 +140,20 @@ const DesktopNav = () => {
           justifyContent="space-around"
           alignItems="center"
           display="flex"
-          // textAlign={"center"}
           w="full"
           marginX="auto"
         >
-          {/* {console.log(
-            "heyyy",
-            NAV_ITEMS.length,
-            "==========",
-            i,
-            `${NAV_ITEMS.length - 1 !== i ? "1px" : "2px"}`
-          )} */}
-
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
               <Center
                 as="a"
-                p={2}
+                m={1}
                 px={4}
                 href={navItem.href ?? "#"}
                 fontSize={"sm"}
-                fontWeight={500}
+                fontWeight={400}
                 borderRight={`${NAV_ITEMS.length - 1 !== i && "1px"}`}
-                borderColor={"gray.200"}
+                borderColor={"gray.300"}
                 color={linkColor}
                 _hover={{
                   textDecoration: "none",
@@ -168,17 +163,17 @@ const DesktopNav = () => {
                 w={"full"}
                 mx={"auto"}
               >
-                <Center>{navItem.label}</Center>
+                <Center whiteSpace={"nowrap"}>{navItem.label}</Center>
               </Center>
             </PopoverTrigger>
 
             {navItem.children && (
               <PopoverContent
-                border={0}
-                boxShadow={"xl"}
+                border={"1px"}
+                borderColor="gray.400"
                 bg={popoverContentBgColor}
                 p={4}
-                rounded={"xl"}
+                rounded={"none"}
                 minW={"sm"}
               >
                 <Stack>

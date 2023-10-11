@@ -44,8 +44,13 @@ const SigninModal = () => {
         cursor={"pointer"}
         display={{ base: "none", md: "inline-flex" }}
         fontSize={"sm"}
-        color={"black"}
+        fontWeight={"400"}
+        color={"white"}
         bg={"transparent"}
+        _hover={{
+          bg: "transparent",
+          color: "blue.500",
+        }}
       >
         Login
       </Button>

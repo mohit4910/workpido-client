@@ -47,13 +47,14 @@ const SignupModal = () => {
         cursor={"pointer"}
         display={{ base: "none", md: "inline-flex" }}
         fontSize={"sm"}
+        fontWeight={"400"}
         color={"white"}
         bg={"brand.primary"}
         _hover={{
           bg: "green.300",
         }}
       >
-        Signup
+        Sign up
       </Button>
       <AppModal title="Sign Up" setIsOpen={setIsOpen} isOpen={isOpen}>
         <Formik
