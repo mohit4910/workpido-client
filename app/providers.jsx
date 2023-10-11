@@ -25,6 +25,13 @@ const Text = defineStyleConfig({
   //   // color: "#f5f",
   // },
 });
+const Button = defineStyleConfig({
+  // The styles all button have in common
+  baseStyle: {
+    bg: "#04b70a",
+    color: "#fff",
+  },
+});
 
 export const theme = extendTheme({
   colors,
@@ -33,6 +40,7 @@ export const theme = extendTheme({
   },
   components: {
     Text,
+    // Button,
   },
 });
 

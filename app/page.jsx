@@ -12,9 +12,11 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+
+import { API } from "@/lib/api";
 // import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ZoomableImage = ({ src, alt }) => {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -93,6 +95,14 @@ const Catalog = () => (
 );
 
 export default function Home() {
+  const getData = async () => {
+    let res = await API.getGigs();
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <main className="flex flex-col items-center justify-between min-h-screen  mb-10">
       {/* Banner */}

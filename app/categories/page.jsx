@@ -1,11 +1,19 @@
 "use client";
 
 import GigCard from "@/components/GigCard";
+import { API } from "@/lib/api";
 import { Box, Flex, Grid, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { ArrowDown2 } from "iconsax-react";
-import React from "react";
+import React, { useState } from "react";
 
-const page = () => {
+const Categories = () => {
+  const [gigs, setGigs] = useState([]);
+  const readData = () => {
+    const res = API.getGigs();
+    setGigs(res);
+    console.log(res);
+  };
+
   return (
     <main className="flex flex-col min-h-screen p-4 mb-10 bg-[#f6f6f6] lg:container lg:mx-auto">
       <div className="mb-8">
@@ -52,4 +60,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Categories;
