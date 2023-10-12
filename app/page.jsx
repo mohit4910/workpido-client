@@ -10,15 +10,18 @@ import {
   Heading,
   Image,
   Input,
+  List,
+  ListItem,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
 
 import { API } from "@/lib/api";
 // import Image from "next/image";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import Swiper from "swiper";
+import { SwiperSlide } from "swiper/react";
 
 const ZoomableImage = ({ src, alt }) => {
   const [isZoomed, setIsZoomed] = useState(false);
@@ -110,22 +113,22 @@ export default function Home() {
       <Flex
         className="relative max-h-[720px]"
         bgImage="url(https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=600)"
-        h={{ base: "60vh", md: "85vh" }}
+        h={{ base: "40vh", md: "85vh" }}
         w={"full"}
-        justify="center"
+        justify="flex-start"
         bgSize={"cover"}
       >
         <Flex
           flexDirection="column"
           align="flex-start"
           justify="center"
-          className="text-white w-full px-8 container"
+          className="text-white w-full px-8 md:w-1/2 container items-start"
         >
-          <Text className="mb-3 font-semibold md:text-4xl md:mb-4 mx-auto md:mx-0">
+          <Text className="mb-3 font-semibold text-xl md:text-4xl md:mb-4 mx-auto md:mx-0">
             Buy affordable freelance services on the go
           </Text>
-          <Flex className="flex-col items-center justify-center md:justify-start mx-auto md:mx-0 md:gap-0 md:flex-row gap-2">
-            <Flex className="border text-black bg-white gap-0 items-center">
+          <Flex className="flex-col w-full items-center md:mb-4 justify-center md:justify-start mx-auto md:mx-0 md:gap-0 md:flex-row gap-2">
+            <Flex className="border text-black bg-white gap-0 w-full items-center">
               <BsSearch size={"20px"} className="m-3" />
               <Input
                 type="text"
@@ -147,7 +150,25 @@ export default function Home() {
               Search
             </Button>
           </Flex>
+          <Flex className="w-full items-center justify-around hidden md:flex">
+            <Text className="ext-sm mx-0">Popular:</Text>
+            <List className="flex items-center gap-3">
+              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                Web Design
+              </ListItem>
+              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                Logo Design
+              </ListItem>
+              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                Social Media Design
+              </ListItem>
+              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                Wordpress
+              </ListItem>
+            </List>
+          </Flex>
         </Flex>
+        {/* Top Brands */}
         <Flex
           background={"rgba(255, 255, 255)"}
           position={"absolute"}
@@ -228,7 +249,7 @@ export default function Home() {
       <Flex
         flexDirection={"column"}
         alignItems={"center"}
-        className="mb-8 py-4 lg:container"
+        className="mb-8 py-4 w-full lg:container"
       >
         <Text fontSize={24} fontWeight={"semibold"} mb={8} ml={4}>
           {"Explore Kwork's Evergrowing Catalog"}
@@ -241,18 +262,21 @@ export default function Home() {
           flexDirection="column"
           align="center"
           justify="center"
-          className="py-10 px-3 w-full bg-white mt-3 md:container gap-2"
-          bgImage="url(https://images.pexels.com/photos/3184433/pexels-photo-3184433.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
+          className="py-10 px-3 w-full bg-white mt-3 md:container gap-1 md:gap-2"
+          bgImage="url(https://images.pexels.com/photos/5474294/pexels-photo-5474294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
           bgSize={"cover"}
+          bgRepeat={"no-repeat"}
+          bgPosition={"center"}
+          bgAttachment={"fixed"}
         >
-          <h4 className="text-2xl mt-5 text-center font-bold">
+          <Heading className="text-xl md:text-2xl mt-3 md:mt-5 text-center font-bold">
             Start saving with freelance services today
-          </h4>
+          </Heading>
           <Text className="font-bold ">
             Speed, quality, and affordability: you can have it all!
           </Text>
           <Button
-            className="my-5 w-1/3 px-2 py-6 text-sm"
+            className="my-5 w-2/3 rounded md:w-1/3 px-2 py-6 text-base"
             as={"a"}
             display={"inline-flex"}
             color={"white"}
