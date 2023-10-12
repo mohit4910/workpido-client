@@ -15,15 +15,29 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
+
+// import required modules
+import { Autoplay, EffectCards, Navigation } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 import { API } from "@/lib/api";
 // import Image from "next/image";
+import SellerCard from "@/components/SellerCard";
+import ZoomableImage from "@/components/ZoomableImage";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import Swiper from "swiper";
-import { SwiperSlide } from "swiper/react";
 
-const ZoomableImage = ({ src, alt }) => {
+const ZoomImage = ({ src, alt }) => {
   const [isZoomed, setIsZoomed] = useState(false);
 
   const handleZoom = () => {
@@ -70,28 +84,28 @@ const Catalog = () => (
     rowGap={10}
     className="mx-auto max-w-[1196px]"
   >
-    <ZoomableImage
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
       alt="services"
     />
-    <ZoomableImage
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
       alt="services"
     />
-    <ZoomableImage src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/programming_guest.webp?ver=1615534237" />
-    <ZoomableImage
+    <ZoomImage src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/programming_guest.webp?ver=1615534237" />
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/design_guest.webp?ver=1615534203"
       alt="services"
     />
-    <ZoomableImage
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/writing-translations_guest.webp?ver=1615534286"
       alt="services"
     />
-    <ZoomableImage
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/audio-video_guest.webp?ver=1615534330"
       alt="services"
     />
-    <ZoomableImage
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/business_guest.webp?ver=1615534340"
       alt="services"
     />
@@ -168,6 +182,85 @@ export default function Home() {
             </List>
           </Flex>
         </Flex>
+        {/* Freelancers */}
+        <Flex
+          justify="center"
+          align="center"
+          flexWrap="wrap"
+          className="p-6 md:container hidden md:flex md:w-1/2"
+        >
+          <Flex className=" relative justify-center align-center ">
+            <Swiper
+              effect={"cards"}
+              grabCursor={true}
+              modules={[EffectCards, Autoplay]}
+              loop={true}
+              autoplay={{
+                delay: 2500, // Set the delay between auto slides in milliseconds (3 seconds in this example)
+                disableOnInteraction: false, // Keep auto-scrolling after user interactions
+              }}
+              className="mySwiper w-72 h-72"
+            >
+              <SwiperSlide>
+                {" "}
+                <ZoomableImage
+                  src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="services"
+                  caption="I'm a Link Builder"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <ZoomableImage
+                  src="https://images.pexels.com/photos/2240772/pexels-photo-2240772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="services"
+                  caption="I'm a Voice Actor"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <ZoomableImage
+                  src="https://images.pexels.com/photos/1520760/pexels-photo-1520760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="services"
+                  caption="I'm a Web Developer"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <ZoomableImage
+                  src="https://images.pexels.com/photos/2345293/pexels-photo-2345293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="services"
+                  caption="I'm a Dance Instructor"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <ZoomableImage
+                  src="https://images.pexels.com/photos/3119215/pexels-photo-3119215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="services"
+                  caption="I'm a Designer"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <ZoomableImage
+                  src="https://images.pexels.com/photos/2531552/pexels-photo-2531552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="services"
+                  caption="I'm a Video Editor"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                {" "}
+                <ZoomableImage
+                  src="https://images.pexels.com/photos/2748242/pexels-photo-2748242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  alt="services"
+                  caption="I'm a Actor"
+                />
+              </SwiperSlide>
+            </Swiper>
+          </Flex>
+        </Flex>
+
         {/* Top Brands */}
         <Flex
           background={"rgba(255, 255, 255)"}
