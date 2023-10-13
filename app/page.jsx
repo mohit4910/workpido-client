@@ -60,12 +60,9 @@ const ZoomImage = ({ src, alt }) => {
         <Image
           src={src}
           alt={alt}
-          width="280px"
-          height="180px"
           objectFit="cover"
           transform="scale(1.0)"
-          // objectFit="contain"
-          // width="100%"
+          className="h-28 md:h-44 w-44 md:w-72"
           transition="0.3s ease-in-out"
           _hover={{
             transform: "scale(1.05)",
@@ -80,9 +77,7 @@ const Catalog = () => (
   <Flex
     justify="space-around"
     flexWrap="wrap"
-    columnGap={6}
-    rowGap={10}
-    className="mx-auto max-w-[1196px]"
+    className="mx-2 md:mx-auto max-w-[1196px] gap-x-2 md:gap-x-2 gap-y-4 md:gap-y-6"
   >
     <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
@@ -129,138 +124,139 @@ export default function Home() {
         bgImage="url(https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=600)"
         h={{ base: "40vh", md: "85vh" }}
         w={"full"}
-        justify="flex-start"
+        justify="center"
         bgSize={"cover"}
       >
-        <Flex
-          flexDirection="column"
-          align="flex-start"
-          justify="center"
-          className="text-white w-full px-8 md:w-1/2 container items-start"
-        >
-          <Text className="mb-3 font-semibold text-xl md:text-4xl md:mb-4 mx-auto md:mx-0">
-            Buy affordable freelance services on the go
-          </Text>
-          <Flex className="flex-col w-full items-center md:mb-4 justify-center md:justify-start mx-auto md:mx-0 md:gap-0 md:flex-row gap-2">
-            <Flex className="border text-black bg-white gap-0 w-full items-center">
-              <BsSearch size={"20px"} className="m-3" />
-              <Input
-                type="text"
-                placeholder={`Try "social media design"`}
-                className="border-none h-full outline-none text-base"
-              />
+        <Flex className="container">
+          <Flex
+            flexDirection="column"
+            align="flex-start"
+            justify="center"
+            className="text-white w-full px-8 md:w-1/2 items-start"
+          >
+            <Text className="mb-3 font-semibold text-xl md:text-4xl md:mb-4 mx-auto md:mx-0">
+              Buy affordable freelance services on the go
+            </Text>
+            <Flex className="flex-col w-full items-center md:mb-4 justify-center md:justify-start mx-auto md:mx-0 md:gap-0 md:flex-row gap-2">
+              <Flex className="border text-black bg-white gap-0 w-full items-center">
+                <BsSearch size={"20px"} className="m-3" />
+                <Input
+                  type="text"
+                  placeholder={`Try "social media design"`}
+                  className="border-none h-full outline-none text-base"
+                />
+              </Flex>
+              <Button
+                className="px-4 py-6 text-sm w-full md:w-1/4"
+                as={"a"}
+                display={"inline-flex"}
+                color={"white"}
+                bg={"brand.primary"}
+                href={"#"}
+                _hover={{
+                  bg: "green.300",
+                }}
+              >
+                Search
+              </Button>
             </Flex>
-            <Button
-              className="px-4 py-6 text-sm w-full md:w-1/4"
-              as={"a"}
-              display={"inline-flex"}
-              color={"white"}
-              bg={"brand.primary"}
-              href={"#"}
-              _hover={{
-                bg: "green.300",
-              }}
-            >
-              Search
-            </Button>
+            <Flex className="w-full items-center justify-around hidden md:flex">
+              <Text className="ext-sm mx-0">Popular:</Text>
+              <List className="flex items-center gap-3">
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Web Design
+                </ListItem>
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Logo Design
+                </ListItem>
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Social Media Design
+                </ListItem>
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Wordpress
+                </ListItem>
+              </List>
+            </Flex>
           </Flex>
-          <Flex className="w-full items-center justify-around hidden md:flex">
-            <Text className="ext-sm mx-0">Popular:</Text>
-            <List className="flex items-center gap-3">
-              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
-                Web Design
-              </ListItem>
-              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
-                Logo Design
-              </ListItem>
-              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
-                Social Media Design
-              </ListItem>
-              <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
-                Wordpress
-              </ListItem>
-            </List>
-          </Flex>
-        </Flex>
-        {/* Freelancers */}
-        <Flex
-          justify="center"
-          align="center"
-          flexWrap="wrap"
-          className="p-6 md:container hidden md:flex md:w-1/2"
-        >
-          <Flex className=" relative justify-center align-center ">
-            <Swiper
-              effect={"cards"}
-              grabCursor={true}
-              modules={[EffectCards, Autoplay]}
-              loop={true}
-              autoplay={{
-                delay: 2500, // Set the delay between auto slides in milliseconds (3 seconds in this example)
-                disableOnInteraction: false, // Keep auto-scrolling after user interactions
-              }}
-              className="mySwiper w-72 h-72"
-            >
-              <SwiperSlide>
-                {" "}
-                <ZoomableImage
-                  src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="services"
-                  caption="I'm a Link Builder"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <ZoomableImage
-                  src="https://images.pexels.com/photos/2240772/pexels-photo-2240772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="services"
-                  caption="I'm a Voice Actor"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <ZoomableImage
-                  src="https://images.pexels.com/photos/1520760/pexels-photo-1520760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="services"
-                  caption="I'm a Web Developer"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <ZoomableImage
-                  src="https://images.pexels.com/photos/2345293/pexels-photo-2345293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="services"
-                  caption="I'm a Dance Instructor"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <ZoomableImage
-                  src="https://images.pexels.com/photos/3119215/pexels-photo-3119215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="services"
-                  caption="I'm a Designer"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <ZoomableImage
-                  src="https://images.pexels.com/photos/2531552/pexels-photo-2531552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="services"
-                  caption="I'm a Video Editor"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                {" "}
-                <ZoomableImage
-                  src="https://images.pexels.com/photos/2748242/pexels-photo-2748242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  alt="services"
-                  caption="I'm a Actor"
-                />
-              </SwiperSlide>
-            </Swiper>
+          {/* Freelancers */}
+          <Flex
+            justify="center"
+            align="center"
+            flexWrap="wrap"
+            className="p-6  hidden md:flex md:w-1/2"
+          >
+            <Flex className=" relative justify-center align-center ">
+              <Swiper
+                effect={"cards"}
+                grabCursor={true}
+                modules={[EffectCards, Autoplay]}
+                loop={true}
+                autoplay={{
+                  delay: 2500, // Set the delay between auto slides in milliseconds (3 seconds in this example)
+                  disableOnInteraction: false, // Keep auto-scrolling after user interactions
+                }}
+                className="mySwiper w-72 h-72"
+              >
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Link Builder"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2240772/pexels-photo-2240772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Voice Actor"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/1520760/pexels-photo-1520760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Web Developer"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2345293/pexels-photo-2345293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Dance Instructor"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/3119215/pexels-photo-3119215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Designer"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2531552/pexels-photo-2531552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Video Editor"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2748242/pexels-photo-2748242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Actor"
+                  />
+                </SwiperSlide>
+              </Swiper>
+            </Flex>
           </Flex>
         </Flex>
-
         {/* Top Brands */}
         <Flex
           background={"rgba(255, 255, 255)"}
