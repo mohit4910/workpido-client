@@ -20,7 +20,7 @@ const ZoomableImage = ({ src, alt, caption }) => {
       borderRadius="sm"
       overflow="hidden"
       position="relative"
-      className="catalog m-1"
+      className="m-1 rounded-lg catalog"
       transition="0.3s ease-in-out"
       _hover={{ shadow: "xl", brightness: "0.2" }}
     >
@@ -40,7 +40,7 @@ const ZoomableImage = ({ src, alt, caption }) => {
       </Box>
 
       {caption && (
-        <h3 className="text-white p-4 text-2xl font-bold bg-gradient-to-b from-transparent to-black absolute bottom-0 left-0 w-full">
+        <h3 className="absolute bottom-0 left-0 w-full p-4 text-2xl font-bold text-white bg-gradient-to-b from-transparent to-black">
           {caption}
         </h3>
       )}

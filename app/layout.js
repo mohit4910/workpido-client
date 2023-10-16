@@ -20,11 +20,11 @@ export default function RootLayout({ children }) {
     <html lang="en" className={poppins.className}>
       <head>
         <title>Workpido</title>
-        <style jsx global>{`
+        {/* <style jsx global>{`
           html {
             font-family: ${poppins.style.fontFamily};
           }
-        `}</style>
+        `}</style> */}
       </head>
       <body>
         <ToastContainer />

@@ -2,7 +2,9 @@
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  mode: "",
+  corePlugins: {
+    preflight: false,
+  },
 
   // preflight: false,
 
@@ -23,7 +25,11 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    fontFamily: {
+      sans: "Poppins",
+    },
     colors: {
+      border: "##e2e2e2",
       transparent: "transparent",
       current: "currentColor",
       black: colors.black,
