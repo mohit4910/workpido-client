@@ -32,8 +32,6 @@ const ZoomableImage = ({ src, alt, caption }) => {
           height="280px"
           objectFit="cover"
           transform="scale(1.0)"
-          // objectFit="contain"
-          // width="100%"
           transition="0.3s ease-in-out"
           _hover={{
             transform: "scale(1.05)",

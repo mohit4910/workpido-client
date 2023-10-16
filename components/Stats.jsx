@@ -1,7 +1,7 @@
+import { Box } from "@chakra-ui/react";
+import Image from "next/image";
 import React from "react";
 import logo from "../assets/logo.png";
-import Image from "next/image";
-import { Box } from "@chakra-ui/react";
 
 const Stat = ({ value, text }) => {
   return (
@@ -20,7 +20,7 @@ const Stats = () => {
   return (
     <Box
       border="1px"
-      className="py-16 mx-auto mt-8 rounded-lg shadow-lg sm:max-w-xl md:max-w-full lg:max-w-screen-xl lg:py-10"
+      className="hidden md:block py-16 mx-auto w-[96%] mt-8 rounded-lg shadow-lg lg:max-w-screen-xl lg:py-10"
     >
       <div className="grid grid-cols-1 row-gap-8 md:grid-cols-4">
         <Box

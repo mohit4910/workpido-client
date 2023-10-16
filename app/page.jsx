@@ -9,16 +9,35 @@ import {
   Flex,
   Heading,
   Image,
+  Input,
+  List,
+  ListItem,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
+
+// import required modules
+import { Autoplay, EffectCards, Navigation } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 import { API } from "@/lib/api";
 // import Image from "next/image";
-import { motion } from "framer-motion";
+import SellerCard from "@/components/SellerCard";
+import ZoomableImage from "@/components/ZoomableImage";
 import { useEffect, useState } from "react";
+import { BsSearch } from "react-icons/bs";
 
-const ZoomableImage = ({ src, alt }) => {
+const ZoomImage = ({ src, alt }) => {
   const [isZoomed, setIsZoomed] = useState(false);
 
   const handleZoom = () => {
@@ -41,12 +60,9 @@ const ZoomableImage = ({ src, alt }) => {
         <Image
           src={src}
           alt={alt}
-          width="230px"
-          height="150px"
           objectFit="cover"
           transform="scale(1.0)"
-          // objectFit="contain"
-          // width="100%"
+          className="h-28 md:h-44 w-44 md:w-72"
           transition="0.3s ease-in-out"
           _hover={{
             transform: "scale(1.05)",
@@ -58,37 +74,34 @@ const ZoomableImage = ({ src, alt }) => {
 };
 
 const Catalog = () => (
-  <Flex justify="space-around" flexWrap="wrap" columnGap={5} rowGap={10}>
-    <ZoomableImage
+  <Flex
+    justify="space-around"
+    flexWrap="wrap"
+    className="mx-2 md:mx-auto max-w-[1196px] gap-x-2 md:gap-x-2 gap-y-4 md:gap-y-6"
+  >
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
       alt="services"
     />
-    <ZoomableImage
+    <ZoomImage
       src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
       alt="services"
     />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
+    <ZoomImage src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/programming_guest.webp?ver=1615534237" />
+    <ZoomImage
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/design_guest.webp?ver=1615534203"
       alt="services"
     />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
+    <ZoomImage
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/writing-translations_guest.webp?ver=1615534286"
       alt="services"
     />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/audio-video_guest.webp?ver=1615534330"
+    <ZoomImage
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/audio-video_guest.webp?ver=1615534330"
       alt="services"
     />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
-      alt="services"
-    />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
-      alt="services"
-    />
-    <ZoomableImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
+    <ZoomImage
+      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/business_guest.webp?ver=1615534340"
       alt="services"
     />
   </Flex>
@@ -108,38 +121,143 @@ export default function Home() {
       {/* Banner */}
       <Flex
         className="relative max-h-[720px]"
-        bgImage="url(https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80)"
-        h={{ base: "60vh", md: "90vh" }}
+        bgImage="url(https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=600)"
+        h={{ base: "40vh", md: "85vh" }}
         w={"full"}
         justify="center"
         bgSize={"cover"}
       >
-        <Flex
-          flexDirection="column"
-          align="center"
-          justify="center"
-          className="text-white"
-        >
-          <Heading className="mb-2 md:text-5xl md:mb-4">
-            Do Work You Enjoy
-          </Heading>
-          <Text className="mb-4 px-4 text-center md:p-0 text-white md:text-xl md:mb-6">
-            Thousands of buyers are ready to pay for your skills
-          </Text>
-          <Button
-            className="mt-4 w-3/4 md:w-1/2 px-4 py-6 text-sm"
-            as={"a"}
-            display={"inline-flex"}
-            color={"white"}
-            bg={"brand.primary"}
-            href={"#"}
-            _hover={{
-              bg: "green.300",
-            }}
+        <Flex className="container">
+          <Flex
+            flexDirection="column"
+            align="flex-start"
+            justify="center"
+            className="text-white w-full px-8 md:w-1/2 items-start"
           >
-            Start Earning
-          </Button>
+            <Text className="mb-3 font-semibold text-xl md:text-4xl md:mb-4 mx-auto md:mx-0">
+              Buy affordable freelance services on the go
+            </Text>
+            <Flex className="flex-col w-full items-center md:mb-4 justify-center md:justify-start mx-auto md:mx-0 md:gap-0 md:flex-row gap-2">
+              <Flex className="border text-black bg-white gap-0 w-full items-center">
+                <BsSearch size={"20px"} className="m-3" />
+                <Input
+                  type="text"
+                  placeholder={`Try "social media design"`}
+                  className="border-none h-full outline-none text-base"
+                />
+              </Flex>
+              <Button
+                className="px-4 py-6 text-sm w-full md:w-1/4"
+                as={"a"}
+                display={"inline-flex"}
+                color={"white"}
+                bg={"brand.primary"}
+                href={"#"}
+                _hover={{
+                  bg: "green.300",
+                }}
+              >
+                Search
+              </Button>
+            </Flex>
+            <Flex className="w-full items-center justify-around hidden md:flex">
+              <Text className="ext-sm mx-0">Popular:</Text>
+              <List className="flex items-center gap-3">
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Web Design
+                </ListItem>
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Logo Design
+                </ListItem>
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Social Media Design
+                </ListItem>
+                <ListItem className="text-black cursor-pointer text-sm border-indigo-500 bg-slate-200 rounded-sm px-2 py-1">
+                  Wordpress
+                </ListItem>
+              </List>
+            </Flex>
+          </Flex>
+          {/* Freelancers */}
+          <Flex
+            justify="center"
+            align="center"
+            flexWrap="wrap"
+            className="p-6  hidden md:flex md:w-1/2"
+          >
+            <Flex className=" relative justify-center align-center ">
+              <Swiper
+                effect={"cards"}
+                grabCursor={true}
+                modules={[EffectCards, Autoplay]}
+                loop={true}
+                autoplay={{
+                  delay: 2500, // Set the delay between auto slides in milliseconds (3 seconds in this example)
+                  disableOnInteraction: false, // Keep auto-scrolling after user interactions
+                }}
+                className="mySwiper w-72 h-72"
+              >
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Link Builder"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2240772/pexels-photo-2240772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Voice Actor"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/1520760/pexels-photo-1520760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Web Developer"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2345293/pexels-photo-2345293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Dance Instructor"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/3119215/pexels-photo-3119215.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Designer"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2531552/pexels-photo-2531552.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Video Editor"
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  {" "}
+                  <ZoomableImage
+                    src="https://images.pexels.com/photos/2748242/pexels-photo-2748242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                    alt="services"
+                    caption="I'm a Actor"
+                  />
+                </SwiperSlide>
+              </Swiper>
+            </Flex>
+          </Flex>
         </Flex>
+        {/* Top Brands */}
         <Flex
           background={"rgba(255, 255, 255)"}
           position={"absolute"}
@@ -158,7 +276,6 @@ export default function Home() {
               alt=""
             />
           </Tooltip>
-
           <Tooltip
             hasArrow
             label="Top Companies uses Workpido to get work done"
@@ -217,8 +334,13 @@ export default function Home() {
           </Tooltip>
         </Flex>
       </Flex>
-      <div className="mb-8 py-4">
-        <Text fontSize={24} fontWeight={"semibold"} mb={8}>
+      {/* Main Content */}
+      <Flex
+        flexDirection={"column"}
+        alignItems={"center"}
+        className="mb-8 py-4 w-full lg:container"
+      >
+        <Text fontSize={24} fontWeight={"semibold"} mb={8} ml={4}>
           {"Explore Kwork's Evergrowing Catalog"}
         </Text>
         <Catalog />
@@ -229,18 +351,21 @@ export default function Home() {
           flexDirection="column"
           align="center"
           justify="center"
-          className="py-10 px-3 w-full bg-white mt-3 md:container gap-2"
-          bgImage="url(https://images.pexels.com/photos/3184433/pexels-photo-3184433.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
+          className="py-10 px-3 w-full bg-white mt-3 md:container gap-1 md:gap-2"
+          bgImage="url(https://images.pexels.com/photos/5474294/pexels-photo-5474294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
           bgSize={"cover"}
+          bgRepeat={"no-repeat"}
+          bgPosition={"center"}
+          bgAttachment={"fixed"}
         >
-          <h4 className="text-2xl mt-5 text-center font-bold">
+          <Heading className="text-xl md:text-2xl mt-3 md:mt-5 text-center font-bold">
             Start saving with freelance services today
-          </h4>
+          </Heading>
           <Text className="font-bold ">
             Speed, quality, and affordability: you can have it all!
           </Text>
           <Button
-            className="my-5 w-1/3 px-2 py-6 text-sm"
+            className="my-5 w-2/3 rounded md:w-1/3 px-2 py-6 text-base"
             as={"a"}
             display={"inline-flex"}
             color={"white"}
@@ -254,7 +379,7 @@ export default function Home() {
           </Button>
         </Flex>
         <AboutUs />
-      </div>
+      </Flex>
     </main>
   );
 }
