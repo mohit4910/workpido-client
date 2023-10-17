@@ -147,7 +147,7 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <Center
                 as="a"
-                m={1}
+                p={1}
                 px={4}
                 href={navItem.href ?? "#"}
                 fontSize={"sm"}
@@ -157,7 +157,8 @@ const DesktopNav = () => {
                 color={linkColor}
                 _hover={{
                   textDecoration: "none",
-                  color: linkHoverColor,
+                  color: "#177de5",
+                  borderBottom: "3px solid #177de5",
                 }}
                 // flex="1"
                 w={"full"}
@@ -172,9 +173,9 @@ const DesktopNav = () => {
                 border={"1px"}
                 borderColor="gray.400"
                 bg={popoverContentBgColor}
-                p={4}
+                py={4}
                 rounded={"none"}
-                minW={"sm"}
+                minW={"xs"}
               >
                 <Stack>
                   {navItem.children.map((child) => (
@@ -201,32 +202,20 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
       href={href}
       role={"group"}
       display={"block"}
-      p={2}
-      rounded={"md"}
-      _hover={{ bg: useColorModeValue("green.50", "gray.900") }}
+      px={6}
+      _hover={{ color: "blue.400", borderLeft: "3px solid #177de5" }}
     >
       <Stack direction={"row"} align={"center"}>
         <Box>
           <Text
             transition={"all .3s ease"}
-            _groupHover={{ color: "green.400" }}
+            _groupHover={{ color: "blue.400" }}
             fontWeight={500}
           >
             {label}
           </Text>
-          <Text fontSize={"sm"}>{subLabel}</Text>
+          {/* <Text fontSize={"sm"}>{subLabel}</Text> */}
         </Box>
-        <Flex
-          transition={"all .3s ease"}
-          transform={"translateX(-10px)"}
-          opacity={0}
-          _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
-          justify={"flex-end"}
-          align={"center"}
-          flex={1}
-        >
-          <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
-        </Flex>
       </Stack>
     </Box>
   );
@@ -313,6 +302,21 @@ const NAV_ITEMS = [
         subLabel: "Up-and-coming Designers",
         href: "/categories",
       },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
     ],
   },
   {
@@ -328,6 +332,26 @@ const NAV_ITEMS = [
         subLabel: "An exclusive list for contract work",
         href: "/categories",
       },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
     ],
   },
   {
@@ -336,6 +360,16 @@ const NAV_ITEMS = [
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
         href: "/categories",
       },
       {
@@ -358,6 +392,26 @@ const NAV_ITEMS = [
         subLabel: "An exclusive list for contract work",
         href: "/categories",
       },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
     ],
   },
   {
@@ -366,6 +420,26 @@ const NAV_ITEMS = [
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
         href: "/categories",
       },
       {
@@ -388,6 +462,26 @@ const NAV_ITEMS = [
         subLabel: "An exclusive list for contract work",
         href: "/categories",
       },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
     ],
   },
   {
@@ -396,6 +490,26 @@ const NAV_ITEMS = [
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
+        href: "/categories",
+      },
+      {
+        label: "New & Noteworthy",
+        subLabel: "Up-and-coming Designers",
         href: "/categories",
       },
       {

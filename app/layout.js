@@ -17,14 +17,9 @@ export const poppins = Poppins({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={poppins.className}>
+    <html>
       <head>
         <title>Workpido</title>
-        {/* <style jsx global>{`
-          html {
-            font-family: ${poppins.style.fontFamily};
-          }
-        `}</style> */}
       </head>
       <body>
         <ToastContainer />

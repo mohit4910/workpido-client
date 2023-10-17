@@ -16,9 +16,17 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    let data = localStorage.getItem("user");
+    setUser(JSON.parse(data));
+    console.log(data);
+  }, []);
+
   return (
     <main className="relative min-h-screen">
       <Flex className="w-[98%] md:w-[95%] lg:w-11/12 flex-col md:flex-row items-center md:items-start mx-auto lg:container">
@@ -28,13 +36,13 @@ const page = () => {
           flexDirection={"column"}
           className="w-[96%] md:w-[30%] my-10 mx-3 md:mx-0 gap-6"
         >
-          <Flex className="bg-white flex-col p-3">
-            <SellerStats />
+          <Flex className="flex-col p-3 bg-white">
+            <SellerStats seller={user} />
           </Flex>
           {/* Inbox */}
           <Flex className="bg-white flex-col px-3 py-10 relative h-[30rem]">
-            <Box className="bg-white z-50 absolute p-3 top-0 left-0 right-0">
-              <Text className="font-semibold text-lg">Inbox</Text>
+            <Box className="absolute top-0 left-0 right-0 z-50 p-3 bg-white">
+              <Text className="text-lg font-semibold">Inbox</Text>
             </Box>
             <Chats />
           </Flex>
@@ -42,20 +50,20 @@ const page = () => {
         {/* More Info */}
         <Flex className="md:mx-3 lg:mx-auto w-[98%] md:w-10/12 md:my-10 lg:w-8/12 flex-col gap-6">
           {/* Order Info */}
-          <Flex className="w-full justify-between bg-white p-5 gap-5">
+          <Flex className="justify-between w-full gap-5 p-5 bg-white">
             <Flex gap={2}>
-              <Heading className="font-semibold text-xl ">My Orders</Heading>
-              <Heading className="font-normal text-xl text-neutral-500">
+              <Heading className="text-xl font-semibold ">My Orders</Heading>
+              <Heading className="text-xl font-normal text-neutral-500">
                 - Total 2 ($200)
               </Heading>
             </Flex>
             <Link href={"/orders"}>View all</Link>
           </Flex>
           {/*My Works*/}
-          <Flex className="w-full justify-between bg-white p-5 gap-5">
+          <Flex className="justify-between w-full gap-5 p-5 bg-white">
             <Flex gap={2}>
-              <Heading className="font-semibold text-xl ">My Workpidos</Heading>
-              <Heading className="font-normal text-xl text-neutral-500">
+              <Heading className="text-xl font-semibold ">My Workpidos</Heading>
+              <Heading className="text-xl font-normal text-neutral-500">
                 - Active 20{" "}
               </Heading>
             </Flex>
@@ -63,14 +71,14 @@ const page = () => {
             <Link href={"/orders"}>View all</Link>
           </Flex>
           {/* 4 Step Process */}
-          <Flex className="w-full flex-col bg-white p-5 gap-5">
+          <Flex className="flex-col w-full gap-5 p-5 bg-white">
             <List>
               <ListItem>
                 <Flex
                   align="center"
-                  justify="space-evenly"
+                  justify="space-between"
                   borderBottom={"1px solid rgb(133, 133, 133)"}
-                  className="flex-col sm:flex-row mt-6 p-5 bg-white"
+                  className="flex-col p-5 mt-6 bg-white sm:flex-row"
                 >
                   {/* Image Container */}
                   <Flex
@@ -87,8 +95,8 @@ const page = () => {
                     />
                   </Flex>
                   {/*Details Container*/}
-                  <Box className="w-full sm:w-5/6 px-4">
-                    <Text className="mt-4 sm:mt-10 font-bold text-lg">
+                  <Box className="w-full px-4 sm:w-5/6">
+                    <Text className="mt-4 text-lg font-bold sm:mt-10">
                       Four Simple Steps to Workpido Success
                     </Text>
                     <Text className="mt-2">
@@ -100,15 +108,15 @@ const page = () => {
               <ListItem>
                 <Flex
                   align="start"
-                  justify="space-evenly"
+                  justify="space-between"
                   borderBottom={"1px solid rgb(133, 133, 133)"}
-                  className="flex-col md:flex-row mt-3 pb-3"
+                  className="flex-col pb-3 mt-3 sm:justify-between md:flex-row"
                 >
                   {/* Image Container */}
                   <Flex
                     borderRadius="sm"
                     overflow="hidden"
-                    className="m-1 items-start"
+                    className="items-start m-1"
                   >
                     <Image
                       src={"https://cdn.kwork.com/images/index/magic-wand.svg"}
@@ -116,8 +124,8 @@ const page = () => {
                       objectFit="cover"
                       className="w-24 h-24"
                     />
-                    <Box className="w-full md:w-3/4 px-4">
-                      <Text className="font-bold text-lg">
+                    <Box className="w-full px-4 md:w-3/4">
+                      <Text className="text-lg font-bold">
                         Step 1: Create your kworks—the more, the better
                       </Text>
                     </Box>
@@ -154,15 +162,15 @@ const page = () => {
               <ListItem>
                 <Flex
                   align="start"
-                  justify="space-evenly"
+                  justify="space-between"
                   borderBottom={"1px solid rgb(133, 133, 133)"}
-                  className="flex-col md:flex-row mt-3 pb-3"
+                  className="flex-col pb-3 mt-3 md:flex-row"
                 >
                   {/* Image Container */}
                   <Flex
                     borderRadius="sm"
                     overflow="hidden"
-                    className="m-1 items-start"
+                    className="items-start m-1"
                   >
                     <Image
                       src={"https://cdn.kwork.com/images/index/magic-wand.svg"}
@@ -170,8 +178,8 @@ const page = () => {
                       objectFit="cover"
                       className="w-24 h-24"
                     />
-                    <Box className="w-full md:w-3/4 px-4">
-                      <Text className="font-bold text-lg">
+                    <Box className="w-full px-4 md:w-3/4">
+                      <Text className="text-lg font-bold">
                         Step 2: Share your kworks to get your first orders and
                         reviews!
                       </Text>
@@ -211,13 +219,13 @@ const page = () => {
                   align="start"
                   justify="space-between"
                   borderBottom={"1px solid rgb(133, 133, 133)"}
-                  className="flex-col md:flex-row mt-3 pb-3"
+                  className="flex-col pb-3 mt-3 md:flex-row"
                 >
                   {/* Image Container */}
                   <Flex
                     borderRadius="sm"
                     overflow="hidden"
-                    className="m-1 items-start justify-start"
+                    className="items-start justify-start m-1"
                   >
                     <Image
                       src={"https://cdn.kwork.com/images/index/smartphone.svg"}
@@ -225,8 +233,8 @@ const page = () => {
                       objectFit="cover"
                       className="w-24 h-24"
                     />
-                    <Box className="w-full md:w-3/4 px-4">
-                      <Text className="font-bold text-lg">
+                    <Box className="w-full px-4 md:w-3/4">
+                      <Text className="text-lg font-bold">
                         Step 3: Get the Kwork app
                       </Text>
                     </Box>
@@ -263,15 +271,15 @@ const page = () => {
               <ListItem>
                 <Flex
                   align="start"
-                  justify="space-evenly"
+                  justify="space-between"
                   borderBottom={"1px solid rgb(133, 133, 133)"}
-                  className="flex-col md:flex-row mt-3 pb-3"
+                  className="flex-col pb-3 mt-3 md:flex-row"
                 >
                   {/* Image Container */}
                   <Flex
                     borderRadius="sm"
                     overflow="hidden"
-                    className="m-1 items-start"
+                    className="items-start m-1"
                   >
                     <Image
                       src={"https://cdn.kwork.com/images/index/hat.svg"}
@@ -279,8 +287,8 @@ const page = () => {
                       objectFit="cover"
                       className="w-24 h-24"
                     />
-                    <Box className="w-full md:w-3/4 px-4">
-                      <Text className="font-bold text-lg">
+                    <Box className="w-full px-4 md:w-3/4">
+                      <Text className="text-lg font-bold">
                         Step 4: Take our free introductory course How To Earn on
                         Kwork
                       </Text>
@@ -323,4 +331,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

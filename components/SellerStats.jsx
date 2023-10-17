@@ -11,22 +11,22 @@ import {
 import React from "react";
 import { BsStarFill } from "react-icons/bs";
 
-const SellerStats = () => {
+const SellerStats = ({ seller }) => {
   return (
-    <Flex className="items-center flex-col gap-3 justify-center">
+    <Flex className="flex-col items-center justify-center gap-3">
       <Stack direction={"column"} spacing={2} align={"center"}>
         <Avatar
           size={"2xl"}
           src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
         />
         <Text fontSize={"md"} className="font-semibold">
-          geekguyadarsh
+          {seller?.username}
         </Text>
         <Text fontSize={"md"}>Adarsh P.</Text>
       </Stack>
       <Flex align={"center"} className="gap-2">
         <Text fontSize="md">Seller</Text>
-        <BsStarFill className="text-yellow-500 font-semibold" />
+        <BsStarFill className="font-semibold text-yellow-500" />
         <Text fontSize="md" className="font-semibold">
           3.4
         </Text>
@@ -47,50 +47,50 @@ const SellerStats = () => {
       </FormControl>
 
       {/* Stats */}
-      <Flex className="w-full justify-between items-center">
+      <Flex className="items-center justify-between w-full">
         <Text>Reliablity</Text>
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
             colorScheme={"green"}
             width={"120px"}
-            className="rounded-full h-2"
+            className="h-2 rounded-full"
           />
           <Text>100%</Text>
         </Stack>
       </Flex>
-      <Flex className="w-full justify-between items-center">
+      <Flex className="items-center justify-between w-full">
         <Text>Punctuality</Text>
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
             colorScheme={"green"}
             width={"120px"}
-            className="rounded-full h-2"
+            className="h-2 rounded-full"
           />
           <Text>100%</Text>
         </Stack>
       </Flex>
-      <Flex className="w-full justify-between items-center">
+      <Flex className="items-center justify-between w-full">
         <Text>Response Time</Text>
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
             colorScheme={"green"}
             width={"120px"}
-            className="rounded-full h-2"
+            className="h-2 rounded-full"
           />
           <Text>100%</Text>
         </Stack>
       </Flex>
-      <Flex className="w-full justify-between items-center">
+      <Flex className="items-center justify-between w-full">
         <Text>Response Rate</Text>
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
             colorScheme={"green"}
             width={"120px"}
-            className="rounded-full h-2"
+            className="h-2 rounded-full"
           />
           <Text>100%</Text>
         </Stack>

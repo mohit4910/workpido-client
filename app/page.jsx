@@ -195,9 +195,9 @@ export default function Home() {
             justify="center"
             align="center"
             flexWrap="wrap"
-            className="hidden p-6 md:flex md:w-1/2"
+            className="justify-center hidden p-6 md:flex md:w-full"
           >
-            <Flex className="relative justify-center items-right">
+            <Flex className="relative justify-center ml-12 items-right">
               <Swiper
                 effect={"cards"}
                 grabCursor={true}
