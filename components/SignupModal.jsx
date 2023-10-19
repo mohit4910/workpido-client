@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { API } from "@/lib/api";
 import Input from "./Input";
 import { toast } from "react-toastify";
+import useApiHandler from "@/hooks/useApiHandler";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -16,28 +17,29 @@ const SignupSchema = Yup.object().shape({
 
 const SignupModal = () => {
   const router = useRouter();
+  const { handleError } = useApiHandler();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSubmit = (values, { setSubmitting, setFieldError }) => {
+  const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     // Call your API here to handle form submission
 
     // Example API call (you should replace this with your actual API call)
-    API.signup(values)
-      .then((response) => {
-        // Handle success, e.g., redirect to a new page
-        toast.success("Signup successful");
-        setIsOpen(false);
-        // router.push("/dashboard");
-      })
-      .catch((error) => {
-        // Handle error, e.g., display error message
-        toast.error("Signup failed");
-
-        setFieldError("error", "An error occurred. Please try again.");
-      })
-      .finally(() => {
-        setSubmitting(false);
-      });
+    try {
+      const res = await API.signup(values);
+      if (!res.data?.token) {
+        handleError({ message: "No token in response" });
+        return;
+      }
+      toast.success("Signup successful");
+      setIsOpen(false);
+      router.push("/seller-dashboard");
+    } catch (error) {
+      console.log(error);
+      toast.error("Signup failed");
+      setFieldError("error", "An error occurred. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

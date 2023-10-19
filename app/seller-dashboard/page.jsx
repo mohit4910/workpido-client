@@ -17,15 +17,34 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import Loading from "../loading";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const { push } = useRouter();
   const [user, setUser] = useState();
+  const [hasToken, setHasToken] = useState(false);
 
   useEffect(() => {
     let data = localStorage.getItem("user");
     setUser(JSON.parse(data));
     console.log(data);
   }, []);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      push("/");
+    }
+    if (token) {
+      setHasToken(true);
+    }
+  }, []);
+
+  if (!hasToken) {
+    return <Loading />;
+  }
 
   return (
     <main className="relative min-h-screen">

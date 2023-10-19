@@ -71,7 +71,7 @@ export default function WithSubnavigation() {
               alt={"workpido"}
             />
             <span className="ml-0.5 text-2xl font-bold tracking-wider text-white">
-              ORKPIDO
+              WORKPIDO
             </span>
           </Flex>
 
@@ -105,7 +105,7 @@ export default function WithSubnavigation() {
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
         // minH={"60px"}
-        py={1}
+        // py={1}
         // py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
@@ -147,7 +147,7 @@ const DesktopNav = () => {
             <PopoverTrigger>
               <Center
                 as="a"
-                p={1}
+                p={2}
                 px={4}
                 href={navItem.href ?? "#"}
                 fontSize={"sm"}

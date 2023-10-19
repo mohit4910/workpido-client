@@ -16,6 +16,8 @@ const SigninModal = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
+  const [intent, setIntent] = useState("login");
+
   const handleSubmit = (values, { setSubmitting, setFieldError }) => {
     API.login(values)
       .then((response) => {
@@ -54,7 +56,11 @@ const SigninModal = () => {
       >
         Login
       </Button>
-      <AppModal title="Login" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <AppModal
+        title={intent == "login" ? "Login" : "Forgot Password"}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      >
         <Formik
           initialValues={{ identifier: "", password: "" }}
           validationSchema={SignupSchema}
@@ -68,48 +74,100 @@ const SigninModal = () => {
             errors,
             touched,
           }) => (
-            <Form>
-              <Stack spacing={4} px={1}>
-                <Input.Free
-                  type="email"
-                  name="identifier"
-                  placeholder="Email"
-                  label="Email"
-                  value={values.identifier}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  touched={touched.identifier}
-                  error={errors.identifier}
-                  isRequired
-                />
+            <>
+              {intent == "login" ? (
+                <Form>
+                  <Stack spacing={4} px={1}>
+                    <Input.Free
+                      type="email"
+                      name="identifier"
+                      placeholder="Email"
+                      label="Email"
+                      value={values.identifier}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      touched={touched.identifier}
+                      error={errors.identifier}
+                      isRequired
+                    />
 
-                <Input.Free
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  label="Password"
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  touched={touched.password}
-                  error={errors.password}
-                  isRequired
-                />
+                    <Input.Free
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      label="Password"
+                      value={values.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      touched={touched.password}
+                      error={errors.password}
+                      isRequired
+                    />
 
-                <Button
-                  bg="brand.primary"
-                  fontWeight={400}
-                  textColor={"white"}
-                  type="submit"
-                  mt={4}
-                  isLoading={isSubmitting}
-                  disabled={errors}
-                >
-                  Login
-                </Button>
-                <ErrorMessage name="error" component="div" />
-              </Stack>
-            </Form>
+                    <Text
+                      textAlign={"right"}
+                      color={"#177de5"}
+                      cursor={"pointer"}
+                      onClick={() => setIntent("forgotPassword")}
+                    >
+                      Forgot Password
+                    </Text>
+
+                    <Button
+                      bg="brand.primary"
+                      fontWeight={400}
+                      textColor={"white"}
+                      type="submit"
+                      mt={4}
+                      isLoading={isSubmitting}
+                      disabled={errors}
+                    >
+                      Login
+                    </Button>
+                    <ErrorMessage name="error" component="div" />
+                  </Stack>
+                </Form>
+              ) : (
+                <Form>
+                  <Stack spacing={4} px={1}>
+                    <Input.Free
+                      type="email"
+                      name="identifier"
+                      placeholder="Email"
+                      label="Email"
+                      value={values.identifier}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      touched={touched.identifier}
+                      error={errors.identifier}
+                      isRequired
+                    />
+
+                    <Button
+                      bg="brand.primary"
+                      fontWeight={400}
+                      textColor={"white"}
+                      type="submit"
+                      mt={4}
+                      isLoading={isSubmitting}
+                      disabled={errors}
+                    >
+                      Send Reset Link
+                    </Button>
+                    <ErrorMessage name="error" component="div" />
+                    <Text
+                      fontSize={"xs"}
+                      textAlign={"center"}
+                      color={"#177de5"}
+                      cursor={"pointer"}
+                      onClick={() => setIntent("login")}
+                    >
+                      Forgot Password
+                    </Text>
+                  </Stack>
+                </Form>
+              )}
+            </>
           )}
         </Formik>
       </AppModal>
