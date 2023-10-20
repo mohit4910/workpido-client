@@ -33,7 +33,7 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("sessionToken");
     if (!token) {
       push("/");
     }

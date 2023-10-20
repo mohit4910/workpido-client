@@ -1,5 +1,5 @@
 import { API_BASE_URL, JWT_SECRET, TOKEN_MAX_AGE } from "@/lib/constants";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { serialize } from "cookie";
 import jwt from "jsonwebtoken";
 
@@ -19,7 +19,10 @@ export async function POST(req) {
       );
     }
 
-    const res = await axios.post(`${API_BASE_URL}/api/auth/local`);
+    const res = await axios.post(`${API_BASE_URL}/auth/local`, body);
+
+    console.log("Login Response")
+    console.log(res.data)
 
     const sessionToken = jwt.sign({ userId: res.data?.id }, JWT_SECRET, {
       algorithm: "HS256",
@@ -32,7 +35,7 @@ export async function POST(req) {
       maxAge: TOKEN_MAX_AGE,
     });
 
-    const accessToken = serialize("token", res.data?.token, {
+    const accessToken = serialize("token", res.data?.jwt, {
       httpOnly: true,
       secure: true,
       maxAge: TOKEN_MAX_AGE,
@@ -45,7 +48,8 @@ export async function POST(req) {
       },
     });
   } catch (error) {
-    console.log(`Error while registration`);
+    console.log(`Error while login`);
+    console.log(error?.message)
     return new Response(error, { status: error?.response?.status || 500 });
   }
 }

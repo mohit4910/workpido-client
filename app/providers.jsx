@@ -47,7 +47,12 @@ export const theme = extendTheme({
 export function Providers({ children }) {
   return (
     <CacheProvider>
-      <ChakraProvider theme={theme}>{children}</ChakraProvider>
+      <ChakraProvider
+        theme={theme}
+        toastOptions={{ defaultOptions: { position: "top" } }}
+      >
+        {children}
+      </ChakraProvider>
     </CacheProvider>
   );
 }

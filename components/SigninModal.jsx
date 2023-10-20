@@ -29,7 +29,7 @@ const SigninModal = () => {
         setIsOpen(false);
       })
       .catch((error) => {
-        toast.error("Signup failed", error);
+        toast.error("Signin failed", error);
 
         setFieldError("error", "An error occurred. Please try again.");
       })
@@ -162,7 +162,7 @@ const SigninModal = () => {
                       cursor={"pointer"}
                       onClick={() => setIntent("login")}
                     >
-                      Forgot Password
+                      Back to Login
                     </Text>
                   </Stack>
                 </Form>

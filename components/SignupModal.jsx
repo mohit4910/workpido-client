@@ -21,12 +21,21 @@ const SignupModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
-    // Call your API here to handle form submission
+    // Checking if username is valid
+    const isValid =
+      /^[a-zA-Z][a-zA-Z0-9_]*$/.test(values?.username) &&
+      !/\s/.test(values?.username);
+    if (!isValid) {
+      toast.warning("Invalid username");
+      return;
+    }
 
-    // Example API call (you should replace this with your actual API call)
     try {
       const res = await API.signup(values);
-      if (!res.data?.token) {
+      console.log("Signup Response")
+      console.log(res)
+      console.log("--------------")
+      if (!res.jwt) {
         handleError({ message: "No token in response" });
         return;
       }

@@ -19,7 +19,7 @@ export async function POST(req) {
       );
     }
 
-    const res = await axios.post(`${API_BASE_URL}/api/auth/local/register`);
+    const res = await axios.post(`${API_BASE_URL}/auth/local/register`, body);
 
     const sessionToken = jwt.sign({ userId: res.data?.id }, JWT_SECRET, {
       algorithm: "HS256",
@@ -32,7 +32,7 @@ export async function POST(req) {
       maxAge: TOKEN_MAX_AGE,
     });
 
-    const accessToken = serialize("token", res.data?.token, {
+    const accessToken = serialize("token", res.data?.jwt, {
       httpOnly: true,
       secure: true,
       maxAge: TOKEN_MAX_AGE,
@@ -45,7 +45,8 @@ export async function POST(req) {
       },
     });
   } catch (error) {
-    console.log(`Error while registration`);
+    console.log(`Error while signup`);
+    console.log(error?.response?.data)
     return new Response(error, { status: error?.response?.status || 500 });
   }
 }
