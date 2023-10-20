@@ -12,6 +12,7 @@ import {
   Center,
   Collapse,
   Flex,
+  HStack,
   Icon,
   IconButton,
   Popover,
@@ -28,9 +29,13 @@ import logo from "../assets/logo-w.png";
 import AppModal from "./AppModal";
 import SignupModal from "./SignupModal";
 import SigninModal from "./SigninModal";
+import useAuth from "@/hooks/useAuth";
+import { MoneyRecive, ShoppingCart } from "iconsax-react";
+import NavAvatar from "./NavAvatar";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const { isLoggedIn, user, currentRole, onLogout } = useAuth();
 
   return (
     <Box>
@@ -80,26 +85,85 @@ export default function WithSubnavigation() {
           </Flex> */}
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          spacing={6}
-        >
-          <SigninModal />
-          <SignupModal />
-
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"/for-freelancers"}
-            color="white"
+        {!isLoggedIn ? (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
           >
-            Are you a freelancer?
-          </Button>
-        </Stack>
+            <SigninModal />
+            <SignupModal />
+
+            <Button
+              as={"a"}
+              fontSize={"sm"}
+              fontWeight={400}
+              variant={"link"}
+              href={"/for-freelancers"}
+              color="white"
+            >
+              Are you a freelancer?
+            </Button>
+          </Stack>
+        ) : (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
+          >
+            <Button
+              as={"a"}
+              fontSize={"sm"}
+              fontWeight={400}
+              variant={"link"}
+              href={"/for-freelancers"}
+              color="white"
+            >
+              Kworks
+            </Button>
+            <Button
+              as={"a"}
+              fontSize={"sm"}
+              fontWeight={400}
+              variant={"link"}
+              href={"/for-freelancers"}
+              color="white"
+            >
+              Orders
+            </Button>
+            <Button
+              as={"a"}
+              fontSize={"sm"}
+              fontWeight={400}
+              variant={"link"}
+              href={"/for-freelancers"}
+              color="white"
+            >
+              Chat
+            </Button>
+            <HStack>
+              <MoneyRecive size="24" color="#F4CE14" />
+              <Text fontSize={"sm"} color={"#FFF"}>
+                $1200
+              </Text>
+            </HStack>
+            {currentRole == "buyer" ? (
+              <IconButton
+                p={0}
+                variant={"link"}
+                href={"#"}
+                icon={<ShoppingCart size="24" color="#FAFAFA" />}
+              />
+            ) : null}
+            <NavAvatar
+              user={user}
+              currentRole={currentRole}
+              onLogout={onLogout}
+            />
+          </Stack>
+        )}
       </Flex>
       <Flex
         bg={useColorModeValue("white", "gray.800")}

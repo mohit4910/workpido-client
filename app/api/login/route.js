@@ -18,7 +18,7 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-
+    console.log(body)
     const res = await axios.post(`${API_BASE_URL}/auth/local`, body);
 
     console.log("Login Response")

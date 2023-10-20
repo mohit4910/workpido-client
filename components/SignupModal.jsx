@@ -36,7 +36,7 @@ const SignupModal = () => {
       console.log(res)
       console.log("--------------")
       if (!res.jwt) {
-        handleError({ message: "No token in response" });
+        handleError({ message: "Verification mail sent" });
         return;
       }
       toast.success("Signup successful");

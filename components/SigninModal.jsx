@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { API } from "@/lib/api";
 import Input from "./Input";
 import { toast } from "react-toastify";
+import useAuth from "@/hooks/useAuth";
 const SignupSchema = Yup.object().shape({
   identifier: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().required("Password is required"),
@@ -14,18 +15,22 @@ const SignupSchema = Yup.object().shape({
 
 const SigninModal = () => {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
+  const { me } = useAuth();
 
+  const [isOpen, setIsOpen] = useState(false);
   const [intent, setIntent] = useState("login");
 
   const handleSubmit = (values, { setSubmitting, setFieldError }) => {
     API.login(values)
-      .then((response) => {
+      .then(async (response) => {
+        if (!response?.jwt) {
+          toast.error("Error while logging you in");
+          return;
+        }
         toast.success("Signin successful");
-        console.log("hehehe", response);
+        console.log(response);
         localStorage.setItem("token", response.jwt);
-        localStorage.setItem("user", JSON.stringify(response.user));
-        router.push("/seller-dashboard");
+        window.location.replace("/seller-dashboard");
         setIsOpen(false);
       })
       .catch((error) => {
@@ -79,7 +84,6 @@ const SigninModal = () => {
                 <Form>
                   <Stack spacing={4} px={1}>
                     <Input.Free
-                      type="email"
                       name="identifier"
                       placeholder="Email"
                       label="Email"

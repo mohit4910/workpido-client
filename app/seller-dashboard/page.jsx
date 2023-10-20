@@ -33,7 +33,7 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    const token = Cookies.get("sessionToken");
+    const token = localStorage.getItem("token");
     if (!token) {
       push("/");
     }
