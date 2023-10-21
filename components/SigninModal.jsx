@@ -8,6 +8,7 @@ import { API } from "@/lib/api";
 import Input from "./Input";
 import { toast } from "react-toastify";
 import useAuth from "@/hooks/useAuth";
+import Cookies from "js-cookie";
 const SignupSchema = Yup.object().shape({
   identifier: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().required("Password is required"),
@@ -29,7 +30,7 @@ const SigninModal = () => {
         }
         toast.success("Signin successful");
         console.log(response);
-        localStorage.setItem("token", response.jwt);
+        Cookies.set("token", response.jwt);
         window.location.replace("/seller-dashboard");
         setIsOpen(false);
       })

@@ -200,7 +200,7 @@ const DesktopNav = () => {
     >
       {NAV_ITEMS.map((navItem, i) => (
         <Box
-          key={navItem.label}
+          key={i}
           justifyContent="space-around"
           alignItems="center"
           display="flex"
@@ -242,9 +242,9 @@ const DesktopNav = () => {
                 minW={"xs"}
               >
                 <Stack>
-                  {navItem.children.map((child) => (
+                  {navItem.children.map((child, key) => (
                     <DesktopSubNav
-                      key={child.label}
+                      key={key}
                       href="/categories"
                       {...child}
                     />
@@ -292,8 +292,8 @@ const MobileNav = () => {
       p={4}
       display={{ md: "none" }}
     >
-      {NAV_ITEMS.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
+      {NAV_ITEMS.map((navItem, key) => (
+        <MobileNavItem key={key} {...navItem} />
       ))}
     </Stack>
   );
@@ -341,8 +341,8 @@ const MobileNavItem = ({ label, children, href }) => {
           align={"start"}
         >
           {children &&
-            children.map((child) => (
-              <Box as="a" key={child.label} py={2} href={child.href}>
+            children.map((child, key) => (
+              <Box as="a" key={key} py={2} href={child.href}>
                 {child.label}
               </Box>
             ))}

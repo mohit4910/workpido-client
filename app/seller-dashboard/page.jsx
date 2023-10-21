@@ -20,29 +20,19 @@ import React, { useEffect, useState } from "react";
 import Loading from "../loading";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 
 const Page = () => {
   const { push } = useRouter();
-  const [user, setUser] = useState();
-  const [hasToken, setHasToken] = useState(false);
+  const { isLoggedIn, user } = useAuth();
 
   useEffect(() => {
-    let data = localStorage.getItem("user");
-    setUser(JSON.parse(data));
-    console.log(data);
-  }, []);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    if (!isLoggedIn) {
       push("/");
     }
-    if (token) {
-      setHasToken(true);
-    }
   }, []);
 
-  if (!hasToken) {
+  if (!isLoggedIn) {
     return <Loading />;
   }
 

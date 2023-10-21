@@ -13,7 +13,8 @@ const useAuth = () => {
   const { push, refresh } = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    const cookieToken = Cookies.get("token");
+    if (cookieToken) {
       setIsLoggedIn(true);
     }
 
@@ -38,7 +39,7 @@ const useAuth = () => {
   };
 
   const onLogout = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("token");
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUser(null);
@@ -56,8 +57,8 @@ const useAuth = () => {
   };
 
   const getToken = () => {
-    return localStorage.getItem("token");
-  }
+    return Cookies.get("token");
+  };
 
   return {
     me,
@@ -66,7 +67,7 @@ const useAuth = () => {
     currentRole,
     changeCurrentRole,
     onLogout,
-    getToken
+    getToken,
   };
 };
 
