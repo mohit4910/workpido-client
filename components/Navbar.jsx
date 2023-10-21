@@ -32,10 +32,17 @@ import SigninModal from "./SigninModal";
 import useAuth from "@/hooks/useAuth";
 import { MoneyRecive, ShoppingCart } from "iconsax-react";
 import NavAvatar from "./NavAvatar";
+import { useEffect, useState } from "react";
 
 export default function WithSubnavigation() {
+  const [loggedIn, setLoggedIn] = useState(false)
   const { isOpen, onToggle } = useDisclosure();
-  const { isLoggedIn, user, currentRole, onLogout } = useAuth();
+  const { isLoggedIn, user, currentRole, onLogout, onChangeRole } = useAuth();
+
+  useEffect(()=>{
+    const res = isLoggedIn()
+    setLoggedIn(res)
+  })
 
   return (
     <Box>
@@ -85,7 +92,7 @@ export default function WithSubnavigation() {
           </Flex> */}
         </Flex>
 
-        {!isLoggedIn ? (
+        {!loggedIn ? (
           <Stack
             flex={{ base: 1, md: 0 }}
             justify={"flex-end"}
@@ -161,6 +168,7 @@ export default function WithSubnavigation() {
               user={user}
               currentRole={currentRole}
               onLogout={onLogout}
+              onChangeRole={(role => onChangeRole(role))}
             />
           </Stack>
         )}
@@ -359,27 +367,27 @@ const NAV_ITEMS = [
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
-        href: "/categories",
+        href: "/categories/design",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
     ],
   },
@@ -389,32 +397,32 @@ const NAV_ITEMS = [
       {
         label: "Job Board",
         subLabel: "Find your dream design job",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "Freelance Projects",
         subLabel: "An exclusive list for contract work",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
     ],
   },
@@ -424,22 +432,22 @@ const NAV_ITEMS = [
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
     ],
   },
@@ -449,32 +457,32 @@ const NAV_ITEMS = [
       {
         label: "Job Board",
         subLabel: "Find your dream design job",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "Freelance Projects",
         subLabel: "An exclusive list for contract work",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
     ],
   },
@@ -484,32 +492,32 @@ const NAV_ITEMS = [
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
     ],
   },
@@ -519,32 +527,32 @@ const NAV_ITEMS = [
       {
         label: "Job Board",
         subLabel: "Find your dream design job",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "Freelance Projects",
         subLabel: "An exclusive list for contract work",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
     ],
   },
@@ -554,32 +562,32 @@ const NAV_ITEMS = [
       {
         label: "Explore Design Work",
         subLabel: "Trending Design to inspire you",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
       {
         label: "New & Noteworthy",
         subLabel: "Up-and-coming Designers",
-        href: "/categories",
+        href: "/categories/new",
       },
     ],
   },

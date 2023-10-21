@@ -4,44 +4,75 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { API } from "@/lib/api";
+import { API_BASE_URL, STORAGE_PROVIDER } from "@/lib/constants";
 
 const useAuth = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [currentRole, setCurrentRole] = useState("seller");
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   const { push, refresh } = useRouter();
 
-  useEffect(() => {
-    const cookieToken = Cookies.get("token");
-    if (cookieToken) {
-      setIsLoggedIn(true);
-    }
+  // useEffect(() => {
+  //   const cookieToken = Cookies.get("token");
+  //   if (cookieToken) {
+  //     setIsLoggedIn(true);
+  //   }
 
-    const role = Cookies.get("currentRole");
-    if (role) {
-      setCurrentRole(role);
-    }
-  }, []);
+  //   const role = Cookies.get("currentRole");
+  //   if (role) {
+  //     setCurrentRole(role);
+  //   }
+  // }, []);
+
+  const isLoggedIn = () => {
+    const cookieToken = Cookies.get("token");
+    if (cookieToken) return true;
+    else return false;
+  };
 
   useEffect(() => {
     const parsedUser = JSON.parse(localStorage.getItem("user"));
-    (async () => {
-      if (isLoggedIn && !parsedUser?.id) {
-        await me();
-      }
-    })();
-  }, [isLoggedIn]);
+    const isActive = isLoggedIn();
+    if (isActive && !parsedUser?.id) {
+      me();
+    }
+    if (isActive && parsedUser?.id) {
+      setUser(parsedUser);
+      getAvatar(parsedUser?.avatar?.url);
+    }
+  }, []);
 
-  const changeCurrentRole = (role = "seller") => {
+  const onChangeRole = (role = "seller") => {
     Cookies.set("currentRole", role);
     setCurrentRole(role);
+    if (role == "buyer") {
+      push("/");
+    }
+    if (role == "seller") {
+      push("/seller-dashboard");
+    }
+  };
+
+  const getAvatar = (referenceUrl) => {
+    if (STORAGE_PROVIDER == "local") {
+      const url = referenceUrl
+        ? API_BASE_URL?.replace("/api", "") + referenceUrl
+        : "/avatar-placeholder.jpg";
+      setAvatarUrl(url);
+      console.log("Avatar");
+      console.log(referenceUrl);
+      return url;
+    } else {
+      setAvatarUrl(referenceUrl);
+      return referenceUrl;
+    }
   };
 
   const onLogout = () => {
     Cookies.remove("token");
     localStorage.removeItem("user");
-    setIsLoggedIn(false);
     setUser(null);
     push("/");
   };
@@ -65,9 +96,11 @@ const useAuth = () => {
     user,
     isLoggedIn,
     currentRole,
-    changeCurrentRole,
+    onChangeRole,
     onLogout,
     getToken,
+    getAvatar,
+    avatarUrl,
   };
 };
 

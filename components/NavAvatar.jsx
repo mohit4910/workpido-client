@@ -16,8 +16,9 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { ArrowDown2 } from "iconsax-react";
+import Link from "next/link";
 
-const NavAvatar = ({ user, currentRole, onLogout }) => {
+const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
   return (
     <>
       <Menu>
@@ -41,6 +42,7 @@ const NavAvatar = ({ user, currentRole, onLogout }) => {
               href="#"
               variant={"link"}
               color={currentRole == "buyer" ? "facebook.500" : "#000"}
+              onClick={() => onChangeRole("buyer")}
             >
               Buyer
             </Button>
@@ -51,12 +53,17 @@ const NavAvatar = ({ user, currentRole, onLogout }) => {
               href="#"
               variant={"link"}
               color={currentRole == "seller" ? "facebook.500" : "#000"}
+              onClick={() => onChangeRole("seller")}
             >
               Seller
             </Button>
           </HStack>
           <MenuDivider />
-          <MenuItem>Profile</MenuItem>
+          <Link href={"/profile/me"}>
+            <MenuItem>
+              <Text>Profile</Text>
+            </MenuItem>
+          </Link>
           <MenuItem>Settings</MenuItem>
           <MenuItem>Cashflow</MenuItem>
           <MenuItem>Help</MenuItem>

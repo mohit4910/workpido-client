@@ -22,7 +22,7 @@ const SellerStats = ({ seller }) => {
         <Text fontSize={"md"} className="font-semibold">
           {seller?.username}
         </Text>
-        <Text fontSize={"md"}>Adarsh P.</Text>
+        <Text fontSize={"md"}>{seller?.displayName}</Text>
       </Stack>
       <Flex align={"center"} className="gap-2">
         <Text fontSize="md">Seller</Text>

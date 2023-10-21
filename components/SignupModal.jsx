@@ -8,6 +8,7 @@ import { API } from "@/lib/api";
 import Input from "./Input";
 import { toast } from "react-toastify";
 import useApiHandler from "@/hooks/useApiHandler";
+import Cookies from "js-cookie";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -32,16 +33,14 @@ const SignupModal = () => {
 
     try {
       const res = await API.signup(values);
-      console.log("Signup Response")
-      console.log(res)
-      console.log("--------------")
       if (!res.jwt) {
         handleError({ message: "Verification mail sent" });
         return;
       }
       toast.success("Signup successful");
+      Cookies.set("token", res?.jwt);
       setIsOpen(false);
-      router.push("/seller-dashboard");
+      window.location.replace("/seller-dashboard");
     } catch (error) {
       console.log(error);
       toast.error("Signup failed");

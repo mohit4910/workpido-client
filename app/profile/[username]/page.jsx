@@ -1,9 +1,13 @@
 "use client";
 
+import Loading from "@/app/loading";
 import ContactSeller from "@/components/ContactSeller";
 import GigCard from "@/components/GigCard";
 import SellerCard from "@/components/SellerCard";
 import ZoomableImage from "@/components/ZoomableImage";
+import useAuth from "@/hooks/useAuth";
+import { API } from "@/lib/api";
+import { API_BASE_URL } from "@/lib/constants";
 import {
   Accordion,
   AccordionButton,
@@ -23,14 +27,56 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { ImEyeBlocked, ImLocation } from "react-icons/im";
 import { PiClockCountdownBold } from "react-icons/pi";
 import { RiRadioButtonLine } from "react-icons/ri";
+import { toast } from "react-toastify";
 
-const page = () => {
+const page = ({ params }) => {
+  const { username } = params;
+  const { push } = useRouter();
+
+  const { me, user, getAvatar, avatarUrl } = useAuth();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    me();
+  }, []);
+
+  useEffect(() => {
+    if (username == "me") {
+      setUserData(user);
+    } else {
+      fetchUserInfo();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    getAvatar(userData?.avatar?.url);
+  }, [userData]);
+
+  const fetchUserInfo = async () => {
+    API.getUserInfo({ username: username })
+      .then((res) => {
+        setUserData(res);
+      })
+      .catch((err) => {
+        push("/not-found");
+      });
+  };
+
+  if (!userData?.id) {
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  }
+
   return (
     <main className="relative mx-auto lg:container overflow-x-hidden min-h-screen">
       {/* Seller Details */}
@@ -39,17 +85,20 @@ const page = () => {
         <Flex className=" mx-auto w-screen md:my-10 md:w-[65%] flex-col md:flex-row">
           {/* User Card */}
           <Flex className="flex-col items-center md:items-start bg-white px-2 md:w-1/3 w-full gap-2">
-            <ZoomableImage src="https://avatars0.githubusercontent.com/u/1164541?v=4" />
+            <ZoomableImage src={avatarUrl} />
             <Box className="my-3 text-center md:text-left">
               <Text className="md:block font-bold text-2xl my-2">
-                geekguyadarsh
+                {userData?.username}
               </Text>
               <Heading className="font-bold md:hidden text-emerald-600 text-4xl my-2">
-                {"Adarsh Prakash"}
+                {userData?.displayName}
               </Heading>
               {/*Seller Profession */}
-              <Text className="md:hidden font-bold text-xl  my-2">
-                Web Developer
+              <Text
+                className="md:hidden font-bold text-xl  my-2"
+                textTransform={"capitalize"}
+              >
+                {userData?.profession}
               </Text>
             </Box>
             <Flex className="items-center gap-1">
@@ -58,11 +107,17 @@ const page = () => {
             </Flex>
             <Flex className="items-center gap-1">
               <ImLocation color="gray" />
-              <Text>India</Text>
+              <Text>{userData?.country || "India"}</Text>
             </Flex>
             <Flex className="items-center gap-1">
               <PiClockCountdownBold color="gray" />
-              <Text>Joined September 2023</Text>
+              <Text>
+                Joined{" "}
+                {new Date(userData?.createdAt).toLocaleString("default", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </Text>
             </Flex>
             <Flex className="items-center gap-1">
               <RiRadioButtonLine color="green" />
@@ -78,45 +133,53 @@ const page = () => {
             <Box className="p-5 overflow-hidden">
               {/*Seller Full Name */}
               <Heading className="hidden md:block font-semibold text-emerald-600 text-4xl text-center md:text-left my-3">
-                {"Adarsh Prakash"}
+                {userData?.displayName}
               </Heading>
               {/*Seller Profession */}
-              <Text className=" hidden md:block font-bold text-xl text-center md:text-left my-3">
-                Web Developer
+              <Text
+                className=" hidden md:block font-bold text-xl text-center md:text-left my-3"
+                textTransform={"capitalize"}
+              >
+                {userData?.profession}
               </Text>
               {/* About the Seller */}
-              <Text className="my-3">
-                For the orders to be completed the following are the
-                requirements for quality work to be delivered and on the
-                speculated period. In case it is a specified niche, the client
-                should provide the topic for the articles. secondly, the buyer
-                should be clear on the format of the article. And last but not
-                least the buyer should be able to provide all the necessary
-                guidelines to avoid misunderstandings and revisions.
-              </Text>
+              <Text className="my-3">{userData?.bio}</Text>
               <Box>
                 <Text className="md:block font-bold text-lg my-3">Skills</Text>
                 {/* About the Seller */}
                 <Flex className="gap-2 flex-wrap">
-                  <span className="p-1 m-1 border rounded">React.js</span>
-                  <span className="p-1 m-1 border rounded">Next.js</span>
-                  <span className="p-1 m-1 border rounded">HTML</span>
-                  <span className="p-1 m-1 border rounded">CSS</span>
-                  <span className="p-1 m-1 border rounded">JavaScript</span>
-                  <span className="p-1 m-1 border rounded">React.js</span>
-                  <span className="p-1 m-1 border rounded">Next.js</span>
-                  <span className="p-1 m-1 border rounded">HTML</span>
-                  <span className="p-1 m-1 border rounded">CSS</span>
-                  <span className="p-1 m-1 border rounded">JavaScript</span>
+                  {userData?.skills ? (
+                    userData?.skills
+                      ?.split(",")
+                      ?.map((skill, key) => (
+                        <span className="p-1 m-1 border rounded">
+                          {skill?.trim()}
+                        </span>
+                      ))
+                  ) : (
+                    <Text>
+                      No skills to show, you can add them by editing your
+                      profile
+                    </Text>
+                  )}
                 </Flex>
+                <br />
+                {username == "me" || username == user?.username ? (
+                  <Button onClick={() => push("/edit-profile")}>
+                    Edit Profile
+                  </Button>
+                ) : null}
               </Box>
             </Box>
           </Box>
         </Flex>
         {/* SideBar - Only visible on large displays */}
+
         <Box className="w-full md:w-[30%]  mx-auto my-10">
           {/* Seller Contact Card */}
-          <SellerCard className="bg-transparent" />
+          {username == "me" || username == user?.username ? null : (
+            <SellerCard className="bg-transparent" />
+          )}
         </Box>
       </Flex>
       {/* Portfolio */}
@@ -212,15 +275,18 @@ const page = () => {
         </Accordion>
       </Box>
       {/* contact Section */}
-      <Flex
-        flexDirection="column"
-        align="center"
-        justify="center"
-        bg={"brand.primary"}
-        className="md:py-10 md:px-3 z-50 w-screen md:w-1/3 md:bg-[#f6f6f6] fixed bottom-0 left-0 right-0 md:relative md:mx-auto md:mt-4"
-      >
-        <ContactSeller className="md:my-5 w-full px-2 py-10 text-lg" />
-      </Flex>
+
+      {username == "me" || username == user?.username ? null : (
+        <Flex
+          flexDirection="column"
+          align="center"
+          justify="center"
+          bg={"brand.primary"}
+          className="md:py-10 md:px-3 z-50 w-screen md:w-1/3 md:bg-[#f6f6f6] fixed bottom-0 left-0 right-0 md:relative md:mx-auto md:mt-4"
+        >
+          <ContactSeller className="md:my-5 w-full px-2 py-10 text-lg" />
+        </Flex>
+      )}
     </main>
   );
 };

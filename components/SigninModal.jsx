@@ -29,7 +29,7 @@ const SigninModal = () => {
           return;
         }
         toast.success("Signin successful");
-        console.log(response);
+        
         Cookies.set("token", response.jwt);
         window.location.replace("/seller-dashboard");
         setIsOpen(false);

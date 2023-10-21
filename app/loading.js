@@ -11,7 +11,7 @@ export default function Loading() {
       justifyContent={"center"}
       alignItems="center"
     >
-      <CircularProgress isIndeterminate color="brand.primary" />;
+      <CircularProgress isIndeterminate color="brand.primary" />
     </Flex>
   );
 }
