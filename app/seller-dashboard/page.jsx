@@ -133,10 +133,15 @@ const Page = () => {
                       objectFit="cover"
                       className="w-24 h-24"
                     />
-                    <Box className="w-full px-4 md:w-3/4">
+                    <Box className="w-full px-4 md:w-6/8">
                       <Text className="text-lg font-bold">
                         Step 1: Create your kworks—the more, the better
                       </Text>
+                      <Link href={"/seller-dashboard/create-gig"}>
+                        <Text color={"facebook.600"} fontWeight={"medium"}>
+                          Create New Gig
+                        </Text>
+                      </Link>
                     </Box>
                   </Flex>
                   {/* Button Container */}

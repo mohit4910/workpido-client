@@ -1,4 +1,5 @@
 import useAuth from "@/hooks/useAuth";
+import { API } from "@/lib/api";
 import {
   Avatar,
   Flex,
@@ -9,18 +10,34 @@ import {
   Switch,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsStarFill } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 const SellerStats = ({ seller }) => {
-  const { avatarUrl } = useAuth();
+  const { avatarUrl, me } = useAuth();
+  const [acceptingOrders, setAcceptingOrders] = useState(false)
+
+  async function handleUpdate(data) {
+    try {
+      await API.updateMe(data);
+      await me()
+      setAcceptingOrders(!acceptingOrders)
+      toast.success("Updated successfully!");
+    } catch (error) {
+      toast.error("Could not update status");
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    setAcceptingOrders(seller?.acceptingOrders)
+  },[seller])
+
   return (
     <Flex className="flex-col items-center justify-center gap-3">
       <Stack direction={"column"} spacing={2} align={"center"}>
-        <Avatar
-          size={"2xl"}
-          src={avatarUrl}
-        />
+        <Avatar size={"2xl"} src={avatarUrl} />
         <Text fontSize={"md"} className="font-semibold">
           {seller?.username}
         </Text>
@@ -45,7 +62,12 @@ const SellerStats = ({ seller }) => {
         <FormLabel htmlFor="email-alerts" mb="0">
           Accepting Orders
         </FormLabel>
-        <Switch id="email-alerts" colorScheme="green" defaultChecked />
+        <Switch
+          id="email-alerts"
+          colorScheme="green"
+          isChecked={acceptingOrders}
+          onChange={(e) => handleUpdate({ acceptingOrders: e.target.checked })}
+        />
       </FormControl>
 
       {/* Stats */}
