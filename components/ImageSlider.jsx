@@ -11,7 +11,7 @@ import "swiper/css/pagination";
 import { Box, Image } from "@chakra-ui/react";
 import { Navigation, Pagination } from "swiper/modules";
 
-export default function ImageSlider() {
+export default function ImageSlider({ images = [] }) {
   return (
     <>
       <Swiper
@@ -29,42 +29,25 @@ export default function ImageSlider() {
         ]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Slide />
-        </SwiperSlide>
+        {images?.map((imageUrl, key) => (
+          <SwiperSlide key={key}>
+            <Slide imageUrl={imageUrl} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </>
   );
 }
 
-const Slide = () => {
+const Slide = ({ imageUrl }) => {
   return (
     <Image
-      src={
-        "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-      }
+      src={imageUrl}
       alt="Example"
+      w={"full"}
+      maxH={"40"}
+      objectFit={"cover"}
+      objectPosition={'top'}
     />
   );
 };

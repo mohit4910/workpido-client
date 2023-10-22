@@ -1,3 +1,4 @@
+import useAuth from "@/hooks/useAuth";
 import {
   Avatar,
   Flex,
@@ -12,12 +13,13 @@ import React from "react";
 import { BsStarFill } from "react-icons/bs";
 
 const SellerStats = ({ seller }) => {
+  const { avatarUrl } = useAuth();
   return (
     <Flex className="flex-col items-center justify-center gap-3">
       <Stack direction={"column"} spacing={2} align={"center"}>
         <Avatar
           size={"2xl"}
-          src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+          src={avatarUrl}
         />
         <Text fontSize={"md"} className="font-semibold">
           {seller?.username}

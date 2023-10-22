@@ -61,8 +61,6 @@ const useAuth = () => {
         ? API_BASE_URL?.replace("/api", "") + referenceUrl
         : "/avatar-placeholder.jpg";
       setAvatarUrl(url);
-      console.log("Avatar");
-      console.log(referenceUrl);
       return url;
     } else {
       setAvatarUrl(referenceUrl);

@@ -35,14 +35,14 @@ import NavAvatar from "./NavAvatar";
 import { useEffect, useState } from "react";
 
 export default function WithSubnavigation() {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false);
   const { isOpen, onToggle } = useDisclosure();
   const { isLoggedIn, user, currentRole, onLogout, onChangeRole } = useAuth();
 
-  useEffect(()=>{
-    const res = isLoggedIn()
-    setLoggedIn(res)
-  })
+  useEffect(() => {
+    const res = isLoggedIn();
+    setLoggedIn(res);
+  });
 
   return (
     <Box>
@@ -168,7 +168,7 @@ export default function WithSubnavigation() {
               user={user}
               currentRole={currentRole}
               onLogout={onLogout}
-              onChangeRole={(role => onChangeRole(role))}
+              onChangeRole={(role) => onChangeRole(role)}
             />
           </Stack>
         )}
@@ -251,11 +251,7 @@ const DesktopNav = () => {
               >
                 <Stack>
                   {navItem.children.map((child, key) => (
-                    <DesktopSubNav
-                      key={key}
-                      href="/categories"
-                      {...child}
-                    />
+                    <DesktopSubNav key={key} href="/categories" {...child} />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -405,9 +401,9 @@ const NAV_ITEMS = [
         href: "/categories/new",
       },
       {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
+        label: "Web Development",
+        subLabel: "Find professional web developers",
+        href: "/categories/web-development",
       },
       {
         label: "New & Noteworthy",

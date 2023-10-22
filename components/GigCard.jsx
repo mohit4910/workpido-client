@@ -12,8 +12,29 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import ImageSlider from "./ImageSlider";
+import { useEffect, useState } from "react";
+import useApiHandler from "@/hooks/useApiHandler";
+import useAuth from "@/hooks/useAuth";
 
-export default function GigCard() {
+export default function GigCard({ gig }) {
+  const { getMediaUrl } = useApiHandler();
+  const { getAvatar } = useAuth();
+  const [bannerImageUrls, setBannerImageUrls] = useState([])
+  const [sellerAvatar, setSellerAvatar] = useState("")
+  
+  useEffect(() => {
+    const banners = gig?.banners || [{url: ""}];
+    let mediaUrls = [];
+    banners?.forEach((banner) => {
+      const url = getMediaUrl(banner?.url);
+      mediaUrls.push(url)
+    });
+    setBannerImageUrls(mediaUrls)
+
+     const avatarUrl = getAvatar(gig?.seller?.avatar?.url)
+     setSellerAvatar(avatarUrl)
+  }, []);
+
   return (
     <Center py={6}>
       <Box
@@ -47,9 +68,9 @@ export default function GigCard() {
             }
             alt="Example"
           /> */}
-          <ImageSlider />
+          <ImageSlider images={bannerImageUrls} />
         </Box>
-        <Link href={"/article-details"}>
+        <Link href={`/article-details/${gig?.id}`}>
           <Stack borderBottom={"1px"} pb={2}>
             <Text
               // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -58,7 +79,7 @@ export default function GigCard() {
               fontFamily={"body"}
             >
               {
-                "I'll build HTML, CSS, Bootstrap pixel perfect and responsive website"
+                gig?.title
               }
             </Text>
             <Text
@@ -68,7 +89,7 @@ export default function GigCard() {
               // fontWeight={"bold"}
               textTransform={"uppercase"}
             >
-              Starting at <span className="text-lg font-bold">$100</span>
+              Starting at <span className="text-lg font-bold">{gig?.seller?.currency?.symbol}{gig?.startingPrice}</span>
             </Text>
           </Stack>
         </Link>
@@ -76,10 +97,10 @@ export default function GigCard() {
           <Stack mt={4} direction={"row"} spacing={2} align={"center"}>
             <Avatar
               size={"sm"}
-              src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+              src={sellerAvatar}
             />
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-              <Text fontSize={"xs"}>geekguyadarsh</Text>
+              <Text fontSize={"xs"}>{gig?.seller?.displayName || gig?.seller?.username}</Text>
               {/* <Text color={"gray.500"} fontSize={"xs"}>
               Developer
             </Text> */}

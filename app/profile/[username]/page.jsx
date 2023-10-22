@@ -1,5 +1,4 @@
 "use client";
-
 import Loading from "@/app/loading";
 import ContactSeller from "@/components/ContactSeller";
 import GigCard from "@/components/GigCard";

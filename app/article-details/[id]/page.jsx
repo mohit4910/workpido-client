@@ -1,8 +1,11 @@
 "use client";
 
+import Loading from "@/app/loading";
 import GigCard from "@/components/GigCard";
 import ImageSlider from "@/components/ImageSlider";
 import SellerCard from "@/components/SellerCard";
+import useAuth from "@/hooks/useAuth";
+import { API } from "@/lib/api";
 import {
   Accordion,
   AccordionButton,
@@ -23,17 +26,49 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
-
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { AiFillEyeInvisible } from "react-icons/ai";
-
 import { BsClockHistory, BsFillCartPlusFill, BsStarFill } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { FiHeart } from "react-icons/fi";
 import { GiCheckMark } from "react-icons/gi";
 import { MdReportProblem } from "react-icons/md";
+import parse from "html-react-parser";
 
-const page = () => {
+const page = ({ params }) => {
+  const { id } = params;
+  const { push } = useRouter();
+  const { getAvatar } = useAuth();
+
+  const [data, setData] = useState(null);
+  const [sellerAvatar, setSellerAvatar] = useState("");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (data?.seller?.id) {
+      const avatarUrl = getAvatar(data?.seller?.avatar?.url);
+      setSellerAvatar(avatarUrl);
+    }
+  }, [data]);
+
+  async function fetchData() {
+    try {
+      const res = await API.getGigInfo(id);
+      setData(res);
+    } catch (error) {
+      console.log("Error while fetching gigs: ", error);
+      push("/not-found");
+    }
+  }
+
+  if (!data) {
+    return <Loading />;
+  }
+
   return (
     <main className="relative min-h-screen lg:mx-auto lg:container">
       {/* Order Button Mobile-only */}
@@ -62,7 +97,8 @@ const page = () => {
             bg: "green.300",
           }}
         >
-          Order for $100
+          Order for {data?.seller?.currency?.symbol}
+          {data?.startingPrice}
         </Button>
       </Flex>
       <Flex className="mx-auto w-screen md:w-10/12">
@@ -73,27 +109,20 @@ const page = () => {
             {/* Article Heading */}
             <Flex className="flex-col gap-3 mb-2 p-5">
               <Text className="font-bold w-fill text-xl md:text-2xl">
-                {
-                  "I'll build HTML, CSS, Bootstrap pixel perfect and responsive website"
-                }
+                {data?.title}
               </Text>
               <Flex className="flex-col gap-2 md:gap-0 md:flex-row md:justify-between items-start md:items-center">
                 {/* Abstract */}
                 <Flex className="items-center gap-3">
                   <Link href={"/profile"}>
                     <Stack direction={"row"} spacing={2} align={"center"}>
-                      <Avatar
-                        size={"sm"}
-                        src={
-                          "https://avatars0.githubusercontent.com/u/1164541?v=4"
-                        }
-                      />
+                      <Avatar size={"sm"} src={sellerAvatar} />
                       <Stack direction={"column"} spacing={0} fontSize={"sm"}>
                         <Text
                           fontSize={"sm"}
                           className=" hover:text-indigo-600"
                         >
-                          geekguyadarsh
+                          {data?.seller?.displayName || data?.seller?.username}
                         </Text>
                       </Stack>
                     </Stack>
@@ -134,52 +163,14 @@ const page = () => {
               <Text className="block font-bold text-lg my-3">
                 Work Overview
               </Text>
-              <Text className="my-3">
-                For the orders to be completed the following are the
-                requirements for quality work to be delivered and on the
-                speculated period. In case it is a specified niche, the client
-                should provide the topic for the articles. secondly, the buyer
-                should be clear on the format of the article. And last but not
-                least the buyer should be able to provide all the necessary
-                guidelines to avoid misunderstandings and revisions.
-              </Text>
-              <Text className="font-bold my-3">
-                To get started Seller needs:
-              </Text>
-              <Text>
-                All the articles need to be pre-ordered within 24hrs, quality
-                content is expected and quick turn around time. The buyer needs
-                to provide the following File providing information related to
-                the topic. File that provides relevant information about your
-                company. Files that can offer guidance when creating the website
-              </Text>
-              <Text className="font-bold my-3">Service includes:</Text>
-              <List>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Keywords
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  HTML
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Formatting
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Posting the article
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Language: English
-                </ListItem>
-              </List>
-              <Text className="my-3">
-                <span className="font-bold">Delivery: </span>
-                <span>1 month</span>
-              </Text>
+              <Text className="my-3">{data?.overview}</Text>
+              <br />
+              <Box>
+                <Text className="block font-bold text-lg my-3">
+                  Description
+                </Text>
+                {parse(data?.description || "<p>No Description available</p>")}
+              </Box>
             </Box>
             {/* Article Ordering */}
             <Flex className="justify-center flex-col p-5">
@@ -187,12 +178,12 @@ const page = () => {
               <Flex className="items-center justify-evenly">
                 <List className="flex items-center justify-end md:pr-5 md:justify-evenly w-full text-xs">
                   <ListItem className="hidden md:inline-block">
-                    <ListIcon as={BsClockHistory} color="black" />1 Month
+                    <ListIcon as={BsClockHistory} color="black" />{data?.deliveryDays} Days
                     delivery
                   </ListItem>
                   <ListItem className="hidden md:inline-block">
                     <ListIcon as={GiCheckMark} color="black" />
-                    Unlimited Revisions
+                    {data?.revisions} Revisions
                   </ListItem>
                   <ListItem className="flex items-center justify-evenly gap-3">
                     <Text className="font-bold">Quantity</Text>
@@ -226,7 +217,8 @@ const page = () => {
                     bg: "green.300",
                   }}
                 >
-                  Order for $100
+                  Order for {data?.seller?.currency?.symbol}
+                  {data?.startingPrice}
                 </Button>
               </Flex>
             </Flex>
@@ -286,7 +278,10 @@ const page = () => {
           <Flex className="bg-white justify-center flex-col p-3">
             {/* Header */}
             <Text color="brand.primary">
-              <span className="text-lg mx-2">$100</span>
+              <span className="text-lg mx-2">
+                {data?.seller?.currency?.symbol}
+                {data?.startingPrice}
+              </span>
               <span className="text-lg text-black mx-2 font-bold">
                 Order Details
               </span>
@@ -295,11 +290,11 @@ const page = () => {
             <Flex className="flex-col justify-around gap-3">
               <List className="flex items-center justify-end md:pr-5 mt-2 md:justify-evenly w-full text-xs">
                 <ListItem>
-                  <ListIcon as={BsClockHistory} color="black" />1 Month delivery
+                  <ListIcon as={BsClockHistory} color="black" />{data?.deliveryDays} delivery
                 </ListItem>
                 <ListItem>
                   <ListIcon as={GiCheckMark} color="black" />
-                  Unlimited Revisions
+                  {data?.revisions} Revisions
                 </ListItem>
               </List>
               <List className="text-sm">
@@ -355,7 +350,8 @@ const page = () => {
                   bg: "green.300",
                 }}
               >
-                Order for $100
+                Order for {data?.seller?.currency?.symbol}
+                {data?.startingPrice}
               </Button>
             </Flex>
           </Flex>
