@@ -33,16 +33,31 @@ import useAuth from "@/hooks/useAuth";
 import { MoneyRecive, ShoppingCart } from "iconsax-react";
 import NavAvatar from "./NavAvatar";
 import { useEffect, useState } from "react";
+import { API } from "@/lib/api";
+import { toast } from "react-toastify";
 
 export default function WithSubnavigation() {
-  const [loggedIn, setLoggedIn] = useState(false);
   const { isOpen, onToggle } = useDisclosure();
   const { isLoggedIn, user, currentRole, onLogout, onChangeRole } = useAuth();
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const res = isLoggedIn();
     setLoggedIn(res);
-  });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await API.getAllCategories();
+        setCategories(res)
+      } catch (error) {
+        toast.warn("Couldn't fetch categories")
+      }
+    })();
+  }, []);
 
   return (
     <Box>
@@ -185,16 +200,16 @@ export default function WithSubnavigation() {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
-        <DesktopNav />
+        <DesktopNav categories={categories} />
       </Flex>
       <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
+        <MobileNav categories={categories} />
       </Collapse>
     </Box>
   );
 }
 
-const DesktopNav = () => {
+const DesktopNav = ({categories}) => {
   const linkColor = useColorModeValue("gray.600", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
@@ -206,7 +221,7 @@ const DesktopNav = () => {
       w={"full"}
       overflowX="hidden"
     >
-      {NAV_ITEMS.map((navItem, i) => (
+      {categories?.map((navItem, i) => (
         <Box
           key={i}
           justifyContent="space-around"
@@ -221,10 +236,10 @@ const DesktopNav = () => {
                 as="a"
                 p={2}
                 px={4}
-                href={navItem.href ?? "#"}
+                href={navItem?.frontendLink ?? "#"}
                 fontSize={"sm"}
                 fontWeight={400}
-                borderRight={`${NAV_ITEMS.length - 1 !== i && "1px"}`}
+                borderRight={`${categories?.length - 1 !== i && "1px"}`}
                 borderColor={"gray.300"}
                 color={linkColor}
                 _hover={{
@@ -236,11 +251,11 @@ const DesktopNav = () => {
                 w={"full"}
                 mx={"auto"}
               >
-                <Center whiteSpace={"nowrap"}>{navItem.label}</Center>
+                <Center whiteSpace={"nowrap"}>{navItem.title}</Center>
               </Center>
             </PopoverTrigger>
 
-            {navItem.children && (
+            {navItem?.subCategories?.length && (
               <PopoverContent
                 border={"1px"}
                 borderColor="gray.400"
@@ -250,8 +265,8 @@ const DesktopNav = () => {
                 minW={"xs"}
               >
                 <Stack>
-                  {navItem.children.map((child, key) => (
-                    <DesktopSubNav key={key} href="/categories" {...child} />
+                  {navItem?.subCategories?.map((child, key) => (
+                    <DesktopSubNav key={key} href={child?.frontendLink ?? "#"} {...child} />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -263,11 +278,11 @@ const DesktopNav = () => {
   );
 };
 
-const DesktopSubNav = ({ label, href, subLabel }) => {
+const DesktopSubNav = ({ title, frontendLink }) => {
   return (
     <Box
       as="a"
-      href={href}
+      href={frontendLink}
       role={"group"}
       display={"block"}
       px={6}
@@ -280,7 +295,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
             _groupHover={{ color: "blue.400" }}
             fontWeight={500}
           >
-            {label}
+            {title}
           </Text>
           {/* <Text fontSize={"sm"}>{subLabel}</Text> */}
         </Box>
@@ -289,29 +304,29 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
   );
 };
 
-const MobileNav = () => {
+const MobileNav = ({categories}) => {
   return (
     <Stack
       bg={useColorModeValue("white", "gray.800")}
       p={4}
       display={{ md: "none" }}
     >
-      {NAV_ITEMS.map((navItem, key) => (
+      {categories?.map((navItem, key) => (
         <MobileNavItem key={key} {...navItem} />
       ))}
     </Stack>
   );
 };
 
-const MobileNavItem = ({ label, children, href }) => {
+const MobileNavItem = ({ title, subCategories, frontendLink }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack spacing={4} onClick={subCategories && onToggle}>
       <Box
         py={2}
         as="a"
-        href={href ?? "#"}
+        href={frontendLink ?? "#"}
         justifyContent="space-between"
         alignItems="center"
         _hover={{
@@ -322,9 +337,9 @@ const MobileNavItem = ({ label, children, href }) => {
           fontWeight={600}
           color={useColorModeValue("gray.600", "gray.200")}
         >
-          {label}
+          {title}
         </Text>
-        {children && (
+        {subCategories && (
           <Icon
             as={ChevronDownIcon}
             transition={"all .25s ease-in-out"}
@@ -344,10 +359,10 @@ const MobileNavItem = ({ label, children, href }) => {
           borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
-          {children &&
-            children.map((child, key) => (
-              <Box as="a" key={key} py={2} href={child.href}>
-                {child.label}
+          {subCategories?.length &&
+            subCategories.map((child, key) => (
+              <Box as="a" key={key} py={2} href={child.frontendLink ?? "#"}>
+                {child.title}
               </Box>
             ))}
         </Stack>
