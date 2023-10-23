@@ -5,7 +5,7 @@ import { API } from "@/lib/api";
 import { Box, Flex, Grid, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 
-const page = ({ params }) => {
+const Gigs = ({ params }) => {
   const { slug } = params;
   const [gigs, setGigs] = useState([]);
   
@@ -61,4 +61,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Gigs;

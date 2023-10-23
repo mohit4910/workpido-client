@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 
-const page = () => {
+const EditProfile = () => {
   const { avatarUrl, me, user } = useAuth();
   const { push } = useRouter();
   useEffect(() => {
@@ -214,4 +214,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default EditProfile;

@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const page = () => {
+const CreateGig = () => {
   return (
     <>
       <Box p={[4, 8, 12]}>
@@ -52,4 +52,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CreateGig;
