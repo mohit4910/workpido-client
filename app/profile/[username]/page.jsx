@@ -151,7 +151,7 @@ const page = ({ params }) => {
                     userData?.skills
                       ?.split(",")
                       ?.map((skill, key) => (
-                        <span className="p-1 m-1 border rounded">
+                        <span className="p-1 m-1 border rounded" key={key}>
                           {skill?.trim()}
                         </span>
                       ))
