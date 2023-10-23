@@ -36,7 +36,7 @@ import { GiCheckMark } from "react-icons/gi";
 import { MdReportProblem } from "react-icons/md";
 import parse from "html-react-parser";
 
-const GigInfo = ({ params }) => {
+const ArticleDetails = ({ params }) => {
   const { id } = params;
   const { push } = useRouter();
   const { getAvatar } = useAuth();
@@ -480,4 +480,4 @@ const GigInfo = ({ params }) => {
   );
 };
 
-export default GigInfo;
+export default ArticleDetails;
