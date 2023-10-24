@@ -13,18 +13,34 @@ import {
   Stack,
   Text,
   Textarea,
+  Select as ChakraSelect,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const EditProfile = () => {
   const { avatarUrl, me, user } = useAuth();
   const { push } = useRouter();
+
+  const [currencies, setCurrencies] = useState([]);
+
   useEffect(() => {
     me();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await API.getCurrencies();
+        setCurrencies(res?.data);
+      } catch (error) {
+        console.log("Error fetching currencies");
+        console.log(error);
+      }
+    })();
   }, []);
 
   const Formik = useFormik({
@@ -37,10 +53,11 @@ const EditProfile = () => {
       defaultDashboard: user?.defaultDashboard || "seller",
       acceptingOrders: user?.acceptingOrders || true,
       skills: user?.skills || "",
+      currency: user?.currency || "",
     },
     onSubmit: async (values) => {
       try {
-        await API.updateMe(values);
+        await API.updateMe({ ...values, country: values?.country?.value });
         toast.success("Profile update successfully!");
         me();
       } catch (error) {
@@ -58,14 +75,16 @@ const EditProfile = () => {
       Formik.setFieldValue("bio", user?.bio);
       Formik.setFieldValue("defaultDashboard", user?.defaultDashboard);
       Formik.setFieldValue("skills", user?.skills);
+      Formik.setFieldValue("currency", user?.currency?.id);
     }
   }, [user]);
+
 
   return (
     <>
       <Box w={"full"} minH={"90vh"} p={[4, 8, 12]}>
         <Text fontSize={["xl", "2xl"]} fontWeight={"bold"}>
-          Edit Your Profile
+          Update Your Profile
         </Text>
         <br />
         <Stack
@@ -129,9 +148,10 @@ const EditProfile = () => {
             <FormLabel>Country</FormLabel>
             <Select
               name="country"
-              value={Formik.values.country}
+              value={COUNTRIES.find(
+                (country) => country.value == Formik.values.country
+              )}
               onChange={(value) => Formik.setFieldValue("country", value)}
-              defaultValue={Formik.values.country}
               options={COUNTRIES}
               useBasicStyles
             />
@@ -148,7 +168,7 @@ const EditProfile = () => {
                   Formik.setFieldValue("defaultDashboard", "buyer")
                 }
               >
-                Buyer Dashboard
+                Buyer
               </Button>
               <Button
                 size={"sm"}
@@ -161,7 +181,7 @@ const EditProfile = () => {
                   Formik.setFieldValue("defaultDashboard", "seller")
                 }
               >
-                Seller Dashboard
+                Seller
               </Button>
             </HStack>
           </FormControl>
@@ -175,7 +195,7 @@ const EditProfile = () => {
                 }
                 onClick={() => Formik.setFieldValue("acceptingOrders", true)}
               >
-                Yes, I'm accepting orders
+                Yes
               </Button>
               <Button
                 size={"sm"}
@@ -184,9 +204,27 @@ const EditProfile = () => {
                 }
                 onClick={() => Formik.setFieldValue("acceptingOrders", false)}
               >
-                No, I'm busy
+                No
               </Button>
             </HStack>
+          </FormControl>
+
+          <FormControl w={["full", "sm"]}>
+            <FormLabel>Currency</FormLabel>
+            <ChakraSelect
+              name="currency"
+              value={Formik.values.currency}
+              onChange={Formik.handleChange}
+              isDisabled={Boolean(user?.currency)}
+              placeholder="Please select"
+            >
+              {currencies?.map((currency, key) => (
+                <option value={currency?.id} key={key}>
+                  {currency?.attributes?.isoCode} (
+                  {currency?.attributes?.symbol})
+                </option>
+              ))}
+            </ChakraSelect>
           </FormControl>
         </Stack>
         <br />

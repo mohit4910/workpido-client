@@ -72,7 +72,7 @@ const useAuth = () => {
     Cookies.remove("token");
     localStorage.removeItem("user");
     setUser(null);
-    push("/");
+    window.location.replace("/");
   };
 
   const me = async () => {

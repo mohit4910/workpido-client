@@ -16,17 +16,22 @@ import {
   CheckboxGroup,
   Checkbox,
   VStack,
+  InputGroup,
+  InputRightAddon,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
-import { useDropzone } from "react-dropzone";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { AddCircle } from "iconsax-react";
 import FileDropzone from "@/components/FileDropzone";
+import useAuth from "@/hooks/useAuth";
+import PricingTable from "@/components/PricingTable";
 
 const CreateGig = () => {
+  const { user } = useAuth();
+
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -42,6 +47,9 @@ const CreateGig = () => {
       description: "",
       services: [],
       attributes: [],
+      pricingModel: "",
+      revisions: "",
+      deliveryDays: "",
     },
   });
 
@@ -95,40 +103,6 @@ const CreateGig = () => {
     setAttributes(filteredData);
   }, [Formik.values.services]);
 
-  const onDrop = useCallback(async (acceptedFiles) => {
-    console.log(acceptedFiles);
-    Formik.setFieldValue("files", acceptedFiles);
-    const newImages = acceptedFiles.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    });
-
-    Promise.all(newImages)
-      .then((imagePreviews) =>
-        setSelectedImages((prevImages) => [...prevImages, ...imagePreviews])
-      )
-      .catch((error) => console.error("Error reading file:", error));
-  }, []);
-
-  const removeImage = (index) => {
-    setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    Formik.setFieldValue(
-      "files",
-      Formik.values.files?.filter((_, i) => i !== index)
-    );
-  };
-
-  const [selectedImages, setSelectedImages] = useState([]);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: "image/*",
-    multiple: true,
-  });
-
   return (
     <>
       <Box p={[4, 8, 12]}>
@@ -140,6 +114,7 @@ const CreateGig = () => {
 
         <Box w={["full", "3xl", "4xl"]}>
           <Accordion allowMultiple>
+            {/* Title & Category */}
             <GigAccordion step={1} title={"Title & Category"}>
               <Box py={4}>
                 <FormControl py={2}>
@@ -257,33 +232,144 @@ const CreateGig = () => {
               </Box>
             </GigAccordion>
 
+            {/* Description & Files */}
             <GigAccordion step={2} title={"Description & Files"}>
               <Box py={4}>
                 <Box py={4}>
-                  <Text pb={4} fontWeight={"semibold"}>
-                    Upload Banner Images
-                  </Text>
-                  <FileDropzone />
+                  <Text fontWeight={"semibold"}>Upload Banner Images</Text>
+                  <FileDropzone onUpload={(files) => console.log(files)} />
                 </Box>
 
-                <Text fontWeight={"semibold"} py={4}>
-                  Detailed Description
-                </Text>
-                <SunEditor height="520px" />
+                <Box py={4}>
+                  <Text fontWeight={"semibold"}>Detailed Description</Text>
+                  <SunEditor height="520px" />
+                </Box>
 
                 <Box py={4}>
-                  <Text pb={4} fontWeight={"semibold"}>
+                  <Text fontWeight={"semibold"}>
                     Upload Other Attachments (optional)
                   </Text>
-                  <FileDropzone />
+                  <FileDropzone onUpload={(files) => console.log(files)} />
                 </Box>
               </Box>
             </GigAccordion>
 
+            {/* Pricing */}
             <GigAccordion step={3} title={"Pricing"}>
-              <Text>Text Inside Gig Accordion</Text>
+              <Box py={4}>
+                <FormControl py={4}>
+                  <HStack>
+                    <FormLabel flex={1}>Pricing Model</FormLabel>
+                    <HStack flex={5} gap={8}>
+                      <Select
+                        maxW={"xs"}
+                        name="pricingModel"
+                        onChange={Formik.handleChange}
+                        placeholder="Please Select"
+                      >
+                        <option value="fixed">Fixed Price</option>
+                        <option value="hourly">Hourly Rate</option>
+                        <option value="plans">Plan Based</option>
+                      </Select>
+                    </HStack>
+                  </HStack>
+                </FormControl>
+
+                {Formik.values.pricingModel == "fixed" ? (
+                  <FormControl py={4}>
+                    <HStack>
+                      <FormLabel flex={1}>Fixed Price</FormLabel>
+                      <HStack flex={5}>
+                        <InputGroup w={"xs"}>
+                          <InputLeftAddon children={user?.currency?.symbol} />
+                          <Input
+                            type="number"
+                            name="fixedPrice"
+                            onChange={Formik.handleChange}
+                            placeholder="Fixed price"
+                          />
+                        </InputGroup>
+                      </HStack>
+                    </HStack>
+                    {!user?.currency?.isoCode ? (
+                      <Text
+                        color={"red"}
+                        py={2}
+                        fontSize={"xs"}
+                        fontWeight={"semibold"}
+                      >
+                        Please add your currency in profile
+                      </Text>
+                    ) : null}
+                  </FormControl>
+                ) : Formik.values.pricingModel == "hourly" ? (
+                  <FormControl py={4}>
+                    <HStack>
+                      <FormLabel flex={1}>Hourly Price</FormLabel>
+                      <HStack flex={5}>
+                        <InputGroup w={"xs"}>
+                          <InputLeftAddon children={user?.currency?.symbol} />
+                          <Input
+                            type="number"
+                            name="hourlyPrice"
+                            onChange={Formik.handleChange}
+                            placeholder="Price per hour"
+                          />
+                          <InputRightAddon children={"per hr."} />
+                        </InputGroup>
+                      </HStack>
+                    </HStack>
+                    {!user?.currency?.isoCode ? (
+                      <Text
+                        color={"red"}
+                        py={2}
+                        fontSize={"xs"}
+                        fontWeight={"semibold"}
+                      >
+                        Please add your currency in profile
+                      </Text>
+                    ) : null}
+                  </FormControl>
+                ) : null}
+
+                <FormControl py={4}>
+                  <HStack>
+                    <FormLabel flex={1}>Revisions</FormLabel>
+                    <HStack flex={5}>
+                      <Input
+                        type="number"
+                        w={"xs"}
+                        name="revisions"
+                        onChange={Formik.handleChange}
+                        placeholder="How many revisions are allowed?"
+                      />
+                    </HStack>
+                  </HStack>
+                </FormControl>
+
+                <FormControl py={4}>
+                  <HStack>
+                    <FormLabel flex={1}>Delivery Days</FormLabel>
+                    <HStack flex={5}>
+                      <InputGroup w={"xs"}>
+                        <Input
+                          type="number"
+                          name="deliveryDays"
+                          onChange={Formik.handleChange}
+                          placeholder="Max. delivery days"
+                        />
+                        <InputRightAddon children={"Days"} />
+                      </InputGroup>
+                    </HStack>
+                  </HStack>
+                </FormControl>
+                <Box py={4}>
+                  <PricingTable />
+                </Box>
+              </Box>
             </GigAccordion>
 
+            {/* FAQs */}
             <GigAccordion step={4} title={"Frequently Asked Questions (FAQs)"}>
               <Text>Text Inside Gig Accordion</Text>
             </GigAccordion>

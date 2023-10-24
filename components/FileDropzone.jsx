@@ -5,7 +5,7 @@ import { Box, Icon, Text, VStack, HStack, Image, Input } from "@chakra-ui/react"
 import { AddCircle } from "iconsax-react";
 import { BsXCircleFill } from "react-icons/bs";
 
-const FileDropzone = () => {
+const FileDropzone = ({onUpload}) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [files, setFiles] = useState([]);
 
@@ -38,6 +38,10 @@ const FileDropzone = () => {
     accept: "image/*",
     multiple: true,
   });
+
+  useEffect(()=>{
+    onUpload(files)
+  },[files])
 
   return (
     <>

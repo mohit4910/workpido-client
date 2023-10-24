@@ -16,7 +16,6 @@ const SignupSchema = Yup.object().shape({
 
 const SigninModal = () => {
   const router = useRouter();
-  const { me } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
   const [intent, setIntent] = useState("login");
@@ -29,9 +28,14 @@ const SigninModal = () => {
           return;
         }
         toast.success("Signin successful");
-        
+
         Cookies.set("token", response.jwt);
-        window.location.replace("/seller-dashboard");
+        if (response?.isProfileComplete) {
+          window.location.replace("/seller-dashboard");
+        }
+        if (!response?.isProfileComplete){
+          window.location.replace("/edit-profile");
+        }
         setIsOpen(false);
       })
       .catch((error) => {
