@@ -13,187 +13,236 @@ import {
   EditableInput,
   HStack,
   IconButton,
+  Button,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { BsPlus, BsTrash } from "react-icons/bs";
-import { toast } from "react-toastify";
+import { BsTrash } from "react-icons/bs";
 
-const EditableData = ({
-  id,
-  parentColumn,
-  attribute,
-  defaultValue,
-  onChange,
-}) => {
+const EditableData = ({ defaultValue, onChange }) => {
   const [data, setData] = useState(defaultValue);
-
-  useEffect(() => {
-    if (!data) return;
-    if (data == "label") {
-      toast.warning("label is a reserved keyword, please use something else");
-      setData("");
-      return;
-    }
-    onChange({
-      id: id,
-      plan: parentColumn,
-      attribute: attribute,
-      value: data,
-    });
-  }, [data]);
 
   return (
     <>
-      <Editable value={data} onChange={(value) => setData(value)} w={"full"}>
+      <Editable
+        value={data}
+        onChange={(value) => setData(value)}
+        w={"full"}
+        onBlur={() => onChange(data)}
+      >
         <EditablePreview w={"full"} />
-        <EditableInput w={"24"} />
+        <EditableInput w={"full"} />
       </Editable>
     </>
   );
 };
 
 const PricingTable = ({ data = [], size }) => {
-  const [plans, setPlans] = useState([]);
-  const [rowData, setRowData] = useState([]);
-  const [attributes, setAttributes] = useState([]);
-  const [tableData, setTableData] = useState([
-    {
-      id: "0",
-      plan: "Basic",
-      attribute: "label",
-      value: "Pages",
+  const [tableData, setTableData] = useState({
+    plans: ["Plan Name"],
+    attributes: ["Attribute Name"],
+    data: {
+      "Attribute Name": ["Value"],
     },
-    {
-      id: "0.0",
-      plan: "Basic",
-      attribute: "Pages",
-      value: "5",
-    },
-    {
-      id: "0.1",
-      plan: "Gold",
-      attribute: "Pages",
-      value: "10",
-    },
-    {
-      id: "0.2",
-      plan: "Premium",
-      attribute: "Pages",
-      value: "10+",
-    },
-  ]);
+  });
 
-  useEffect(() => {
-    if (tableData.length) {
-      const allPlans = [];
-      const labels = [];
-      const groupedData = {};
+  function handleDataUpdate({
+    propertyToUpdate,
+    index,
+    data,
+    parentAttribute,
+  }) {
+    // Make a copy of the current tableData
+    const updatedTableData = { ...tableData };
 
-      tableData.forEach((item) => {
-        const { attribute, ...rest } = item;
-        if (attribute === "label") {
-          labels.push({ value: rest.value, id: rest.id });
-        } else {
-          if (!groupedData[attribute]) {
-            groupedData[attribute] = [rest];
-          } else {
-            groupedData[attribute].push(rest);
-          }
-        }
+    if (propertyToUpdate !== "data") {
+      // Ensure that the propertyToUpdate exists in the updatedTableData
+      if (!updatedTableData[propertyToUpdate]) {
+        updatedTableData[propertyToUpdate] = [];
+      }
 
-        if (!allPlans.includes(item.plan)) {
-          allPlans.push(item.plan);
-        }
-      });
+      const existingAttributeName = tableData.attributes[index];
 
-      setPlans(allPlans);
-      setRowData(groupedData);
-      setAttributes(labels);
-      console.log("Grouped Data");
-      console.log(groupedData);
+      if (propertyToUpdate == "attributes" && existingAttributeName != data) {
+        let existingData = tableData.data[existingAttributeName];
+        updatedTableData.data[data] = existingData;
+        delete updatedTableData.data[existingAttributeName];
+      }
+
+      // Ensure that the index is within bounds
+      if (index >= 0 && index < updatedTableData[propertyToUpdate].length) {
+        updatedTableData[propertyToUpdate][index] = data;
+      }
+    } else {
+      // Ensure that the parentAttribute exists in the updatedTableData.data
+      if (!updatedTableData.data[parentAttribute]) {
+        updatedTableData.data[parentAttribute] = [];
+      }
+
+      // Ensure that the index is within bounds
+      if (index >= 0 && index < updatedTableData.data[parentAttribute].length) {
+        updatedTableData.data[parentAttribute][index] = data;
+      }
     }
-  }, [tableData]);
 
-  function handleDataUpdate(data) {
-    const { id, ...rest } = data;
-    let updatedTableData = [...tableData];
+    // Log the updates to ensure that data is being modified correctly
+    console.log("Updated Data:");
+    console.log(updatedTableData);
 
-    // Find the index of the item with the matching ID
-    const itemIndex = updatedTableData.findIndex((item) => item.id === id);
+    // Update the state with the updatedTableData
+    setTableData(updatedTableData);
+  }
 
-    if (itemIndex !== -1) {
-      // Update the item with the new data
-      updatedTableData[itemIndex] = {
-        ...updatedTableData[itemIndex],
-        ...rest,
-      };
+  function handleRowAdd(clickedAttribute) {
+    // If no specific attribute is provided, add a row at the end
+    if (!clickedAttribute) {
+      const newAttribute = `NewAttribute_${Date.now()}`; // Generates a unique name
+      const dummyValues = new Array(tableData.plans.length).fill("DummyValue");
 
-      // Set the state with the updated table data
+      // Create a copy of the existing tableData
+      const updatedTableData = { ...tableData };
+
+      // Insert the new attribute and its corresponding data at the end in the copy
+      updatedTableData.attributes.push(newAttribute);
+      updatedTableData.data[newAttribute] = [...dummyValues];
+
+      // Set the updated tableData state
+      setTableData(updatedTableData);
+      return;
+    }
+
+    // Find the index of the clicked attribute
+    const attributeIndex = tableData.attributes.indexOf(clickedAttribute);
+
+    if (attributeIndex !== -1) {
+      // Create a new attribute with a unique name and an array of dummy values
+      const newAttribute = `NewAttribute_${Date.now()}`; // Generates a unique name
+      const dummyValues = new Array(tableData.plans.length).fill("DummyValue");
+
+      // Create a copy of the existing tableData
+      const updatedTableData = { ...tableData };
+
+      // Insert the new attribute and its corresponding data right after the clicked attribute in the copy
+      updatedTableData.attributes.splice(attributeIndex + 1, 0, newAttribute);
+      updatedTableData.data[newAttribute] = [...dummyValues];
+
+      // Set the updated tableData state
       setTableData(updatedTableData);
     }
-    // console.log("Index ", id)
-    // console.log(data)
   }
+
+  function handleRowDelete(attributeToDelete) {
+    // Create a copy of the existing tableData
+    const updatedTableData = { ...tableData };
+
+    // Find the index of the attribute to delete
+    const attributeIndex =
+      updatedTableData.attributes.indexOf(attributeToDelete);
+
+    // Remove the attribute and its corresponding data from the copy
+    updatedTableData.attributes.splice(attributeIndex, 1);
+    delete updatedTableData.data[attributeToDelete];
+
+    // Set the updated tableData state
+    setTableData(updatedTableData);
+  }
+
+  useEffect(() => {
+    console.log("Attributes Updated");
+    console.log(tableData.attributes);
+  }, [tableData.attributes]);
+
+  useEffect(() => {
+    console.log("Data Updated");
+    console.log(tableData.data);
+  }, [tableData.data]);
+
+  useEffect(() => {
+    console.log("Global Table Data Listener");
+    console.log(tableData);
+  }, [tableData]);
 
   return (
     <>
       <Box>
         <TableContainer>
-          <Table size={size || "sm"} variant={"striped"}>
+          <Table size={size || "md"} variant={"striped"}>
             <Thead bgColor={"yellow.300"}>
               <Tr>
                 <Th>#</Th>
-                {plans?.map((plan, key) => (
-                  <Th key={key}>{plan}</Th>
+                {tableData?.plans?.map((data, key) => (
+                  <Th key={key}>
+                    <EditableData
+                      defaultValue={data}
+                      onChange={(data) =>
+                        handleDataUpdate({
+                          propertToUpdate: "plans",
+                          index: key,
+                          data: data,
+                        })
+                      }
+                    />
+                  </Th>
                 ))}
                 <Th maxW={"12"}>Actions</Th>
               </Tr>
             </Thead>
 
             <Tbody>
-              {attributes && plans
-                ? attributes.map((attr, key) => (
-                    <Tr key={key}>
-                      <Td>
-                        <EditableData
-                          id={attr.id}
-                          parentColumn={plans[key]}
-                          attribute="label"
-                          defaultValue={attr.value}
-                          onChange={(data) => handleDataUpdate(data)}
-                        />
-                      </Td>
-                      {rowData[attr.value]?.map((data, i) => (
-                        <Td key={i} px={4}>
-                          <EditableData
-                            id={data.id}
-                            parentColumn={data.plan}
-                            attribute={attr.value}
-                            defaultValue={data.value}
-                            onChange={(data) => handleDataUpdate(data)}
-                          />
-                        </Td>
-                      ))}
-                      <Td maxW="12">
-                        <HStack>
-                          <IconButton
-                            icon={<BsPlus size={20} />}
-                            colorScheme="whatsapp"
-                            size="xs"
-                          />
-                          <IconButton
-                            icon={<BsTrash />}
-                            colorScheme="red"
-                            size="xs"
-                          />
-                        </HStack>
-                      </Td>
-                    </Tr>
-                  ))
-                : null}
+              {tableData?.attributes?.map((attribute, i) => (
+                <Tr key={i}>
+
+                  <Td>
+                    <EditableData
+                      defaultValue={attribute}
+                      onChange={(data) =>
+                        handleDataUpdate({
+                          propertyToUpdate: "attributes",
+                          index: i,
+                          data: data,
+                        })
+                      }
+                    />
+                  </Td>
+
+                  {tableData?.data[attribute]?.map((data, key) => (
+                    <Td key={key}>
+                      <EditableData
+                        defaultValue={data ?? ""}
+                        onChange={(data) =>
+                          handleDataUpdate({
+                            propertyToUpdate: "data",
+                            index: key,
+                            data: data,
+                            parentAttribute: attribute,
+                          })
+                        }
+                      />
+                    </Td>
+                  ))}
+
+                  <Td>
+                      <IconButton
+                        size={"xs"}
+                        icon={<BsTrash />}
+                        colorScheme="red"
+                        onClick={() => handleRowDelete(attribute)}
+                      />
+                  </Td>
+
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
+        <HStack justifyContent={"flex-end"} py={4}>
+          <Button
+            size={"xs"}
+            colorScheme="whatsapp"
+            onClick={() => handleRowAdd()}
+          >
+            Add New Row
+          </Button>
+        </HStack>
       </Box>
     </>
   );
