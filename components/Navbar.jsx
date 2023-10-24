@@ -255,7 +255,7 @@ const DesktopNav = ({categories}) => {
               </Center>
             </PopoverTrigger>
 
-            {navItem?.subCategories?.length && (
+            {navItem?.subCategories?.length ? (
               <PopoverContent
                 border={"1px"}
                 borderColor="gray.400"
@@ -270,7 +270,7 @@ const DesktopNav = ({categories}) => {
                   ))}
                 </Stack>
               </PopoverContent>
-            )}
+            ) : null}
           </Popover>
         </Box>
       ))}
@@ -359,12 +359,12 @@ const MobileNavItem = ({ title, subCategories, frontendLink }) => {
           borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
-          {subCategories?.length &&
+          {subCategories?.length ?
             subCategories.map((child, key) => (
               <Box as="a" key={key} py={2} href={child.frontendLink ?? "#"}>
                 {child.title}
               </Box>
-            ))}
+            )) : null}
         </Stack>
       </Collapse>
     </Stack>
