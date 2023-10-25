@@ -31,6 +31,7 @@ import PricingTable from "@/components/PricingTable";
 import FaqsContainer from "@/components/FaqsContainer";
 import axios from "axios";
 import { API_BASE_URL } from "@/lib/constants";
+import Cookies from "js-cookie";
 
 const CreateGig = () => {
   const { user } = useAuth();
@@ -51,25 +52,45 @@ const CreateGig = () => {
       services: [],
       attributes: [],
       pricingModel: "",
-      fixedPrice: "",
-      hourlyPrice: "",
-      startingPrice: "",
+      fixedPrice: null,
+      hourlyPrice: null,
+      startingPrice: null,
       totalPlans: "1",
       pricingTableData: null,
-      revisions: "",
-      deliveryDays: "",
+      revisions: null,
+      deliveryDays: null,
       faqs: null,
       banners: null,
       attachments: null,
     },
     onSubmit: async (values) => {
-      console.log(values);
       try {
-        const res = await axios.post(`${API_BASE_URL}/api/gigs/create`, values, {
-          headers: {
-            'Content-Type' : "multipart/form-data"
+        const formData = new FormData();
+        let data = {};
+        Object.keys(values)?.forEach((property, key) => {
+          if (property != "banners" && property != "attachments") {
+            if (property == "category" || property == "subCategory") {
+              data[property] = { connect: [values[property]] };
+            } else {
+              data[property] = property.includes("Price")
+                ? Number(values[property])
+                : values[property];
+            }
+          } else {
+            formData.append(`files.${property}`, values[property]);
           }
         });
+        formData.append("data", JSON.stringify(data));
+        const res = await fetch(
+          `${API_BASE_URL}/gigs`,
+          { 
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: "Bearer " + Cookies.get("token"),
+            },
+          }
+        );
         console.log(res);
         toast.success("Gig created successfully!");
       } catch (error) {
@@ -140,18 +161,17 @@ const CreateGig = () => {
     }
   }, [Formik.values.pricingModel]);
 
-  function handleAttributeClick(attribute){
-    const i = Formik.values.attributes.indexOf(attribute)
-    let data = Formik.values.attributes
+  function handleAttributeClick(attribute) {
+    const i = Formik.values.attributes.indexOf(attribute);
+    let data = Formik.values.attributes;
 
-    if(i == -1){
-      data.push(attribute)
-    }
-    else {
-      data.splice(i, 1)
+    if (i == -1) {
+      data.push(attribute);
+    } else {
+      data.splice(i, 1);
     }
 
-    Formik.setFieldValue("attributes", data)
+    Formik.setFieldValue("attributes", data);
   }
 
   return (
@@ -183,6 +203,22 @@ const CreateGig = () => {
                       name="title"
                       onChange={Formik.handleChange}
                       placeholder="I will create a professional website..."
+                    />
+                  </HStack>
+                </FormControl>
+                <FormControl py={2}>
+                  <HStack alignItems={"flex-start"}>
+                    <FormLabel flex={1}>Brief Overview</FormLabel>
+                    <Textarea
+                      flex={5}
+                      maxLength={400}
+                      h={36}
+                      fontWeight={"medium"}
+                      resize={"none"}
+                      w={"full"}
+                      name="overview"
+                      onChange={Formik.handleChange}
+                      placeholder="A brief overview about your Gig..."
                     />
                   </HStack>
                 </FormControl>
@@ -266,20 +302,27 @@ const CreateGig = () => {
                           justifyContent={"flex-start"}
                           gap={4}
                         >
-                            {attributes?.map((attributeGroup) => (
-                              <Stack
-                                direction={["column", "row"]}
-                                alignItems={"flex-start"}
-                                justifyContent={"flex-start"}
-                                gap={4}
-                              >
-                                {attributeGroup?.attributes?.map((attribute, i) => (
-                                  <Checkbox value={attribute?.value} onChange={e => handleAttributeClick(e.target.value)}>
+                          {attributes?.map((attributeGroup) => (
+                            <Stack
+                              direction={["column", "row"]}
+                              alignItems={"flex-start"}
+                              justifyContent={"flex-start"}
+                              gap={4}
+                            >
+                              {attributeGroup?.attributes?.map(
+                                (attribute, i) => (
+                                  <Checkbox
+                                    value={attribute?.value}
+                                    onChange={(e) =>
+                                      handleAttributeClick(e.target.value)
+                                    }
+                                  >
                                     {attribute?.label}
                                   </Checkbox>
-                                ))}
-                              </Stack>
-                            ))}
+                                )
+                              )}
+                            </Stack>
+                          ))}
                         </Stack>
                       </Box>
                     </HStack>
@@ -454,7 +497,6 @@ const CreateGig = () => {
                     <FormLabel flex={1}>Revisions</FormLabel>
                     <HStack flex={5}>
                       <Input
-                        type="number"
                         w={"xs"}
                         name="revisions"
                         onChange={Formik.handleChange}
