@@ -36,14 +36,27 @@ const EditableData = ({ defaultValue, onChange }) => {
   );
 };
 
-const PricingTable = ({ data = [], size }) => {
-  const [tableData, setTableData] = useState({
-    plans: ["Plan Name"],
-    attributes: ["Attribute Name"],
-    data: {
-      "Attribute Name": ["Value"],
-    },
-  });
+const PricingTable = ({ data, totalPlans, size, onUpdate }) => {
+  const [tableData, setTableData] = useState(null);
+
+  useEffect(() => {
+    console.log(totalPlans);
+    console.log(typeof totalPlans);
+    if (data) {
+      setTableData(data);
+    }
+    if (totalPlans != tableData?.plans?.length) {
+      console.log(new Array(totalPlans).fill("Your Plan Name"));
+
+      setTableData({
+        plans: new Array(totalPlans).fill("Your Plan Name"),
+        attributes: ["Attribute Name"],
+        data: {
+          "Attribute Name": new Array(totalPlans).fill("Value"),
+        },
+      });
+    }
+  }, [data, totalPlans]);
 
   function handleDataUpdate({
     propertyToUpdate,
@@ -147,25 +160,14 @@ const PricingTable = ({ data = [], size }) => {
   }
 
   useEffect(() => {
-    console.log("Attributes Updated");
-    console.log(tableData.attributes);
-  }, [tableData.attributes]);
-
-  useEffect(() => {
-    console.log("Data Updated");
-    console.log(tableData.data);
-  }, [tableData.data]);
-
-  useEffect(() => {
-    console.log("Global Table Data Listener");
-    console.log(tableData);
+    onUpdate(tableData);
   }, [tableData]);
 
   return (
     <>
       <Box>
         <TableContainer>
-          <Table size={size || "md"} variant={"striped"}>
+          <Table size={size || "sm"} variant={"striped"}>
             <Thead bgColor={"yellow.300"}>
               <Tr>
                 <Th>#</Th>
@@ -183,14 +185,12 @@ const PricingTable = ({ data = [], size }) => {
                     />
                   </Th>
                 ))}
-                <Th maxW={"12"}>Actions</Th>
               </Tr>
             </Thead>
 
             <Tbody>
               {tableData?.attributes?.map((attribute, i) => (
                 <Tr key={i}>
-
                   <Td>
                     <EditableData
                       defaultValue={attribute}
@@ -219,22 +219,23 @@ const PricingTable = ({ data = [], size }) => {
                       />
                     </Td>
                   ))}
-
-                  <Td>
-                      <IconButton
-                        size={"xs"}
-                        icon={<BsTrash />}
-                        colorScheme="red"
-                        onClick={() => handleRowDelete(attribute)}
-                      />
-                  </Td>
-
                 </Tr>
               ))}
             </Tbody>
           </Table>
         </TableContainer>
         <HStack justifyContent={"flex-end"} py={4}>
+          <Button
+            size={"xs"}
+            colorScheme="red"
+            onClick={() =>
+              handleRowDelete(
+                tableData?.attributes[tableData?.attributes?.length - 1]
+              )
+            }
+          >
+            Delete Last Row
+          </Button>
           <Button
             size={"xs"}
             colorScheme="whatsapp"

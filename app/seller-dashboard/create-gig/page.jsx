@@ -21,13 +21,16 @@ import {
   InputLeftAddon,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import FileDropzone from "@/components/FileDropzone";
 import useAuth from "@/hooks/useAuth";
 import PricingTable from "@/components/PricingTable";
+import FaqsContainer from "@/components/FaqsContainer";
+import axios from "axios";
+import { API_BASE_URL } from "@/lib/constants";
 
 const CreateGig = () => {
   const { user } = useAuth();
@@ -48,8 +51,30 @@ const CreateGig = () => {
       services: [],
       attributes: [],
       pricingModel: "",
+      fixedPrice: "",
+      hourlyPrice: "",
+      startingPrice: "",
+      totalPlans: "1",
+      pricingTableData: null,
       revisions: "",
       deliveryDays: "",
+      faqs: null,
+      banners: null,
+      attachments: null,
+    },
+    onSubmit: async (values) => {
+      console.log(values);
+      try {
+        const res = await axios.post(`${API_BASE_URL}/api/gigs/create`, values, {
+          headers: {
+            'Content-Type' : "multipart/form-data"
+          }
+        });
+        console.log(res);
+        toast.success("Gig created successfully!");
+      } catch (error) {
+        toast.error("Couldn't create Gig");
+      }
     },
   });
 
@@ -103,6 +128,32 @@ const CreateGig = () => {
     setAttributes(filteredData);
   }, [Formik.values.services]);
 
+  useEffect(() => {
+    if (Formik.values.totalPlans > 3) Formik.setFieldValue("totalPlans", 3);
+  }, [Formik.values.totalPlans]);
+
+  useEffect(() => {
+    if (!Formik.values.pricingModel) {
+      Formik.setFieldValue("fixedPrice", "");
+      Formik.setFieldValue("hourlyPrice", "");
+      Formik.setFieldValue("startingPrice", "");
+    }
+  }, [Formik.values.pricingModel]);
+
+  function handleAttributeClick(attribute){
+    const i = Formik.values.attributes.indexOf(attribute)
+    let data = Formik.values.attributes
+
+    if(i == -1){
+      data.push(attribute)
+    }
+    else {
+      data.splice(i, 1)
+    }
+
+    Formik.setFieldValue("attributes", data)
+  }
+
   return (
     <>
       <Box p={[4, 8, 12]}>
@@ -129,6 +180,8 @@ const CreateGig = () => {
                       fontWeight={"medium"}
                       resize={"none"}
                       w={"full"}
+                      name="title"
+                      onChange={Formik.handleChange}
                       placeholder="I will create a professional website..."
                     />
                   </HStack>
@@ -213,17 +266,20 @@ const CreateGig = () => {
                           justifyContent={"flex-start"}
                           gap={4}
                         >
-                          {attributes?.map((attributeGroup, key) => (
-                            <Box>
-                              {attributeGroup?.attributes?.map(
-                                (attribute, key) => (
-                                  <Checkbox value={attribute?.value} key={key}>
+                            {attributes?.map((attributeGroup) => (
+                              <Stack
+                                direction={["column", "row"]}
+                                alignItems={"flex-start"}
+                                justifyContent={"flex-start"}
+                                gap={4}
+                              >
+                                {attributeGroup?.attributes?.map((attribute, i) => (
+                                  <Checkbox value={attribute?.value} onChange={e => handleAttributeClick(e.target.value)}>
                                     {attribute?.label}
                                   </Checkbox>
-                                )
-                              )}
-                            </Box>
-                          ))}
+                                ))}
+                              </Stack>
+                            ))}
                         </Stack>
                       </Box>
                     </HStack>
@@ -237,19 +293,30 @@ const CreateGig = () => {
               <Box py={4}>
                 <Box py={4}>
                   <Text fontWeight={"semibold"}>Upload Banner Images</Text>
-                  <FileDropzone onUpload={(files) => console.log(files)} />
+                  <FileDropzone
+                    onUpload={(files) => Formik.setFieldValue("banners", files)}
+                  />
                 </Box>
 
                 <Box py={4}>
                   <Text fontWeight={"semibold"}>Detailed Description</Text>
-                  <SunEditor height="520px" />
+                  <SunEditor
+                    onChange={(value) =>
+                      Formik.setFieldValue("description", value)
+                    }
+                    height="520px"
+                  />
                 </Box>
 
                 <Box py={4}>
                   <Text fontWeight={"semibold"}>
                     Upload Other Attachments (optional)
                   </Text>
-                  <FileDropzone onUpload={(files) => console.log(files)} />
+                  <FileDropzone
+                    onUpload={(files) =>
+                      Formik.setFieldValue("attachments", files)
+                    }
+                  />
                 </Box>
               </Box>
             </GigAccordion>
@@ -330,6 +397,56 @@ const CreateGig = () => {
                       </Text>
                     ) : null}
                   </FormControl>
+                ) : Formik.values.pricingModel == "plans" ? (
+                  <>
+                    <FormControl py={4}>
+                      <HStack>
+                        <FormLabel flex={1}>Total Plans</FormLabel>
+                        <HStack flex={5}>
+                          <Input
+                            name="totalPlans"
+                            id="totalPlans"
+                            type="number"
+                            onChange={Formik.handleChange}
+                            value={Formik.values.totalPlans}
+                            w={"xs"}
+                            max={3}
+                            min={1}
+                            onBlur={async () => {
+                              if (Formik.values.totalPlans < 1)
+                                await Formik.setFieldValue("totalPlans", 1);
+                            }}
+                          />
+                        </HStack>
+                      </HStack>
+                    </FormControl>
+                    <FormControl py={4}>
+                      <HStack>
+                        <FormLabel flex={1}>Starting Price</FormLabel>
+                        <Box flex={5}>
+                          <InputGroup w={"xs"}>
+                            <InputLeftAddon children={user?.currency?.symbol} />
+                            <Input
+                              type="number"
+                              name="startingPrice"
+                              onChange={Formik.handleChange}
+                              placeholder="Starting price"
+                            />
+                          </InputGroup>
+                          {!user?.currency?.isoCode ? (
+                            <Text
+                              color={"red"}
+                              py={2}
+                              fontSize={"xs"}
+                              fontWeight={"semibold"}
+                            >
+                              Please add your currency in profile
+                            </Text>
+                          ) : null}
+                        </Box>
+                      </HStack>
+                    </FormControl>
+                  </>
                 ) : null}
 
                 <FormControl py={4}>
@@ -363,20 +480,33 @@ const CreateGig = () => {
                     </HStack>
                   </HStack>
                 </FormControl>
-                <Box py={4}>
-                  <PricingTable />
-                </Box>
+                {Formik.values.pricingModel == "plans" ? (
+                  <Box py={4}>
+                    <PricingTable
+                      totalPlans={Formik.values.totalPlans}
+                      data={Formik.values.pricingTableData}
+                      onUpdate={(data) =>
+                        Formik.setFieldValue("pricingTableData", data)
+                      }
+                    />
+                  </Box>
+                ) : null}
               </Box>
             </GigAccordion>
 
             {/* FAQs */}
             <GigAccordion step={4} title={"Frequently Asked Questions (FAQs)"}>
-              <Text>Text Inside Gig Accordion</Text>
+              <Box py={4}>
+                <FaqsContainer
+                  data={Formik.values.faqs}
+                  onUpdate={(data) => Formik.setFieldValue("faqs", data)}
+                />
+              </Box>
             </GigAccordion>
           </Accordion>
           <HStack w={"full"} justifyContent={"flex-end"} mt={8}>
-            <Button>Cancel</Button>
-            <Button isDisabled colorScheme="whatsapp">
+            <Button onClick={Formik.handleReset}>Reset</Button>
+            <Button colorScheme="whatsapp" onClick={Formik.handleSubmit}>
               Submit for Review
             </Button>
           </HStack>
