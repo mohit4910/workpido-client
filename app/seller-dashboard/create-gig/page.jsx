@@ -19,6 +19,7 @@ import {
   InputGroup,
   InputRightAddon,
   InputLeftAddon,
+  Modal,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
@@ -32,15 +33,22 @@ import FaqsContainer from "@/components/FaqsContainer";
 import axios from "axios";
 import { API_BASE_URL } from "@/lib/constants";
 import Cookies from "js-cookie";
+import useApiHandler from "@/hooks/useApiHandler";
+import AppModal from "@/components/AppModal";
+import { useRouter } from "next/navigation";
 
 const CreateGig = () => {
   const { user } = useAuth();
+  const { uploadAndAttachMedia } = useApiHandler();
+  const { push } = useRouter();
 
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [services, setServices] = useState([]);
   const [attributes, setAttributes] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const Formik = useFormik({
     initialValues: {
@@ -56,7 +64,7 @@ const CreateGig = () => {
       hourlyPrice: null,
       startingPrice: null,
       totalPlans: "1",
-      pricingTableData: null,
+      pricingTable: null,
       revisions: null,
       deliveryDays: null,
       faqs: null,
@@ -65,6 +73,8 @@ const CreateGig = () => {
     },
     onSubmit: async (values) => {
       try {
+        setLoading(true);
+        toast.info("Please wait while we upload your Gig");
         const formData = new FormData();
         let data = {};
         Object.keys(values)?.forEach((property, key) => {
@@ -76,28 +86,78 @@ const CreateGig = () => {
                 ? Number(values[property])
                 : values[property];
             }
-          } else {
-            formData.append(`files.${property}`, values[property]);
           }
+          // else {
+          //   formData.append(`files.${property}`, values[property]);
+          // }
         });
         formData.append("data", JSON.stringify(data));
-        const res = await fetch(
-          `${API_BASE_URL}/gigs`,
-          { 
-            method: "POST",
-            body: formData,
-            headers: {
-              Authorization: "Bearer " + Cookies.get("token"),
-            },
-          }
-        );
-        console.log(res);
-        toast.success("Gig created successfully!");
+        const res = await axios.post(`${API_BASE_URL}/gigs`, formData, {
+          headers: {
+            Authorization: "Bearer " + Cookies.get("token"),
+          },
+        });
+        Cookies.set("recentGigId", res.data?.data?.id);
+        await uploadAllMedia(res.data?.data?.id);
       } catch (error) {
-        toast.error("Couldn't create Gig");
+        toast.error("We couldn't uplload your Gig");
+        setLoading(false);
       }
     },
   });
+  async function uploadAllMedia(entryId) {
+    const recentGigId = Cookies.get("recentGigId") || entryId;
+
+    if (!recentGigId) {
+      toast.error("We couldn't upload");
+      return;
+    }
+
+    try {
+      // Upload banners and attachments
+      const bannersUploaded = await uploadAndAttachMedia({
+        files: Formik.values.banners,
+        entryId: recentGigId,
+        modelName: "api::gig.gig",
+        field: "banners",
+        path: "/gigs/banners",
+      });
+
+      const attachmentsUploaded = await uploadAndAttachMedia({
+        files: Formik.values.attachments,
+        entryId: recentGigId,
+        modelName: "api::gig.gig",
+        field: "attachments",
+        path: "/gigs/attachments",
+      });
+
+      // Check the results of the uploads
+      if (bannersUploaded.message) {
+        console.log(bannersUploaded.message);
+        // You can update your UI or perform other actions here based on success.
+      } else {
+        toast.error("Error uploading banners");
+        // Handle the error case for banners here.
+      }
+
+      if (attachmentsUploaded.message) {
+        console.log(attachmentsUploaded.message);
+        // You can update your UI or perform other actions here based on success.
+      } else {
+        toast.error("Error uploading attachments");
+        // Handle the error case for attachments here.
+      }
+
+      if (attachmentsUploaded.message && bannersUploaded.message) {
+        push("/seller-dashboard/create-gig/success")
+      }
+    } catch (error) {
+      // Handle any unexpected errors that may occur.
+      console.error("An error occurred during media upload:", error);
+      toast.error("Error uploading media");
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     (async () => {
@@ -526,9 +586,9 @@ const CreateGig = () => {
                   <Box py={4}>
                     <PricingTable
                       totalPlans={Formik.values.totalPlans}
-                      data={Formik.values.pricingTableData}
+                      data={Formik.values.pricingTable}
                       onUpdate={(data) =>
-                        Formik.setFieldValue("pricingTableData", data)
+                        Formik.setFieldValue("pricingTable", data)
                       }
                     />
                   </Box>
@@ -547,8 +607,14 @@ const CreateGig = () => {
             </GigAccordion>
           </Accordion>
           <HStack w={"full"} justifyContent={"flex-end"} mt={8}>
-            <Button onClick={Formik.handleReset}>Reset</Button>
-            <Button colorScheme="whatsapp" onClick={Formik.handleSubmit}>
+            <Button onClick={Formik.handleReset} isLoading={loading}>
+              Reset
+            </Button>
+            <Button
+              colorScheme="whatsapp"
+              onClick={Formik.handleSubmit}
+              isLoading={loading}
+            >
               Submit for Review
             </Button>
           </HStack>

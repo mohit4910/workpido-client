@@ -1,12 +1,17 @@
 "use client";
 import { API_BASE_URL, STORAGE_PROVIDER } from "@/lib/constants";
 import { useToast } from "@chakra-ui/react";
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import useAuth from "./useAuth";
 
 const useApiHandler = () => {
   const Toast = useToast();
-  const [mediaUrl, setMediaUrl] = useState("")
+  const [mediaUrl, setMediaUrl] = useState("");
+
+  const {user} = useAuth();
 
   const handleError = (error, title) => {
     // if (error?.response?.status == 401) {
@@ -43,10 +48,53 @@ const useApiHandler = () => {
     }
   };
 
+  const uploadAndAttachMedia = async ({
+    files,
+    path,
+    entryId,
+    field,
+    modelName,
+  }) => {
+    try {
+      if (!files.length) {
+        toast.error("No files selected!");
+        throw new Error("No files selected");
+      }
+      if (!entryId) {
+        toast.error("No files selected!");
+        throw new Error("Entry ID is required");
+      }
+      const form = new FormData();
+      for (let i = 0; i < files?.length; i++) {
+        const file = files[i];
+        form.append("files", file);
+      }
+      form.append("path", `/user_${user?.id}/${path}`);
+      form.append("field", field);
+      form.append("refId", entryId);
+      form.append("ref", modelName);
+      const res = await axios.post(`${API_BASE_URL}/upload`, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + Cookies.get("token"),
+        },
+      });
+      console.log(res.data);
+      return {
+        message: `${field} Files uploaded successfully!`,
+        data: res.data,
+      };
+    } catch (error) {
+      toast.error("Error uploading media");
+      throw new Error(`Error uploading ${field}`);
+    }
+  };
+
   return {
     handleError,
     getMediaUrl,
-    mediaUrl
+    mediaUrl,
+    uploadAndAttachMedia,
   };
 };
 
