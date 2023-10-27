@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AppModal from "./AppModal";
-import { Heading, Stack, Text, Box, Button } from "@chakra-ui/react";
+import { Heading, Stack, Text, Box, Button, HStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -68,7 +68,12 @@ const SignupModal = () => {
       </Button>
       <AppModal title="Sign Up" setIsOpen={setIsOpen} isOpen={isOpen}>
         <Formik
-          initialValues={{ email: "", username: "", password: "" }}
+          initialValues={{
+            email: "",
+            username: "",
+            password: "",
+            defaultDashboard: "seller",
+          }}
           validationSchema={SignupSchema}
           onSubmit={handleSubmit}
         >
@@ -79,10 +84,32 @@ const SignupModal = () => {
             handleBlur,
             errors,
             touched,
+            setFieldValue,
           }) => (
             <Form>
+              <HStack py={4}>
+                <Button
+                  bgColor={
+                    values.defaultDashboard == "seller"
+                      ? "gray.500"
+                      : "transparent"
+                  }
+                  onClick={() => setFieldValue("defaultDashboard", "seller")}
+                >
+                  Seller
+                </Button>
+                <Button
+                  bgColor={
+                    values.defaultDashboard == "buyer"
+                      ? "gray.500"
+                      : "transparent"
+                  }
+                  onClick={() => setFieldValue("defaultDashboard", "buyer")}
+                >
+                  Buyer
+                </Button>
+              </HStack>
               <Stack spacing={4} px={1}>
-                {console.log(values)}
                 <Input.Free
                   type="email"
                   name="email"
