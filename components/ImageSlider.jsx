@@ -11,7 +11,7 @@ import "swiper/css/pagination";
 import { Box, Image } from "@chakra-ui/react";
 import { Navigation, Pagination } from "swiper/modules";
 
-export default function ImageSlider({ images = [] }) {
+export default function ImageSlider({ images = [], height }) {
   return (
     <>
       <Swiper
@@ -31,7 +31,7 @@ export default function ImageSlider({ images = [] }) {
       >
         {images?.map((imageUrl, key) => (
           <SwiperSlide key={key}>
-            <Slide imageUrl={imageUrl} />
+            <Slide imageUrl={imageUrl} height={height} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -39,13 +39,13 @@ export default function ImageSlider({ images = [] }) {
   );
 }
 
-const Slide = ({ imageUrl }) => {
+const Slide = ({ imageUrl, height }) => {
   return (
     <Image
       src={imageUrl}
       alt="Example"
       w={"full"}
-      maxH={"40"}
+      maxH={height || "40"}
       objectFit={"cover"}
       objectPosition={'top'}
     />

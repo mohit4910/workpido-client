@@ -14,29 +14,34 @@ import {
   HStack,
   IconButton,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 
-const EditableData = ({ defaultValue, onChange }) => {
+const EditableData = ({ defaultValue, onChange, isViewOnly }) => {
   const [data, setData] = useState(defaultValue);
 
   return (
     <>
-      <Editable
-        value={data}
-        onChange={(value) => setData(value)}
-        w={"full"}
-        onBlur={() => onChange(data)}
-      >
-        <EditablePreview w={"full"} />
-        <EditableInput w={"full"} />
-      </Editable>
+      {isViewOnly ? (
+        <Text>{defaultValue}</Text>
+      ) : (
+        <Editable
+          value={data}
+          onChange={(value) => setData(value)}
+          w={"full"}
+          onBlur={() => onChange(data)}
+        >
+          <EditablePreview w={"full"} />
+          <EditableInput w={"full"} />
+        </Editable>
+      )}
     </>
   );
 };
 
-const PricingTable = ({ data, totalPlans, size, onUpdate }) => {
+const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
   const [tableData, setTableData] = useState(null);
 
   useEffect(() => {
@@ -44,6 +49,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate }) => {
     console.log(typeof totalPlans);
     if (data) {
       setTableData(data);
+      return;
     }
     if (totalPlans != tableData?.plans?.length) {
       console.log(new Array(totalPlans).fill("Your Plan Name"));
@@ -174,6 +180,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate }) => {
                 {tableData?.plans?.map((data, key) => (
                   <Th key={key}>
                     <EditableData
+                      isViewOnly={isViewOnly}
                       defaultValue={data}
                       onChange={(data) =>
                         handleDataUpdate({
@@ -193,6 +200,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate }) => {
                 <Tr key={i}>
                   <Td>
                     <EditableData
+                      isViewOnly={isViewOnly}
                       defaultValue={attribute}
                       onChange={(data) =>
                         handleDataUpdate({
@@ -207,6 +215,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate }) => {
                   {tableData?.data[attribute]?.map((data, key) => (
                     <Td key={key}>
                       <EditableData
+                        isViewOnly={isViewOnly}
                         defaultValue={data ?? ""}
                         onChange={(data) =>
                           handleDataUpdate({
@@ -224,26 +233,28 @@ const PricingTable = ({ data, totalPlans, size, onUpdate }) => {
             </Tbody>
           </Table>
         </TableContainer>
-        <HStack justifyContent={"flex-end"} py={4}>
-          <Button
-            size={"xs"}
-            colorScheme="red"
-            onClick={() =>
-              handleRowDelete(
-                tableData?.attributes[tableData?.attributes?.length - 1]
-              )
-            }
-          >
-            Delete Last Row
-          </Button>
-          <Button
-            size={"xs"}
-            colorScheme="whatsapp"
-            onClick={() => handleRowAdd()}
-          >
-            Add New Row
-          </Button>
-        </HStack>
+        {isViewOnly ? null : (
+          <HStack justifyContent={"flex-end"} py={4}>
+            <Button
+              size={"xs"}
+              colorScheme="red"
+              onClick={() =>
+                handleRowDelete(
+                  tableData?.attributes[tableData?.attributes?.length - 1]
+                )
+              }
+            >
+              Delete Last Row
+            </Button>
+            <Button
+              size={"xs"}
+              colorScheme="whatsapp"
+              onClick={() => handleRowAdd()}
+            >
+              Add New Row
+            </Button>
+          </HStack>
+        )}
       </Box>
     </>
   );

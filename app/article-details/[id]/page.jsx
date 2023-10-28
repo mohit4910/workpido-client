@@ -35,14 +35,29 @@ import { FiHeart } from "react-icons/fi";
 import { GiCheckMark } from "react-icons/gi";
 import { MdReportProblem } from "react-icons/md";
 import parse from "html-react-parser";
+import useApiHandler from "@/hooks/useApiHandler";
+import PricingTable from "@/components/PricingTable";
+import PlanAccordion from "@/components/PlanAccordion";
 
 const ArticleDetails = ({ params }) => {
   const { id } = params;
   const { push } = useRouter();
   const { getAvatar } = useAuth();
+  const { getMediaUrl } = useApiHandler();
 
   const [data, setData] = useState(null);
   const [sellerAvatar, setSellerAvatar] = useState("");
+  const [bannerImageUrls, setBannerImageUrls] = useState([]);
+
+  useEffect(() => {
+    const banners = data?.banners || [{ url: "" }];
+    let mediaUrls = [];
+    banners?.forEach((banner) => {
+      const url = getMediaUrl(banner?.url);
+      mediaUrls.push(url);
+    });
+    setBannerImageUrls(mediaUrls);
+  }, [data]);
 
   useEffect(() => {
     fetchData();
@@ -156,7 +171,11 @@ const ArticleDetails = ({ params }) => {
               </Flex>
             </Flex>
             {/* Article Image */}
-            <ImageSlider className="w-full h-1/4" />
+            <ImageSlider
+              images={bannerImageUrls}
+              height={"md"}
+              className="w-full h-1/4"
+            />
             {/* Article Text */}
             <Box className="p-5 overflow-hidden">
               {/* Article Description */}
@@ -172,56 +191,71 @@ const ArticleDetails = ({ params }) => {
                 {parse(data?.description || "<p>No Description available</p>")}
               </Box>
             </Box>
+
             {/* Article Ordering */}
-            <Flex className="justify-center flex-col p-5">
-              {/* Details */}
-              <Flex className="items-center justify-evenly">
-                <List className="flex items-center justify-end md:pr-5 md:justify-evenly w-full text-xs">
-                  <ListItem className="hidden md:inline-block">
-                    <ListIcon as={BsClockHistory} color="black" />{data?.deliveryDays} Days
-                    delivery
-                  </ListItem>
-                  <ListItem className="hidden md:inline-block">
-                    <ListIcon as={GiCheckMark} color="black" />
-                    {data?.revisions} Revisions
-                  </ListItem>
-                  <ListItem className="flex items-center justify-evenly gap-3">
-                    <Text className="font-bold">Quantity</Text>
-                    <Input type="text" placeholder="25" />
-                  </ListItem>
-                </List>
+            {data?.pricingModel != "plans" ? (
+              <Flex className="justify-center flex-col p-5">
+                {/* Details */}
+                <Flex className="items-center justify-evenly">
+                  <List className="flex items-center justify-end md:pr-5 md:justify-evenly w-full text-xs">
+                    <ListItem className="hidden md:inline-block">
+                      <ListIcon as={BsClockHistory} color="black" />
+                      {data?.deliveryDays} Days delivery
+                    </ListItem>
+                    <ListItem className="hidden md:inline-block">
+                      <ListIcon as={GiCheckMark} color="black" />
+                      {data?.revisions} Revisions
+                    </ListItem>
+                    <ListItem className="flex items-center justify-evenly gap-3">
+                      <Text className="font-bold">Quantity</Text>
+                      <Input type="text" placeholder="25" />
+                    </ListItem>
+                  </List>
+                </Flex>
+                {/* Buttons */}
+                <Flex className=" w-full  items-center justify-evenly">
+                  <Button
+                    className="my-4 ml-2 mr-1 w-1/4 px-4 py-6 text-base"
+                    as={"a"}
+                    display={"inline-flex"}
+                    color={"white"}
+                    bg={"brand.primary"}
+                    href={"#"}
+                    _hover={{
+                      bg: "green.300",
+                    }}
+                  >
+                    <BsFillCartPlusFill />
+                  </Button>
+                  <Button
+                    className="my-4 ml-1 mr-2 w-3/4 px-4 py-6 text-base"
+                    as={"a"}
+                    display={"inline-flex"}
+                    color={"white"}
+                    bg={"brand.primary"}
+                    href={"#"}
+                    _hover={{
+                      bg: "green.300",
+                    }}
+                  >
+                    Order for {data?.seller?.currency?.symbol}
+                    {data?.startingPrice}
+                  </Button>
+                </Flex>
               </Flex>
-              {/* Buttons */}
-              <Flex className=" w-full  items-center justify-evenly">
-                <Button
-                  className="my-4 ml-2 mr-1 w-1/4 px-4 py-6 text-base"
-                  as={"a"}
-                  display={"inline-flex"}
-                  color={"white"}
-                  bg={"brand.primary"}
-                  href={"#"}
-                  _hover={{
-                    bg: "green.300",
-                  }}
-                >
-                  <BsFillCartPlusFill />
-                </Button>
-                <Button
-                  className="my-4 ml-1 mr-2 w-3/4 px-4 py-6 text-base"
-                  as={"a"}
-                  display={"inline-flex"}
-                  color={"white"}
-                  bg={"brand.primary"}
-                  href={"#"}
-                  _hover={{
-                    bg: "green.300",
-                  }}
-                >
-                  Order for {data?.seller?.currency?.symbol}
-                  {data?.startingPrice}
-                </Button>
-              </Flex>
-            </Flex>
+            ) : (
+              <Box py={8}>
+                <Heading size="md">
+                  Select a plan to proceed with your order.
+                </Heading>
+                <br />
+                <PricingTable
+                  data={data?.pricingTable}
+                  isViewOnly={true}
+                  onUpdate={() => console.log("Table Updated")}
+                />
+              </Box>
+            )}
           </Box>
           {/* Money-Back Gurantee */}
           <Box className="bg-white lg:hidden mx-auto w-full p-5">
@@ -275,86 +309,97 @@ const ArticleDetails = ({ params }) => {
         {/* SideBar - Only visible on large displays */}
         <Box className="hidden lg:block w-[30%] my-10">
           {/* Article Ordering */}
-          <Flex className="bg-white justify-center flex-col p-3">
-            {/* Header */}
-            <Text color="brand.primary">
-              <span className="text-lg mx-2">
-                {data?.seller?.currency?.symbol}
-                {data?.startingPrice}
-              </span>
-              <span className="text-lg text-black mx-2 font-bold">
-                Order Details
-              </span>
-            </Text>
-            {/* Order Details */}
-            <Flex className="flex-col justify-around gap-3">
-              <List className="flex items-center justify-end md:pr-5 mt-2 md:justify-evenly w-full text-xs">
-                <ListItem>
-                  <ListIcon as={BsClockHistory} color="black" />{data?.deliveryDays} delivery
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="black" />
-                  {data?.revisions} Revisions
-                </ListItem>
-              </List>
-              <List className="text-sm">
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Keywords
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  HTML
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Formatting
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Posting the article
-                </ListItem>
-                <ListItem>
-                  <ListIcon as={GiCheckMark} color="green.500" />
-                  Language: English
-                </ListItem>
-              </List>
-              <Flex className="items-center justify-evenly gap-3">
-                <Text className="font-bold">Quantity</Text>
-                <Input type="text" placeholder="25" />
+          {data?.pricingModel != "plans" ? (
+            <Flex className="bg-white justify-center flex-col p-3">
+              {/* Header */}
+              <Text color="brand.primary">
+                <span className="text-lg mx-2">
+                  {data?.seller?.currency?.symbol}
+                  {data?.pricingModel == "fixed"
+                    ? data?.fixedPrice
+                    : data?.hourlyPrice}
+                </span>
+                <span className="text-lg text-black mx-2 font-bold">
+                  Order Details
+                </span>
+              </Text>
+              {/* Order Details */}
+              <Flex className="flex-col justify-around gap-3">
+                <List className="flex items-center justify-end md:pr-5 mt-2 md:justify-evenly w-full text-xs">
+                  <ListItem>
+                    <ListIcon as={BsClockHistory} color="black" />
+                    {data?.deliveryDays} delivery
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={GiCheckMark} color="black" />
+                    {data?.revisions} Revisions
+                  </ListItem>
+                </List>
+                <List className="text-sm">
+                  <ListItem>
+                    <ListIcon as={GiCheckMark} color="green.500" />
+                    Keywords
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={GiCheckMark} color="green.500" />
+                    HTML
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={GiCheckMark} color="green.500" />
+                    Formatting
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={GiCheckMark} color="green.500" />
+                    Posting the article
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={GiCheckMark} color="green.500" />
+                    Language: English
+                  </ListItem>
+                </List>
+                <Flex className="items-center justify-evenly gap-3">
+                  <Text className="font-bold">Quantity</Text>
+                  <Input type="text" placeholder="25" />
+                </Flex>
+              </Flex>
+              {/* Buttons */}
+              <Flex className=" w-full items-center justify-evenly">
+                <Button
+                  className="my-4 ml-2 mr-1 w-1/4 px-4 py-6 text-base"
+                  as={"a"}
+                  display={"inline-flex"}
+                  color={"white"}
+                  bg={"brand.primary"}
+                  href={"#"}
+                  _hover={{
+                    bg: "green.300",
+                  }}
+                >
+                  <BsFillCartPlusFill />
+                </Button>
+                <Button
+                  className="my-4 ml-1 mr-2 w-3/4 px-4 py-6 text-base"
+                  as={"a"}
+                  display={"inline-flex"}
+                  color={"white"}
+                  bg={"brand.primary"}
+                  href={"#"}
+                  _hover={{
+                    bg: "green.300",
+                  }}
+                >
+                  Order for {data?.seller?.currency?.symbol}
+                  {data?.startingPrice}
+                </Button>
               </Flex>
             </Flex>
-            {/* Buttons */}
-            <Flex className=" w-full items-center justify-evenly">
-              <Button
-                className="my-4 ml-2 mr-1 w-1/4 px-4 py-6 text-base"
-                as={"a"}
-                display={"inline-flex"}
-                color={"white"}
-                bg={"brand.primary"}
-                href={"#"}
-                _hover={{
-                  bg: "green.300",
-                }}
-              >
-                <BsFillCartPlusFill />
-              </Button>
-              <Button
-                className="my-4 ml-1 mr-2 w-3/4 px-4 py-6 text-base"
-                as={"a"}
-                display={"inline-flex"}
-                color={"white"}
-                bg={"brand.primary"}
-                href={"#"}
-                _hover={{
-                  bg: "green.300",
-                }}
-              >
-                Order for {data?.seller?.currency?.symbol}
-                {data?.startingPrice}
-              </Button>
-            </Flex>
-          </Flex>
+          ) : (
+            <PlanAccordion
+              data={data?.pricingTable}
+              onClick={(data) => console.log(data)}
+            />
+          )}
+
           {/* Money-back Guarantee */}
           <Flex className="bg-white mx-auto w-full mb-10 p-2 items-center">
             <Image
