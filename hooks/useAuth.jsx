@@ -7,42 +7,33 @@ import { API } from "@/lib/api";
 import { API_BASE_URL, STORAGE_PROVIDER } from "@/lib/constants";
 
 const useAuth = () => {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [user, setUser] = useState(null);
   const [currentRole, setCurrentRole] = useState("seller");
   const [avatarUrl, setAvatarUrl] = useState("");
 
-  const { push, refresh } = useRouter();
-
-  // useEffect(() => {
-  //   const cookieToken = Cookies.get("token");
-  //   if (cookieToken) {
-  //     setIsLoggedIn(true);
-  //   }
-
-  //   const role = Cookies.get("currentRole");
-  //   if (role) {
-  //     setCurrentRole(role);
-  //   }
-  // }, []);
-
-  const isLoggedIn = () => {
-    const cookieToken = Cookies.get("token");
-    if (cookieToken) return true;
-    else return false;
-  };
+  const { push } = useRouter();
 
   useEffect(() => {
-    const parsedUser = JSON.parse(localStorage.getItem("user"));
-    const isActive = isLoggedIn();
-    if (isActive && !parsedUser?.id) {
-      me();
-    }
-    if (isActive && parsedUser?.id) {
-      setUser(parsedUser);
-      getAvatar(parsedUser?.avatar?.url);
+    const cookieToken = Cookies.get("token");
+    if (Boolean(cookieToken)) {
+      setIsLoggedIn(true);
     }
   }, []);
+
+  useEffect(() => {
+    (async ()=>{
+      const parsedUser = JSON.parse(localStorage.getItem("user"));
+      if (isLoggedIn) {
+        if (parsedUser?.id) {
+          setUser({ ...parsedUser });
+          getAvatar(parsedUser?.avatar?.url);
+        } else {
+          await me();
+        }
+      }
+    })()
+  }, [isLoggedIn]);
 
   const onChangeRole = (role = "seller") => {
     Cookies.set("currentRole", role);

@@ -34,7 +34,6 @@ import axios from "axios";
 import { API_BASE_URL } from "@/lib/constants";
 import Cookies from "js-cookie";
 import useApiHandler from "@/hooks/useApiHandler";
-import AppModal from "@/components/AppModal";
 import { useRouter } from "next/navigation";
 
 const CreateGig = () => {
@@ -57,6 +56,7 @@ const CreateGig = () => {
       subCategory: "",
       overview: "",
       description: "",
+      requirements: "",
       services: [],
       attributes: [],
       pricingModel: "",
@@ -73,6 +73,42 @@ const CreateGig = () => {
     },
     onSubmit: async (values) => {
       try {
+        if (values.pricingModel == "plans") {
+          if (
+            !values.pricingTable?.attributes?.includes("Pricing") &&
+            !values.pricingTable?.attributes?.includes("Price")
+          ) {
+            toast.warning("Please add a Price row in your Table");
+            return;
+          }
+          if (
+            (values.pricingTable?.attributes?.includes("Pricing") &&
+              values.pricingTable?.attributes?.includes("Price")) ||
+            values.pricingTable?.attributes?.filter(
+              (attribute) =>
+                attribute?.toLowerCase().includes("price") ||
+                attribute?.toLowerCase().includes("pricing")
+            )?.length >= 2
+          ) {
+            toast.warning("You can not add 2 Pricing rows in your Table");
+            return;
+          }
+          if (
+            !values.pricingTable?.attributes?.includes("Revisions") &&
+            !values.pricingTable?.attributes?.includes("Revision")
+          ) {
+            toast.warning("Please add a Revision row in your Table");
+            return;
+          }
+          if (
+            values.pricingTable?.attributes?.filter((attribute) =>
+              attribute?.toLowerCase().includes("revision")
+            )?.length >= 2
+          ) {
+            toast.warning("You can not add 2 Revision rows in your Table");
+            return;
+          }
+        }
         setLoading(true);
         toast.info("Please wait while we upload your Gig");
         const formData = new FormData();
@@ -87,9 +123,6 @@ const CreateGig = () => {
                 : values[property];
             }
           }
-          // else {
-          //   formData.append(`files.${property}`, values[property]);
-          // }
         });
         formData.append("data", JSON.stringify(data));
         const res = await axios.post(`${API_BASE_URL}/gigs`, formData, {
@@ -149,7 +182,7 @@ const CreateGig = () => {
       }
 
       if (attachmentsUploaded.message && bannersUploaded.message) {
-        push("/seller-dashboard/create-gig/success")
+        push("/seller-dashboard/create-gig/success");
       }
     } catch (error) {
       // Handle any unexpected errors that may occur.
@@ -552,36 +585,41 @@ const CreateGig = () => {
                   </>
                 ) : null}
 
-                <FormControl py={4}>
-                  <HStack>
-                    <FormLabel flex={1}>Revisions</FormLabel>
-                    <HStack flex={5}>
-                      <Input
-                        w={"xs"}
-                        name="revisions"
-                        onChange={Formik.handleChange}
-                        placeholder="How many revisions are allowed?"
-                      />
-                    </HStack>
-                  </HStack>
-                </FormControl>
-
-                <FormControl py={4}>
-                  <HStack>
-                    <FormLabel flex={1}>Delivery Days</FormLabel>
-                    <HStack flex={5}>
-                      <InputGroup w={"xs"}>
+                {Formik.values.pricingModel == "plans" ? null : (
+                  <FormControl py={4}>
+                    <HStack>
+                      <FormLabel flex={1}>Revisions</FormLabel>
+                      <HStack flex={5}>
                         <Input
-                          type="number"
-                          name="deliveryDays"
+                          w={"xs"}
+                          name="revisions"
                           onChange={Formik.handleChange}
-                          placeholder="Max. delivery days"
+                          placeholder="How many revisions are allowed?"
                         />
-                        <InputRightAddon children={"Days"} />
-                      </InputGroup>
+                      </HStack>
                     </HStack>
-                  </HStack>
-                </FormControl>
+                  </FormControl>
+                )}
+
+                {Formik.values.pricingModel == "plans" ? null : (
+                  <FormControl py={4}>
+                    <HStack>
+                      <FormLabel flex={1}>Delivery Days</FormLabel>
+                      <HStack flex={5}>
+                        <InputGroup w={"xs"}>
+                          <Input
+                            type="number"
+                            name="deliveryDays"
+                            onChange={Formik.handleChange}
+                            placeholder="Max. delivery days"
+                          />
+                          <InputRightAddon children={"Days"} />
+                        </InputGroup>
+                      </HStack>
+                    </HStack>
+                  </FormControl>
+                )}
+
                 {Formik.values.pricingModel == "plans" ? (
                   <Box py={4}>
                     <PricingTable
@@ -602,6 +640,21 @@ const CreateGig = () => {
                 <FaqsContainer
                   data={Formik.values.faqs}
                   onUpdate={(data) => Formik.setFieldValue("faqs", data)}
+                />
+              </Box>
+            </GigAccordion>
+
+            {/* Client Requirements */}
+            <GigAccordion step={4} title={"Requirements from Client"}>
+              <Box py={4}>
+                <Text fontWeight={"semibold"}>
+                  What details do you need from your client?
+                </Text>
+                <SunEditor
+                  onChange={(value) =>
+                    Formik.setFieldValue("requirements", value)
+                  }
+                  height="520px"
                 />
               </Box>
             </GigAccordion>

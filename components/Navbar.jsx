@@ -40,21 +40,15 @@ export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
   const { isLoggedIn, user, currentRole, onLogout, onChangeRole } = useAuth();
 
-  const [loggedIn, setLoggedIn] = useState(false);
   const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const res = isLoggedIn();
-    setLoggedIn(res);
-  }, []);
 
   useEffect(() => {
     (async () => {
       try {
         const res = await API.getAllCategories();
-        setCategories(res)
+        setCategories(res);
       } catch (error) {
-        toast.warn("Couldn't fetch categories")
+        toast.warn("Couldn't fetch categories");
       }
     })();
   }, []);
@@ -107,7 +101,7 @@ export default function WithSubnavigation() {
           </Flex> */}
         </Flex>
 
-        {!loggedIn ? (
+        {isLoggedIn == null ? null : isLoggedIn == false ? (
           <Stack
             flex={{ base: 1, md: 0 }}
             justify={"flex-end"}
@@ -209,7 +203,7 @@ export default function WithSubnavigation() {
   );
 }
 
-const DesktopNav = ({categories}) => {
+const DesktopNav = ({ categories }) => {
   const linkColor = useColorModeValue("gray.600", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
@@ -266,7 +260,11 @@ const DesktopNav = ({categories}) => {
               >
                 <Stack>
                   {navItem?.subCategories?.map((child, key) => (
-                    <DesktopSubNav key={key} href={child?.frontendLink ?? "#"} {...child} />
+                    <DesktopSubNav
+                      key={key}
+                      href={child?.frontendLink ?? "#"}
+                      {...child}
+                    />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -304,7 +302,7 @@ const DesktopSubNav = ({ title, frontendLink }) => {
   );
 };
 
-const MobileNav = ({categories}) => {
+const MobileNav = ({ categories }) => {
   return (
     <Stack
       bg={useColorModeValue("white", "gray.800")}
@@ -359,12 +357,13 @@ const MobileNavItem = ({ title, subCategories, frontendLink }) => {
           borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
-          {subCategories?.length ?
-            subCategories.map((child, key) => (
-              <Box as="a" key={key} py={2} href={child.frontendLink ?? "#"}>
-                {child.title}
-              </Box>
-            )) : null}
+          {subCategories?.length
+            ? subCategories.map((child, key) => (
+                <Box as="a" key={key} py={2} href={child.frontendLink ?? "#"}>
+                  {child.title}
+                </Box>
+              ))
+            : null}
         </Stack>
       </Collapse>
     </Stack>

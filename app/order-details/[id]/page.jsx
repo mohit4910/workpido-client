@@ -1,6 +1,8 @@
 "use client";
 
 import Message from "@/components/Message";
+import useApiHandler from "@/hooks/useApiHandler";
+import { API } from "@/lib/api";
 import {
   Accordion,
   AccordionButton,
@@ -26,28 +28,76 @@ import {
   Text,
   Textarea,
   useSteps,
+  useDisclosure,
+  HStack,
+  FormControl,
+  FormLabel,
+  Input,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
-
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import parse from "html-react-parser";
 import { FaQuestion, FaUserCircle } from "react-icons/fa";
 import { GiCheckMark } from "react-icons/gi";
 import { LuFileStack } from "react-icons/lu";
 import { TbWriting } from "react-icons/tb";
+import AppModal from "@/components/AppModal";
+import { useFormik } from "formik";
+import SunEditor from "suneditor-react";
+import "suneditor/dist/css/suneditor.min.css";
+import { FiPaperclip } from "react-icons/fi";
 
-const page = () => {
+const page = ({ params }) => {
+  const { id } = params;
+  const { replace, push } = useRouter();
+  const { getMediaUrl } = useApiHandler();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [sellerAvatar, setSellerAvatar] = useState("");
+  const [orderDetails, setOrderDetails] = useState(null);
   const steps = [
     { title: "Order created" },
-    { title: "Order accepted" },
     { title: "Order requirements submitted" },
     { title: "Submitted for approval" },
+    { title: "Order accepted" },
     { title: "Order completed" },
   ];
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { activeStep } = useSteps({
-    index: 5,
+    index: 1,
     count: steps.length,
+  });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await API.getOrderInfo(id);
+        setOrderDetails(res);
+      } catch (error) {
+        if (error?.status == 403) {
+          replace("/system/forbidden");
+        } else {
+          // push("/system/error")
+          console.log(error);
+        }
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (orderDetails?.id) {
+      const avatarUrl = getMediaUrl(orderDetails?.gig?.seller?.avatar?.url);
+      setSellerAvatar(avatarUrl);
+    }
+  }, [orderDetails]);
+
+  const Formik = useFormik({
+    initialValues: {
+      requirements: "",
+      files: null,
+    },
   });
 
   return (
@@ -59,10 +109,7 @@ const page = () => {
           <Flex className="w-full flex-col bg-white p-5 gap-5">
             {/* order heading */}
             <Stack direction={"row"} spacing={2} align={"flex-start"}>
-              <Avatar
-                size={"lg"}
-                src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-              />
+              <Avatar size={"lg"} src={sellerAvatar} />
               <Link href={"/article-details"} className="hover:text-indigo-600">
                 <Text className="text-2xl md:text-3xl font-semibold">
                   I will create responsive websites in NextJS
@@ -75,7 +122,7 @@ const page = () => {
                 <Link className="text-indigo-500" href={"/orders"}>
                   Manage My Orders
                 </Link>{" "}
-                {` > Order Id #156411`}
+                {` > Order Id #${id}`}
               </Text>
               <Text>August 15, 2023</Text>
             </Flex>
@@ -99,7 +146,9 @@ const page = () => {
                       className="px-0 border-none w-2/4"
                     >
                       <Flex textAlign="left" className="gap-2 items-start py-1">
-                        <Text className="text-indigo-600">Basic Package</Text>
+                        <Text className="text-indigo-600">
+                          {orderDetails?.packageName ?? "Overview"}
+                        </Text>
                         <AccordionIcon />
                       </Flex>
                     </AccordionButton>
@@ -108,41 +157,14 @@ const page = () => {
                   </Flex>
                   <AccordionPanel pb={4}>
                     <Text className="block font-bold text-lg my-3">
-                      Work Overview
+                      Seller Requirements
                     </Text>
                     <Text className="my-3 overflow-x-clip">
                       For the orders to be completed the following are the
                       requirements for quality work to be delivered and on the
-                      speculated period. In case it is a specified niche, the
-                      client should provide the topic for the articles.
-                      secondly, the buyer should be clear on the format of the
-                      article. And last but not least the buyer should be able
-                      to provide all the necessary guidelines to avoid
-                      misunderstandings and revisions.
+                      speculated period.
                     </Text>
-                    <Text className="font-bold my-3">Service includes:</Text>
-                    <List>
-                      <ListItem>
-                        <ListIcon as={GiCheckMark} color="green.500" />
-                        Keywords
-                      </ListItem>
-                      <ListItem>
-                        <ListIcon as={GiCheckMark} color="green.500" />
-                        HTML
-                      </ListItem>
-                      <ListItem>
-                        <ListIcon as={GiCheckMark} color="green.500" />
-                        Formatting
-                      </ListItem>
-                      <ListItem>
-                        <ListIcon as={GiCheckMark} color="green.500" />
-                        Posting the article
-                      </ListItem>
-                      <ListItem>
-                        <ListIcon as={GiCheckMark} color="green.500" />
-                        Language: English
-                      </ListItem>
-                    </List>
+                    {parse(orderDetails?.gig?.requirements ?? "<p></p>")}
                     <Text className="my-3">
                       <span className="font-bold">Delivery: </span>
                       <span>1 month</span>
@@ -150,43 +172,28 @@ const page = () => {
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
+              <br />
             </Flex>
           </Flex>
+
+          <Button
+            p={"2.5"}
+            w={"48"}
+            fontSize={"sm"}
+            bgColor={"orange.400"}
+            colorScheme="'orange"
+            color={"#FFF"}
+            fontWeight={"medium"}
+            onClick={onOpen}
+          >
+            Submit Requirements
+          </Button>
+
           {/* Order Updates */}
           <Flex className="w-full flex-col bg-white p-5 gap-5">
             <Text className="bg-[#f8f8f8] p-2 -mx-5 text-neutral-700 sticky top-0">
               August 15
             </Text>
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
-              August 16
-            </Text>
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
-              August 17
-            </Text>
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
-              August 18
-            </Text>
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-            <Text className="bg-[#f8f8f8]  p-2 -mx-5 text-neutral-700 sticky top-0">
-              August 21
-            </Text>
-            <Message />
-            <Message />
             <Message />
             <Message />
           </Flex>
@@ -213,10 +220,7 @@ const page = () => {
             <Flex className="justify-between py-4 border-y">
               <Text>Buyer</Text>
               <Stack direction={"row-reverse"} spacing={2} align={"flex-start"}>
-                <Avatar
-                  size={"md"}
-                  src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-                />
+                <Avatar size={"md"} src={sellerAvatar} />
                 <Stack direction={"column"} spacing={0} fontSize={"lg"}>
                   <Link href={"/profile"} className="hover:text-indigo-600">
                     <Text fontSize={"sm"}>geekguyadarsh</Text>
@@ -369,6 +373,39 @@ const page = () => {
           </Accordion>
         </Box>
       </Flex>
+
+      <AppModal
+        title={"Submit Seller Requirements"}
+        isOpen={isOpen}
+        setIsOpen={(data) => onClose()}
+        size={"xl"}
+      >
+        <Box>
+          <Text fontWeight={"semibold"}>
+            To complete this project, the seller needs following things from
+            you.
+          </Text>
+          <br />
+          {parse(orderDetails?.gig?.requirements ?? "<p></p>")}
+        </Box>
+        <FormControl py={4}>
+          <SunEditor
+            hideToolbar
+            onChange={(value) => Formik.setFieldValue("requirements", value)}
+            height="240px"
+          />
+        </FormControl>
+        <FormControl py={4}>
+          <FormLabel>Attachments</FormLabel>
+          <Input
+            type="file"
+            onChange={(e) => Formik.setFieldValue("files", e.target.files)}
+          />
+        </FormControl>
+        <HStack py={4} justifyContent={"flex-end"}>
+          <Button colorScheme="orange">Submit</Button>
+        </HStack>
+      </AppModal>
     </main>
   );
 };

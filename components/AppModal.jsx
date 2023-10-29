@@ -19,6 +19,7 @@ export default function AppModal({
   children,
   isOpen,
   setIsOpen,
+  size
 }) {
   const { onOpen, onClose } = useDisclosure();
 
@@ -44,7 +45,7 @@ export default function AppModal({
         onClose={() => {
           setIsOpen(false);
         }}
-        size={"sm"}
+        size={size ?? "sm"}
         isCentered
       >
         <ModalOverlay />
