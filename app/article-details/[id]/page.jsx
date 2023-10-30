@@ -43,7 +43,7 @@ const ArticleDetails = ({ params }) => {
   const { id } = params;
   const { push } = useRouter();
   const { getAvatar } = useAuth();
-  const { getMediaUrl } = useApiHandler();
+  const { getMediaUrl, prepareOrder } = useApiHandler();
 
   const [data, setData] = useState(null);
   const [sellerAvatar, setSellerAvatar] = useState("");
@@ -113,7 +113,11 @@ const ArticleDetails = ({ params }) => {
           }}
         >
           Order for {data?.seller?.currency?.symbol}
-          {data?.startingPrice}
+          {data?.pricingModel == "plans"
+            ? data?.startingPrice
+            : data?.pricingModel == "fixed"
+            ? data?.fixedPrice
+            : data?.hourlyPrice}
         </Button>
       </Flex>
       <Flex className="mx-auto w-screen md:w-10/12">
@@ -239,7 +243,11 @@ const ArticleDetails = ({ params }) => {
                     }}
                   >
                     Order for {data?.seller?.currency?.symbol}
-                    {data?.startingPrice}
+                    {data?.pricingModel == "plans"
+                      ? data?.startingPrice
+                      : data?.pricingModel == "fixed"
+                      ? data?.fixedPrice
+                      : data?.hourlyPrice}
                   </Button>
                 </Flex>
               </Flex>
@@ -389,14 +397,24 @@ const ArticleDetails = ({ params }) => {
                   }}
                 >
                   Order for {data?.seller?.currency?.symbol}
-                  {data?.startingPrice}
+                  {data?.pricingModel == "fixed"
+                    ? data?.fixedPrice
+                    : data?.hourlyPrice}
                 </Button>
               </Flex>
             </Flex>
           ) : (
             <PlanAccordion
               data={data?.pricingTable}
-              onClick={(data) => console.log(data)}
+              onClick={(plan) =>
+                prepareOrder({
+                  title: data?.title,
+                  currency: data?.seller?.currency?.isoCode,
+                  amount: plan?.amount,
+                  gigId: id,
+                  type: plan?.name,
+                })
+              }
             />
           )}
 

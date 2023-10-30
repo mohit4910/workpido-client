@@ -13,11 +13,13 @@ import {
   Collapse,
   Flex,
   HStack,
+  Hide,
   Icon,
   IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Show,
   Stack,
   Text,
   useBreakpointValue,
@@ -129,49 +131,59 @@ export default function WithSubnavigation() {
             direction={"row"}
             spacing={6}
           >
-            <Button
-              as={"a"}
-              fontSize={"sm"}
-              fontWeight={400}
-              variant={"link"}
-              href={"/for-freelancers"}
-              color="white"
-            >
-              Kworks
-            </Button>
-            <Button
-              as={"a"}
-              fontSize={"sm"}
-              fontWeight={400}
-              variant={"link"}
-              href={"/for-freelancers"}
-              color="white"
-            >
-              Orders
-            </Button>
-            <Button
-              as={"a"}
-              fontSize={"sm"}
-              fontWeight={400}
-              variant={"link"}
-              href={"/for-freelancers"}
-              color="white"
-            >
-              Chat
-            </Button>
-            <HStack>
-              <MoneyRecive size="24" color="#F4CE14" />
-              <Text fontSize={"sm"} color={"#FFF"}>
-                $1200
-              </Text>
-            </HStack>
-            {currentRole == "buyer" ? (
-              <IconButton
-                p={0}
+            <Hide below="md">
+              <Button
+                as={"a"}
+                fontSize={"sm"}
+                fontWeight={400}
                 variant={"link"}
-                href={"#"}
-                icon={<ShoppingCart size="24" color="#FAFAFA" />}
-              />
+                href={"/for-freelancers"}
+                color="white"
+              >
+                Kworks
+              </Button>
+            </Hide>
+            <Hide below="md">
+              <Button
+                as={"a"}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                href={"/for-freelancers"}
+                color="white"
+              >
+                Orders
+              </Button>
+            </Hide>
+            <Hide below="md">
+              <Button
+                as={"a"}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                href={"/for-freelancers"}
+                color="white"
+              >
+                Chat
+              </Button>
+            </Hide>
+            <Hide below="md">
+              <HStack display={["none", "flex"]}>
+                <MoneyRecive size="24" color="#F4CE14" />
+                <Text fontSize={"sm"} color={"#FFF"}>
+                  $1200
+                </Text>
+              </HStack>
+            </Hide>
+            {currentRole == "buyer" ? (
+              <Hide below="md">
+                <IconButton
+                  p={0}
+                  variant={"link"}
+                  href={"#"}
+                  icon={<ShoppingCart size="24" color="#FAFAFA" />}
+                />
+              </Hide>
             ) : null}
             <NavAvatar
               user={user}

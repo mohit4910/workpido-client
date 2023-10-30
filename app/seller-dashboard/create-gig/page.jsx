@@ -73,6 +73,14 @@ const CreateGig = () => {
     },
     onSubmit: async (values) => {
       try {
+        if(!values.banners){
+          toast.error("You must upload atleast 1 banner")
+          return
+        }
+        if(!values.category || !values.subCategory){
+          toast.error('Please select a valid Category and Sub-Category')
+          return
+        }
         if (values.pricingModel == "plans") {
           if (
             !values.pricingTable?.attributes?.includes("Pricing") &&
@@ -155,6 +163,11 @@ const CreateGig = () => {
         field: "banners",
         path: "/gigs/banners",
       });
+
+      if(!Formik.values.banners){
+        push("/seller-dashboard/create-gig/success");
+        return
+      }
 
       const attachmentsUploaded = await uploadAndAttachMedia({
         files: Formik.values.attachments,

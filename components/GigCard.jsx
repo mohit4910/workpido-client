@@ -19,20 +19,20 @@ import useAuth from "@/hooks/useAuth";
 export default function GigCard({ gig }) {
   const { getMediaUrl } = useApiHandler();
   const { getAvatar } = useAuth();
-  const [bannerImageUrls, setBannerImageUrls] = useState([])
-  const [sellerAvatar, setSellerAvatar] = useState("")
-  
+  const [bannerImageUrls, setBannerImageUrls] = useState([]);
+  const [sellerAvatar, setSellerAvatar] = useState("");
+
   useEffect(() => {
-    const banners = gig?.banners || [{url: ""}];
+    const banners = gig?.banners || [{ url: "" }];
     let mediaUrls = [];
     banners?.forEach((banner) => {
       const url = getMediaUrl(banner?.url);
-      mediaUrls.push(url)
+      mediaUrls.push(url);
     });
-    setBannerImageUrls(mediaUrls)
+    setBannerImageUrls(mediaUrls);
 
-     const avatarUrl = getAvatar(gig?.seller?.avatar?.url)
-     setSellerAvatar(avatarUrl)
+    const avatarUrl = getAvatar(gig?.seller?.avatar?.url);
+    setSellerAvatar(avatarUrl);
   }, []);
 
   return (
@@ -78,9 +78,7 @@ export default function GigCard({ gig }) {
               fontSize={"sm"}
               fontFamily={"body"}
             >
-              {
-                gig?.title
-              }
+              {gig?.title}
             </Text>
             <Text
               align={"right"}
@@ -89,18 +87,25 @@ export default function GigCard({ gig }) {
               // fontWeight={"bold"}
               textTransform={"uppercase"}
             >
-              Starting at <span className="text-lg font-bold">{gig?.seller?.currency?.symbol}{gig?.startingPrice}</span>
+              Starting at{" "}
+              <span className="text-lg font-bold">
+                {gig?.seller?.currency?.symbol}
+                {gig?.pricingModel == "plans"
+                  ? gig?.startingPrice
+                  : gig?.pricingModel == "fixed"
+                  ? gig?.fixedPrice
+                  : gig?.hourlyPrice}
+              </span>
             </Text>
           </Stack>
         </Link>
         <Link href={"/profile"}>
           <Stack mt={4} direction={"row"} spacing={2} align={"center"}>
-            <Avatar
-              size={"sm"}
-              src={sellerAvatar}
-            />
+            <Avatar size={"sm"} src={sellerAvatar} />
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-              <Text fontSize={"xs"}>{gig?.seller?.displayName || gig?.seller?.username}</Text>
+              <Text fontSize={"xs"}>
+                {gig?.seller?.displayName || gig?.seller?.username}
+              </Text>
               {/* <Text color={"gray.500"} fontSize={"xs"}>
               Developer
             </Text> */}

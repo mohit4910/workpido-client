@@ -41,7 +41,10 @@ const PlanAccordion = ({ data, onClick }) => {
                   bgColor={"brand.primary"}
                   colorScheme="green"
                   onClick={() =>
-                    onClick({ planName: plan, price: data?.data["price"][i] })
+                    onClick({
+                      name: plan,
+                      amount: data?.data?.hasOwnProperty("Price") ? data?.data["Price"][i] : data?.data["Pricing"][i],
+                    })
                   }
                 >
                   Buy Now

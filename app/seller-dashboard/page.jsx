@@ -27,7 +27,7 @@ const Page = () => {
   const { isLoggedIn, user } = useAuth();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!Cookies.get("token")) {
       push("/");
     }
   }, []);

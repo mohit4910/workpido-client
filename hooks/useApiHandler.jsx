@@ -6,12 +6,14 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useAuth from "./useAuth";
+import { useRouter } from "next/navigation";
 
 const useApiHandler = () => {
+  const { user } = useAuth();
+  const { push } = useRouter();
+
   const Toast = useToast();
   const [mediaUrl, setMediaUrl] = useState("");
-
-  const {user} = useAuth();
 
   const handleError = (error, title) => {
     // if (error?.response?.status == 401) {
@@ -90,11 +92,20 @@ const useApiHandler = () => {
     }
   };
 
+  const prepareOrder = ({ gigId, title, type, amount, currency }) => {
+    Cookies.set(
+      "order",
+      JSON.stringify({ gig: gigId, currency: currency, title: title, amount: amount, type: type })
+    );
+    push("/payment/token")
+  };
+
   return {
     handleError,
     getMediaUrl,
     mediaUrl,
     uploadAndAttachMedia,
+    prepareOrder
   };
 };
 
