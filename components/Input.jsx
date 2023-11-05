@@ -28,7 +28,11 @@ const Free = ({
 }) => {
   return (
     <FormControl>
-      {label && <FormLabel fontWeight={500}>{label}</FormLabel>}
+      {label && (
+        <FormLabel fontWeight={500} fontSize={"sm"}>
+          {label}
+        </FormLabel>
+      )}
       <Flex alignItems={"center"} justifyContent={"center"} rounded>
         {leftIcon ? <button onClick={onLeftClick}>{leftIcon}</button> : null}
         <ChakraInput
@@ -38,6 +42,7 @@ const Free = ({
           type={type}
           name={name}
           onBlur={onBlur}
+          fontSize={"sm"}
         />
         {rightIcon ? (
           <button

@@ -40,7 +40,7 @@ import { toast } from "react-toastify";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
-  const [loggedIn, setLoggedIn] = useState(null)
+  const [loggedIn, setLoggedIn] = useState(null);
   const { isLoggedIn, user, currentRole, onLogout, onChangeRole } = useAuth();
 
   const [categories, setCategories] = useState([]);
@@ -56,9 +56,9 @@ export default function WithSubnavigation() {
     })();
   }, []);
 
-  useEffect(()=>{
-    setLoggedIn(isLoggedIn)
-  },[isLoggedIn])
+  useEffect(() => {
+    setLoggedIn(isLoggedIn);
+  }, [isLoggedIn]);
 
   return (
     <Box>
@@ -253,6 +253,7 @@ const DesktopNav = ({ categories }) => {
                 borderRight={`${categories?.length - 1 !== i && "1px"}`}
                 borderColor={"gray.300"}
                 color={linkColor}
+                borderBottom={"3px solid transparent"}
                 _hover={{
                   textDecoration: "none",
                   color: "#177de5",

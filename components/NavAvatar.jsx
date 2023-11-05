@@ -28,7 +28,7 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
             <ArrowDown2 size="28" color="#FFF" />
           </HStack>
         </MenuButton>
-        <MenuList color={"#000"} fontSize={"sm"}>
+        <MenuList color={"#000"} fontSize={"sm"} zIndex={99999}>
           <Box px={4}>
             <Text fontWeight={"semibold"} color={"#000"} fontSize={"16px"}>
               {user?.username}

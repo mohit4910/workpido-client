@@ -87,26 +87,32 @@ const SignupModal = () => {
             setFieldValue,
           }) => (
             <Form>
-              <HStack py={4}>
-                <Button
-                  bgColor={
-                    values.defaultDashboard == "seller"
-                      ? "gray.500"
-                      : "transparent"
-                  }
-                  onClick={() => setFieldValue("defaultDashboard", "seller")}
-                >
-                  Seller
-                </Button>
+              <HStack rounded={4} overflow={'hidden'} mb={4} gap={0} border={'0.5px solid #999'}>
                 <Button
                   bgColor={
                     values.defaultDashboard == "buyer"
-                      ? "gray.500"
+                      ? "#177de5"
                       : "transparent"
                   }
+                  flex={1} _hover={'none'}
+                  color={values.defaultDashboard == "buyer" ? "#FFF" : "#000"}
                   onClick={() => setFieldValue("defaultDashboard", "buyer")}
+                  rounded={0} fontWeight={'normal'} fontSize={'sm'}
                 >
                   Buyer
+                </Button>
+                <Button
+                  bgColor={
+                    values.defaultDashboard == "seller"
+                      ? "#177de5"
+                      : "transparent"
+                  }
+                  flex={1} _hover={'none'}
+                  color={values.defaultDashboard == "seller" ? "#FFF" : "#000"}
+                  onClick={() => setFieldValue("defaultDashboard", "seller")}
+                  rounded={0} fontWeight={'normal'} fontSize={'sm'}
+                >
+                  Seller
                 </Button>
               </HStack>
               <Stack spacing={4} px={1}>
@@ -114,7 +120,6 @@ const SignupModal = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  label="Email"
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -126,7 +131,6 @@ const SignupModal = () => {
                   type="text"
                   name="username"
                   placeholder="Username"
-                  label="Username"
                   value={values.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -138,7 +142,6 @@ const SignupModal = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  label="Password"
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
