@@ -40,6 +40,7 @@ import { toast } from "react-toastify";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const [loggedIn, setLoggedIn] = useState(null)
   const { isLoggedIn, user, currentRole, onLogout, onChangeRole } = useAuth();
 
   const [categories, setCategories] = useState([]);
@@ -54,6 +55,10 @@ export default function WithSubnavigation() {
       }
     })();
   }, []);
+
+  useEffect(()=>{
+    setLoggedIn(isLoggedIn)
+  },[isLoggedIn])
 
   return (
     <Box>
@@ -103,7 +108,7 @@ export default function WithSubnavigation() {
           </Flex> */}
         </Flex>
 
-        {isLoggedIn == null ? null : isLoggedIn == false ? (
+        {loggedIn == null ? null : loggedIn == false ? (
           <Stack
             flex={{ base: 1, md: 0 }}
             justify={"flex-end"}

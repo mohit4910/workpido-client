@@ -7,7 +7,7 @@ import { API } from "@/lib/api";
 import { API_BASE_URL, STORAGE_PROVIDER } from "@/lib/constants";
 
 const useAuth = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [currentRole, setCurrentRole] = useState("seller");
   const [avatarUrl, setAvatarUrl] = useState("");
