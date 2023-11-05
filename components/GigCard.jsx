@@ -38,8 +38,8 @@ export default function GigCard({ gig }) {
   return (
     <Center py={6}>
       <Box
-        maxW={"250px"}
         w={"full"}
+        maxW={"250px"}
         transition="0.5s ease"
         // eslint-disable-next-line react-hooks/rules-of-hooks
         bg={useColorModeValue("white", "gray.900")}

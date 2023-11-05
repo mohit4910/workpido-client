@@ -33,7 +33,7 @@ const GigAccordion = ({ children, step, title }) => {
                     {step}
                   </Text>
                 </Box>
-                <Text fontSize={"lg"} fontWeight={"bold"}>
+                <Text fontSize={"lg"} fontWeight={"semibold"}>
                   {title}
                 </Text>
               </HStack>

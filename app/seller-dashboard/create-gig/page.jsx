@@ -73,13 +73,13 @@ const CreateGig = () => {
     },
     onSubmit: async (values) => {
       try {
-        if(!values.banners){
-          toast.error("You must upload atleast 1 banner")
-          return
+        if (!values.banners) {
+          toast.error("You must upload atleast 1 banner");
+          return;
         }
-        if(!values.category || !values.subCategory){
-          toast.error('Please select a valid Category and Sub-Category')
-          return
+        if (!values.category || !values.subCategory) {
+          toast.error("Please select a valid Category and Sub-Category");
+          return;
         }
         if (values.pricingModel == "plans") {
           if (
@@ -156,7 +156,7 @@ const CreateGig = () => {
 
     try {
       // Upload banners and attachments
-      const bannersUploaded = await uploadAndAttachMedia({
+      await uploadAndAttachMedia({
         files: Formik.values.banners,
         entryId: recentGigId,
         modelName: "api::gig.gig",
@@ -164,37 +164,16 @@ const CreateGig = () => {
         path: "/gigs/banners",
       });
 
-      if(!Formik.values.banners){
+      if (Formik.values.attachments?.length) {
+        await uploadAndAttachMedia({
+          files: Formik.values.attachments,
+          entryId: recentGigId,
+          modelName: "api::gig.gig",
+          field: "attachments",
+          path: "/gigs/attachments",
+        });
         push("/seller-dashboard/create-gig/success");
-        return
-      }
-
-      const attachmentsUploaded = await uploadAndAttachMedia({
-        files: Formik.values.attachments,
-        entryId: recentGigId,
-        modelName: "api::gig.gig",
-        field: "attachments",
-        path: "/gigs/attachments",
-      });
-
-      // Check the results of the uploads
-      if (bannersUploaded.message) {
-        console.log(bannersUploaded.message);
-        // You can update your UI or perform other actions here based on success.
       } else {
-        toast.error("Error uploading banners");
-        // Handle the error case for banners here.
-      }
-
-      if (attachmentsUploaded.message) {
-        console.log(attachmentsUploaded.message);
-        // You can update your UI or perform other actions here based on success.
-      } else {
-        toast.error("Error uploading attachments");
-        // Handle the error case for attachments here.
-      }
-
-      if (attachmentsUploaded.message && bannersUploaded.message) {
         push("/seller-dashboard/create-gig/success");
       }
     } catch (error) {
@@ -283,7 +262,7 @@ const CreateGig = () => {
   return (
     <>
       <Box p={[4, 8, 12]}>
-        <Text fontWeight={"bold"} fontSize={"2xl"}>
+        <Text fontWeight={"semibold"} fontSize={"2xl"}>
           Create New Gig
         </Text>
         <br />
@@ -448,7 +427,9 @@ const CreateGig = () => {
                 </Box>
 
                 <Box py={4}>
-                  <Text fontWeight={"semibold"}>Detailed Description</Text>
+                  <Text fontWeight={"medium"} pb={4}>
+                    Detailed Description
+                  </Text>
                   <SunEditor
                     onChange={(value) =>
                       Formik.setFieldValue("description", value)
@@ -641,6 +622,7 @@ const CreateGig = () => {
                       onUpdate={(data) =>
                         Formik.setFieldValue("pricingTable", data)
                       }
+                      isViewOnly={false}
                     />
                   </Box>
                 ) : null}
@@ -660,7 +642,7 @@ const CreateGig = () => {
             {/* Client Requirements */}
             <GigAccordion step={4} title={"Requirements from Client"}>
               <Box py={4}>
-                <Text fontWeight={"semibold"}>
+                <Text fontSize={"md"} fontWeight={"medium"} pb={4}>
                   What details do you need from your client?
                 </Text>
                 <SunEditor

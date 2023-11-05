@@ -28,8 +28,9 @@ const Text = defineStyleConfig({
 const Button = defineStyleConfig({
   // The styles all button have in common
   baseStyle: {
-    bg: "#04b70a",
-    color: "#fff",
+    // bg: "#04b70a",
+    // color: "#fff",
+    fontWeight: 'medium'
   },
 });
 
@@ -40,7 +41,7 @@ export const theme = extendTheme({
   },
   components: {
     Text,
-    // Button,
+    Button,
   },
 });
 

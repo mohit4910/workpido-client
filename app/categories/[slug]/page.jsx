@@ -49,7 +49,7 @@ const Gigs = ({ params }) => {
               <Text>$100</Text>
               <Text>$100</Text>
             </Box>
-            <Flex justify={"space-around"} gap={3} flexWrap={"wrap"}>
+            <Flex w={'full'} justify={"space-around"} gap={3} flexWrap={"wrap"}>
               {gigs?.map((gig, key) => (
                 <GigCard key={key} gig={gig} />
               ))}

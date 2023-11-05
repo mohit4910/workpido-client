@@ -79,11 +79,10 @@ const EditProfile = () => {
     }
   }, [user]);
 
-
   return (
     <>
       <Box w={"full"} minH={"90vh"} p={[4, 8, 12]}>
-        <Text fontSize={["xl", "2xl"]} fontWeight={"bold"}>
+        <Text fontSize={["xl", "2xl"]} fontWeight={"semibold"}>
           Update Your Profile
         </Text>
         <br />
@@ -156,58 +155,6 @@ const EditProfile = () => {
               useBasicStyles
             />
           </FormControl>
-          <FormControl w={["full", "sm"]}>
-            <FormLabel>Default Dashboard</FormLabel>
-            <HStack py={2} w={"full"}>
-              <Button
-                size={"sm"}
-                colorScheme={
-                  Formik.values.defaultDashboard == "buyer" ? "twitter" : "gray"
-                }
-                onClick={() =>
-                  Formik.setFieldValue("defaultDashboard", "buyer")
-                }
-              >
-                Buyer
-              </Button>
-              <Button
-                size={"sm"}
-                colorScheme={
-                  Formik.values.defaultDashboard == "seller"
-                    ? "twitter"
-                    : "gray"
-                }
-                onClick={() =>
-                  Formik.setFieldValue("defaultDashboard", "seller")
-                }
-              >
-                Seller
-              </Button>
-            </HStack>
-          </FormControl>
-          <FormControl w={["full", "sm"]}>
-            <FormLabel>Are you accepting orders?</FormLabel>
-            <HStack py={2} w={"full"}>
-              <Button
-                size={"sm"}
-                colorScheme={
-                  Formik.values.acceptingOrders == true ? "twitter" : "gray"
-                }
-                onClick={() => Formik.setFieldValue("acceptingOrders", true)}
-              >
-                Yes
-              </Button>
-              <Button
-                size={"sm"}
-                colorScheme={
-                  Formik.values.acceptingOrders == false ? "twitter" : "gray"
-                }
-                onClick={() => Formik.setFieldValue("acceptingOrders", false)}
-              >
-                No
-              </Button>
-            </HStack>
-          </FormControl>
 
           <FormControl w={["full", "sm"]}>
             <FormLabel>Currency</FormLabel>
@@ -229,6 +176,112 @@ const EditProfile = () => {
         </Stack>
         <br />
         <br />
+        <Stack
+          direction={["column", "row"]}
+          w={"full"}
+          gap={8}
+          alignItems={"flex-start"}
+        >
+          <FormControl w={["full", "sm"]}>
+            <FormLabel>Default Dashboard</FormLabel>
+            <HStack
+              rounded={4}
+              overflow={"hidden"}
+              mb={4}
+              gap={0}
+              border={"0.5px solid #999"}
+            >
+              <Button
+                size={"sm"}
+                bgColor={
+                  Formik.values.defaultDashboard == "buyer"
+                    ? "#177de5"
+                    : "transparent"
+                }
+                flex={1}
+                _hover={"none"}
+                color={
+                  Formik.values.defaultDashboard == "buyer" ? "#FFF" : "#000"
+                }
+                onClick={() =>
+                  Formik.setFieldValue("defaultDashboard", "buyer")
+                }
+                rounded={0}
+                fontWeight={"normal"}
+                fontSize={"sm"}
+              >
+                Buyer
+              </Button>
+              <Button
+                size={"sm"}
+                bgColor={
+                  Formik.values.defaultDashboard == "seller"
+                    ? "#177de5"
+                    : "transparent"
+                }
+                flex={1}
+                _hover={"none"}
+                color={
+                  Formik.values.defaultDashboard == "seller" ? "#FFF" : "#000"
+                }
+                onClick={() =>
+                  Formik.setFieldValue("defaultDashboard", "seller")
+                }
+                rounded={0}
+                fontWeight={"normal"}
+                fontSize={"sm"}
+              >
+                Seller
+              </Button>
+            </HStack>
+          </FormControl>
+
+          <FormControl w={["full", "sm"]}>
+            <FormLabel>Are you accepting orders?</FormLabel>
+            <HStack
+              rounded={4}
+              overflow={"hidden"}
+              mb={4}
+              gap={0}
+              border={"0.5px solid #999"}
+            >
+              <Button
+                size={"sm"}
+                bgColor={
+                  Formik.values.acceptingOrders ? "#177de5" : "transparent"
+                }
+                flex={1}
+                _hover={"none"}
+                color={Formik.values.acceptingOrders ? "#FFF" : "#000"}
+                onClick={() => Formik.setFieldValue("acceptingOrders", true)}
+                rounded={0}
+                fontWeight={"normal"}
+                fontSize={"sm"}
+              >
+                Yes
+              </Button>
+              <Button
+                size={"sm"}
+                bgColor={
+                  Formik.values.acceptingOrders == false
+                    ? "#177de5"
+                    : "transparent"
+                }
+                flex={1}
+                _hover={"none"}
+                color={Formik.values.acceptingOrders == false ? "#FFF" : "#000"}
+                onClick={() => Formik.setFieldValue("acceptingOrders", false)}
+                rounded={0}
+                fontWeight={"normal"}
+                fontSize={"sm"}
+              >
+                No
+              </Button>
+            </HStack>
+          </FormControl>
+        </Stack>
+        <br />
+        <br />
         <br />
         <FormControl w={["full"]}>
           <FormLabel>Skills</FormLabel>
@@ -242,9 +295,9 @@ const EditProfile = () => {
       </Box>
       <br />
       <br />
-      <HStack w={"full"} py={4} justifyContent={"center"}>
+      <HStack w={"full"} p={[4, 8]} justifyContent={"flex-end"}>
         <Button onClick={() => push("/profile/me")}>Back to Profile</Button>
-        <Button colorScheme="twitter" onClick={Formik.handleSubmit}>
+        <Button colorScheme="whatsapp" onClick={Formik.handleSubmit}>
           Save Details
         </Button>
       </HStack>

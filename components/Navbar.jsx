@@ -142,7 +142,8 @@ export default function WithSubnavigation() {
                 fontSize={"sm"}
                 fontWeight={400}
                 variant={"link"}
-                href={"/for-freelancers"}
+                _hover={'none'}
+                href={"#"}
                 color="white"
               >
                 Kworks
@@ -154,7 +155,8 @@ export default function WithSubnavigation() {
                 fontSize={"sm"}
                 fontWeight={400}
                 variant={"link"}
-                href={"/for-freelancers"}
+                _hover={'none'}
+                href={"#"}
                 color="white"
               >
                 Orders
@@ -166,7 +168,8 @@ export default function WithSubnavigation() {
                 fontSize={"sm"}
                 fontWeight={400}
                 variant={"link"}
-                href={"/for-freelancers"}
+                _hover={'none'}
+                href={"#"}
                 color="white"
               >
                 Chat

@@ -45,15 +45,8 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
   const [tableData, setTableData] = useState(null);
 
   useEffect(() => {
-    console.log(totalPlans);
-    console.log(typeof totalPlans);
-    if (data) {
-      setTableData(data);
-      return;
-    }
     if (totalPlans != tableData?.plans?.length) {
       console.log(new Array(totalPlans).fill("Your Plan Name"));
-
       setTableData({
         plans: new Array(totalPlans).fill("Your Plan Name"),
         attributes: ["Attribute Name"],
@@ -64,6 +57,12 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
     }
   }, [data, totalPlans]);
 
+  useEffect(()=>{
+    if (data != null) {
+      setTableData(data);
+    }
+  },[data])
+
   function handleDataUpdate({
     propertyToUpdate,
     index,
@@ -72,6 +71,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
   }) {
     // Make a copy of the current tableData
     const updatedTableData = { ...tableData };
+    console.log("Property To Update ", propertyToUpdate)
 
     if (propertyToUpdate !== "data") {
       // Ensure that the propertyToUpdate exists in the updatedTableData
@@ -184,7 +184,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
                       defaultValue={data}
                       onChange={(data) =>
                         handleDataUpdate({
-                          propertToUpdate: "plans",
+                          propertyToUpdate: "plans",
                           index: key,
                           data: data,
                         })
@@ -236,7 +236,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
         {isViewOnly ? null : (
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
-              size={"xs"}
+              size={"sm"}
               colorScheme="red"
               onClick={() =>
                 handleRowDelete(
@@ -247,7 +247,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
               Delete Last Row
             </Button>
             <Button
-              size={"xs"}
+              size={"sm"}
               colorScheme="whatsapp"
               onClick={() => handleRowAdd()}
             >

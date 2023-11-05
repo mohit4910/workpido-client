@@ -28,7 +28,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { BsFillTelephoneFill } from "react-icons/bs";
+import { BsFillTelephoneFill, BsPen, BsPencil } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { ImEyeBlocked, ImLocation } from "react-icons/im";
 import { PiClockCountdownBold } from "react-icons/pi";
@@ -164,7 +164,7 @@ const page = ({ params }) => {
                 </Flex>
                 <br />
                 {username == "me" || username == user?.username ? (
-                  <Button onClick={() => push("/edit-profile")}>
+                  <Button onClick={() => push("/edit-profile")} variant={'ghost'} leftIcon={<BsPen />}>
                     Edit Profile
                   </Button>
                 ) : null}

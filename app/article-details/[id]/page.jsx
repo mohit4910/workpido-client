@@ -395,6 +395,18 @@ const ArticleDetails = ({ params }) => {
                   _hover={{
                     bg: "green.300",
                   }}
+                  onClick={(plan) =>
+                    prepareOrder({
+                      title: data?.title,
+                      currency: data?.seller?.currency?.isoCode,
+                      amount:
+                        data?.pricingModel == "fixed"
+                          ? data?.fixedPrice
+                          : data?.hourlyPrice,
+                      gigId: id,
+                      type: data?.pricingModel,
+                    })
+                  }
                 >
                   Order for {data?.seller?.currency?.symbol}
                   {data?.pricingModel == "fixed"

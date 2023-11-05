@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { Poppins } from "next/font/google";
+import { Container } from "@chakra-ui/react";
 export const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
@@ -25,7 +26,9 @@ export default function RootLayout({ children }) {
         <ToastContainer />
         <Providers>
           <WithSubnavigation />
-          <Suspense fallback={<Loading />}>{children}</Suspense>
+          <Suspense fallback={<Loading />}>
+            <Container maxW={['full', '8xl']}>{children}</Container>
+          </Suspense>
           <Footer />
         </Providers>
       </body>

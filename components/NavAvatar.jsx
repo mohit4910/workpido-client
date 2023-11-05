@@ -28,21 +28,22 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
             <ArrowDown2 size="28" color="#FFF" />
           </HStack>
         </MenuButton>
-        <MenuList color={"#000"} fontSize={"sm"} zIndex={99999}>
+        <MenuList color={"#000"} fontSize={"sm"} zIndex={99999} pb={0}>
           <Box px={4}>
             <Text fontWeight={"semibold"} color={"#000"} fontSize={"16px"}>
               {user?.username}
             </Text>
           </Box>
-          <HStack p={2}>
+          <HStack px={2}>
             <Button
               size={"sm"}
               w={"full"}
               as={"a"}
               href="#"
-              variant={"link"}
+              variant={"ghost"}
               color={currentRole == "buyer" ? "facebook.500" : "#000"}
               onClick={() => onChangeRole("buyer")}
+              fontWeight={'medium'}
             >
               Buyer
             </Button>
@@ -51,24 +52,25 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
               w={"full"}
               as={"a"}
               href="#"
-              variant={"link"}
+              variant={"ghost"}
               color={currentRole == "seller" ? "facebook.500" : "#000"}
               onClick={() => onChangeRole("seller")}
+              fontWeight={'medium'}
             >
               Seller
             </Button>
           </HStack>
           <MenuDivider />
           <Link href={"/profile/me"}>
-            <MenuItem>
+            <MenuItem py={1}>
               <Text>Profile</Text>
             </MenuItem>
           </Link>
-          <MenuItem>Settings</MenuItem>
-          <MenuItem>Cashflow</MenuItem>
-          <MenuItem>Help</MenuItem>
-          <MenuDivider />
-          <MenuItem onClick={() => onLogout()}>Signout</MenuItem>
+          <MenuItem py={1}>Settings</MenuItem>
+          <MenuItem py={1}>Cashflow</MenuItem>
+          <MenuItem py={1}>Help</MenuItem>
+          <hr />
+          <MenuItem py={1} onClick={() => onLogout()}>Signout</MenuItem>
         </MenuList>
       </Menu>
     </>
