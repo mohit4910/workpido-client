@@ -97,7 +97,7 @@ const useApiHandler = () => {
       "order",
       JSON.stringify({ gig: gigId, currency: currency, title: title, amount: amount, type: type })
     );
-    push("/payment/token")
+    push("/payment")
   };
 
   return {

@@ -64,6 +64,8 @@ const page = ({ params }) => {
         setUserData(res);
       })
       .catch((err) => {
+        console.log("Error", err);
+        return
         push("/not-found");
       });
   };

@@ -133,7 +133,7 @@ const ArticleDetails = ({ params }) => {
               <Flex className="flex-col gap-2 md:gap-0 md:flex-row md:justify-between items-start md:items-center">
                 {/* Abstract */}
                 <Flex className="items-center gap-3">
-                  <Link href={"/profile"}>
+                  <Link href={`/profile/${data?.seller?.username}`} target="_blank">
                     <Stack direction={"row"} spacing={2} align={"center"}>
                       <Avatar size={"sm"} src={sellerAvatar} />
                       <Stack direction={"column"} spacing={0} fontSize={"sm"}>
