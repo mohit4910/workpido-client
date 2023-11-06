@@ -47,11 +47,12 @@ import { useFormik } from "formik";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import { FiPaperclip } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 const page = ({ params }) => {
   const { id } = params;
   const { replace, push } = useRouter();
-  const { getMediaUrl } = useApiHandler();
+  const { getMediaUrl, uploadAndAttachMedia } = useApiHandler();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [sellerAvatar, setSellerAvatar] = useState("");
@@ -97,6 +98,24 @@ const page = ({ params }) => {
     initialValues: {
       requirements: "",
       files: null,
+    },
+    onSubmit: async (values) => {
+      try {
+        await API.updateOrder(orderDetails?.id, {
+          data: {
+            requirements: values.requirements,
+          },
+        });
+        await uploadAndAttachMedia({
+          field: 'attachments',
+          modelName: "api::order.order",
+          entryId: orderDetails?.id,
+          files: values.files,
+        })
+        toast.success("Updated successfully!")
+      } catch (error) {
+        toast.error("Err updating order")
+      }
     },
   });
 
@@ -403,7 +422,7 @@ const page = ({ params }) => {
           />
         </FormControl>
         <HStack py={4} justifyContent={"flex-end"}>
-          <Button colorScheme="orange">Submit</Button>
+          <Button colorScheme="orange" onClick={Formik.handleSubmit}>Submit</Button>
         </HStack>
       </AppModal>
     </main>
