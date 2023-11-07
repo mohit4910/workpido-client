@@ -24,7 +24,7 @@ const Gigs = ({ params }) => {
 
   return (
     <>
-      <main className="flex flex-col min-h-screen p-4 mb-10 bg-[#f6f6f6] lg:container lg:mx-auto">
+      <Box minH={'100vh'} w={'full'} p={[4,8,12]} bg={'#F6F6F6'}>
         <div className="mb-8">
           <Text fontSize={26} fontWeight={600} textTransform={"capitalize"}>
             {slug?.replace(/-/g, " ")}
@@ -49,14 +49,14 @@ const Gigs = ({ params }) => {
               <Text>$100</Text>
               <Text>$100</Text>
             </Box>
-            <Flex w={'full'} justify={"space-around"} gap={3} flexWrap={"wrap"}>
+            <Flex w={'full'} justify={"flex-start"} gap={8} flexWrap={"wrap"}>
               {gigs?.map((gig, key) => (
                 <GigCard key={key} gig={gig} />
               ))}
             </Flex>
           </Stack>
         </div>
-      </main>
+      </Box>
     </>
   );
 };

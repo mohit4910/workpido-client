@@ -59,7 +59,8 @@ const EditProfile = () => {
       try {
         await API.updateMe({ ...values, country: values?.country?.value });
         toast.success("Profile update successfully!");
-        me();
+        // me();
+        push("/profile/me")
       } catch (error) {
         console.log(error);
         toast.error("Couldn't update profile");

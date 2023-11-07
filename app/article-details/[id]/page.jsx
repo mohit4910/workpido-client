@@ -277,7 +277,7 @@ const ArticleDetails = ({ params }) => {
             </Text>
           </Box>
           {/* Reviews */}
-          <Accordion allowToggle className="bg-white my-3 mx-auto w-full p-5">
+          <Accordion defaultIndex={[0]} className="bg-white my-3 mx-auto w-full p-5">
             <AccordionItem>
               <h2>
                 <AccordionButton
@@ -452,7 +452,7 @@ const ArticleDetails = ({ params }) => {
             </Box>
           </Flex>
           {/* Seller Contact Card */}
-          <SellerCard />
+          <SellerCard user={data?.seller} />
           {/* Social Handles */}
           <Box className="bg-white w-full mt-3 p-5">
             <Text className="text-center text-base mb-3">

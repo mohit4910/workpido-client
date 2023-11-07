@@ -27,7 +27,9 @@ export default function RootLayout({ children }) {
         <Providers>
           <WithSubnavigation />
           <Suspense fallback={<Loading />}>
-            <Container maxW={['full', '8xl']}>{children}</Container>
+            {/* <Container maxW={['full', '8xl']}> */}
+              {children}
+            {/* </Container> */}
           </Suspense>
           <Footer />
         </Providers>

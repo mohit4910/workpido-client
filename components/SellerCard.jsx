@@ -13,11 +13,21 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsStarFill } from "react-icons/bs";
 import ContactSeller from "./ContactSeller";
+import useApiHandler from "@/hooks/useApiHandler";
+import useAuth from "@/hooks/useAuth";
 
-const SellerCard = () => {
+const SellerCard = ({user}) => {
+  const [avatarUrl, setAvatarUrl] = useState("")
+  const {getAvatar} = useAuth()
+
+  useEffect(()=>{
+    const url = getAvatar(user?.seller?.avatar?.url)
+    setAvatarUrl(url)
+  },[user])
+
   return (
     <Card>
       <CardHeader>
@@ -25,11 +35,11 @@ const SellerCard = () => {
           <Stack my={4} direction={"row"} spacing={2} align={"center"}>
             <Avatar
               size={"lg"}
-              src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
+              src={avatarUrl}
             />
             <Stack direction={"column"} spacing={0} fontSize={"lg"}>
-              <Text fontSize={"md"}>geekguyadarsh</Text>
-              <Text fontSize={"md"}>Adarsh P.</Text>
+              <Text fontSize={"md"}>{user?.username}</Text>
+              <Text fontSize={"md"}>{user?.displayName}</Text>
             </Stack>
           </Stack>
         </Link>

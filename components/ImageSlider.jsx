@@ -42,10 +42,10 @@ export default function ImageSlider({ images = [], height }) {
 const Slide = ({ imageUrl, height }) => {
   return (
     <Image
-      src={imageUrl}
+      src={imageUrl ?? "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg"}
       alt="Example"
       w={"full"}
-      maxH={height || "40"}
+      h={height ?? '36'}
       objectFit={"cover"}
       objectPosition={'top'}
     />

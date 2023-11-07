@@ -38,8 +38,8 @@ export default function GigCard({ gig }) {
   return (
     <Center py={6}>
       <Box
-        w={"full"}
-        maxW={"250px"}
+        w={"64"}
+        // maxW={"250px"}
         transition="0.5s ease"
         // eslint-disable-next-line react-hooks/rules-of-hooks
         bg={useColorModeValue("white", "gray.900")}
@@ -55,12 +55,13 @@ export default function GigCard({ gig }) {
         transitionDelay={1}
       >
         <Box
-          // h={"150px"}
+          h={"36"}
           bg={"gray.100"}
           mt={-6}
           mx={-6}
           mb={6}
           pos={"relative"}
+          overflow={'hidden'}
         >
           {/* <img
             src={
@@ -78,7 +79,7 @@ export default function GigCard({ gig }) {
               fontSize={"sm"}
               fontFamily={"body"}
             >
-              {gig?.title}
+              {gig?.title ?? "Sample Gig Title"}
             </Text>
             <Text
               align={"right"}
@@ -89,12 +90,12 @@ export default function GigCard({ gig }) {
             >
               Starting at{" "}
               <span className="text-lg font-bold">
-                {gig?.seller?.currency?.symbol}
+                {gig?.seller?.currency?.symbol ?? "₹"}
                 {gig?.pricingModel == "plans"
                   ? gig?.startingPrice
                   : gig?.pricingModel == "fixed"
                   ? gig?.fixedPrice
-                  : gig?.hourlyPrice}
+                  : gig?.hourlyPrice || "999"}
               </span>
             </Text>
           </Stack>
@@ -104,11 +105,11 @@ export default function GigCard({ gig }) {
             <Avatar size={"sm"} src={sellerAvatar} />
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
               <Text fontSize={"xs"}>
-                {gig?.seller?.displayName || gig?.seller?.username}
+                {gig?.seller?.displayName || gig?.seller?.username || "Adarsh P."}
               </Text>
-              {/* <Text color={"gray.500"} fontSize={"xs"}>
-              Developer
-            </Text> */}
+              <Text color={"gray.500"} fontSize={"xs"}>
+              adarshp
+            </Text>
             </Stack>
           </Stack>
         </Link>

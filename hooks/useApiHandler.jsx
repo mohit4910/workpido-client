@@ -41,7 +41,7 @@ const useApiHandler = () => {
     if (STORAGE_PROVIDER == "local") {
       const url = referenceUrl
         ? API_BASE_URL?.replace("/api", "") + referenceUrl
-        : "/logo.png";
+        : "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg";
       setMediaUrl(url);
       return url;
     } else {
