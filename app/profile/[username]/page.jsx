@@ -74,11 +74,11 @@ const page = ({ params }) => {
       banners: [
         {
           id: 9,
-          url: "/uploads/icard_d6ece4df69.jpeg",
+          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
         },
         {
           id: 10,
-          url: "/uploads/bg_52592ebab0.png",
+          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
         },
       ],
     },
@@ -112,7 +112,7 @@ const page = ({ params }) => {
       banners: [
         {
           id: 32,
-          url: "/uploads/fantasy_db8e90e59f.jpg",
+          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
         },
       ],
     },
@@ -146,11 +146,11 @@ const page = ({ params }) => {
       banners: [
         {
           id: 2,
-          url: "/uploads/bg_5506a9bfcf.png",
+          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
         },
         {
           id: 1,
-          url: "/uploads/7eedd4fbcdfd4b6a81c7323d6fa2d0d4_f01ba1b04c.jpeg",
+          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
         },
       ],
     },
