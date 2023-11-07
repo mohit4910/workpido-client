@@ -51,7 +51,7 @@ import { toast } from "react-toastify";
 
 const page = ({ params }) => {
   const { id } = params;
-  const { replace, push } = useRouter();
+  const { replace, push, refresh } = useRouter();
   const { getMediaUrl, uploadAndAttachMedia } = useApiHandler();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -66,7 +66,7 @@ const page = ({ params }) => {
   ];
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { activeStep } = useSteps({
+  const { activeStep, setActiveStep } = useSteps({
     index: 1,
     count: steps.length,
   });
@@ -91,6 +91,8 @@ const page = ({ params }) => {
     if (orderDetails?.id) {
       const avatarUrl = getMediaUrl(orderDetails?.gig?.seller?.avatar?.url);
       setSellerAvatar(avatarUrl);
+
+      setActiveStep(orderDetails == "requirements submitted" ? 2 : 1)
     }
   }, [orderDetails]);
 
@@ -104,17 +106,21 @@ const page = ({ params }) => {
         await API.updateOrder(orderDetails?.id, {
           data: {
             requirements: values.requirements,
+            status: "requirements submitted",
           },
         });
-        await uploadAndAttachMedia({
-          field: 'attachments',
-          modelName: "api::order.order",
-          entryId: orderDetails?.id,
-          files: values.files,
-        })
-        toast.success("Updated successfully!")
+        if (values?.files?.length) {
+          await uploadAndAttachMedia({
+            field: "attachments",
+            modelName: "api::order.order",
+            entryId: orderDetails?.id,
+            files: values.files,
+          });
+        }
+        refresh()
+        toast.success("Updated successfully!");
       } catch (error) {
-        toast.error("Err updating order")
+        toast.error("Err updating order");
       }
     },
   });
@@ -131,7 +137,7 @@ const page = ({ params }) => {
               <Avatar size={"lg"} src={sellerAvatar} />
               <Link href={"/article-details"} className="hover:text-indigo-600">
                 <Text className="text-2xl md:text-3xl font-semibold">
-                  I will create responsive websites in NextJS
+                  {orderDetails?.gig?.title}
                 </Text>
               </Link>
             </Stack>
@@ -172,7 +178,7 @@ const page = ({ params }) => {
                       </Flex>
                     </AccordionButton>
                     <Text>1 month</Text>
-                    <Text>$100</Text>
+                    <Text>{orderDetails?.amount}</Text>
                   </Flex>
                   <AccordionPanel pb={4}>
                     <Text className="block font-bold text-lg my-3">
@@ -422,7 +428,9 @@ const page = ({ params }) => {
           />
         </FormControl>
         <HStack py={4} justifyContent={"flex-end"}>
-          <Button colorScheme="orange" onClick={Formik.handleSubmit}>Submit</Button>
+          <Button colorScheme="orange" onClick={Formik.handleSubmit}>
+            Submit
+          </Button>
         </HStack>
       </AppModal>
     </main>
