@@ -13,7 +13,7 @@ const page = ({ params }) => {
         alignItems={"center"}
         justifyContent={"center"}
       >
-        <Image src="/failed.png" w={["xs"]} objectFit={"contain"} />
+        <Image src="/failed.png" w={["28"]} objectFit={"contain"} />
         <br />
         <Text
           fontWeight={"semibold"}

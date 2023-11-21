@@ -30,10 +30,10 @@ const SigninModal = () => {
         toast.success("Signin successful");
 
         Cookies.set("token", response.jwt);
-        if (response?.isProfileComplete) {
+        if (response?.user?.isProfileComplete) {
           window.location.replace("/seller-dashboard");
         }
-        if (!response?.isProfileComplete){
+        if (!response?.user?.isProfileComplete){
           window.location.replace("/edit-profile");
         }
         setIsOpen(false);

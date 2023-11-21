@@ -108,7 +108,7 @@ export default function GigCard({ gig }) {
                 {gig?.seller?.displayName || gig?.seller?.username || "Adarsh P."}
               </Text>
               <Text color={"gray.500"} fontSize={"xs"}>
-              adarshp
+              {gig?.seller?.username}
             </Text>
             </Stack>
           </Stack>
