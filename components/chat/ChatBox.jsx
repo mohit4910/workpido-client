@@ -6,19 +6,21 @@ import {
   Button,
   HStack,
   IconButton,
+  Image,
   Spacer,
   Text,
 } from "@chakra-ui/react";
 import { InputBox } from "./InputBox";
 import { FiSearch } from "react-icons/fi";
 import { FaCirclePlus } from "react-icons/fa6";
-import { monthNames } from "@/lib/constants";
+import { API_BASE_URL, monthNames } from "@/lib/constants";
 import {
   List,
   AutoSizer,
   CellMeasurer,
   CellMeasurerCache,
 } from "react-virtualized";
+import Link from "next/link";
 
 export const ChatBox = ({ messages, addMessage, receiver }) => {
   const cache = new CellMeasurerCache({
@@ -45,10 +47,41 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
         <Box w={"85%"}>
           <Text fontWeight="semibold">{messages[index].sender?.name}</Text>
           <Text>{messages[index].text}</Text>
+          {messages[index]?.files?.length ? (
+            <Box
+              marginTop={4}
+              maxW={"xs"}
+              display={"flex"}
+              flexDir={"column"}
+              alignItems={"flex-start"}
+              justifyContent={"flex-start"}
+              gap={2}
+            >
+              {messages[index]?.files?.map((file) => (
+                <Link
+                  href={API_BASE_URL?.replace("/api", "") + file?.url}
+                  target="_blank"
+                >
+                  <HStack p={2} rounded={4} boxShadow={"base"}>
+                    <Image
+                      width="12"
+                      height={12}
+                      objectFit={"contain"}
+                      src={API_BASE_URL?.replace("/api", "") + file?.url}
+                    />
+                  </HStack>
+                </Link>
+              ))}
+            </Box>
+          ) : null}
         </Box>
         <Text fontSize={"xs"} color={"#999"}>
-          {`${new Date(messages[index]?.timestamp ?? messages[index]?.createdAt).getDate()} ${monthNames[
-            new Date(messages[index]?.timestamp ?? messages[index]?.createdAt).getMonth() - 1
+          {`${new Date(
+            messages[index]?.timestamp ?? messages[index]?.createdAt
+          ).getDate()} ${monthNames[
+            new Date(
+              messages[index]?.timestamp ?? messages[index]?.createdAt
+            ).getMonth() - 1
           ].slice(0, 3)}`}
         </Text>
       </HStack>

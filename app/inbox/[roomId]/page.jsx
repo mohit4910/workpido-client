@@ -6,9 +6,11 @@ import { API } from "@/lib/api";
 import useAuth from "@/hooks/useAuth";
 import Pusher from "pusher-js";
 import { toast } from "react-toastify";
+import useApiHandler from "@/hooks/useApiHandler";
 
 const page = ({ params }) => {
   const { me, user } = useAuth();
+  const { uploadAndAttachMedia } = useApiHandler();
 
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -17,24 +19,34 @@ const page = ({ params }) => {
 
   const { roomId } = params;
 
-  const addMessage = async (
+  const addMessage = async ({
     text,
     sender = { name: user?.displayName || user?.username },
     timestamp = new Date(),
-    read = true
-  ) => {
+    read = true,
+    files,
+  }) => {
     try {
-      await API.sendMessage({
+      const message = await API.sendMessage({
         content: text,
         receiver: { id: receiver?.id, username: receiver?.username },
       });
+      console.log(message);
+      if (files?.length) {
+        await uploadAndAttachMedia({
+          files: files,
+          entryId: message?.id,
+          field: "files",
+          modelName: "api::message.message",
+        });
+      }
     } catch (error) {
       toast.error("Error while sending message");
       console.log(error);
     }
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text, sender, timestamp, read },
+      { text, sender, timestamp, read, files },
     ]);
   };
 
@@ -58,7 +70,7 @@ const page = ({ params }) => {
 
     channel.bind("new-message", function (data) {
       // Handle the new message data and update the UI
-      const { content, sender, timestamp } = data;
+      const { content, sender, timestamp, files } = data;
       setMessages((prevMessages) => [
         ...prevMessages,
         {
@@ -69,6 +81,7 @@ const page = ({ params }) => {
           },
           timestamp: timestamp,
           read: true,
+          files: files,
         },
       ]);
       console.log("New Message:", data.message);

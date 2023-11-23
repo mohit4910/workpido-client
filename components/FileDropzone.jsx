@@ -78,7 +78,7 @@ const FileDropzone = ({onUpload}) => {
               right={0}
               onClick={() => removeImage(index)}
             />
-            <Image src={image} w={36} h={36} rounded={16} objectFit={"cover"} />
+            <Image src={image} w={24} h={24} rounded={16} objectFit={"cover"} />
           </Box>
         ))}
       </HStack>
