@@ -13,7 +13,12 @@ import { InputBox } from "./InputBox";
 import { FiSearch } from "react-icons/fi";
 import { FaCirclePlus } from "react-icons/fa6";
 import { monthNames } from "@/lib/constants";
-import { List, AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
+import {
+  List,
+  AutoSizer,
+  CellMeasurer,
+  CellMeasurerCache,
+} from "react-virtualized";
 
 export const ChatBox = ({ messages, addMessage, receiver }) => {
   const cache = new CellMeasurerCache({
@@ -22,7 +27,13 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
   });
 
   const rowRenderer = ({ index, key, parent, style }) => (
-    <CellMeasurer cache={cache} key={key} parent={parent} columnIndex={0} rowIndex={index}>
+    <CellMeasurer
+      cache={cache}
+      key={key}
+      parent={parent}
+      columnIndex={0}
+      rowIndex={index}
+    >
       <HStack
         p={4}
         gap={4}
@@ -30,13 +41,15 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
         _hover={{ bgColor: "gray.50" }}
         style={style}
       >
-        <Avatar size={"xs"} />
+        <Avatar size={"xs"} name={messages[index].sender?.name} />
         <Box w={"85%"}>
-          <Text fontWeight="semibold">{messages[index].user}</Text>
+          <Text fontWeight="semibold">{messages[index].sender?.name}</Text>
           <Text>{messages[index].text}</Text>
         </Box>
         <Text fontSize={"xs"} color={"#999"}>
-          {`${new Date().getDate()} ${monthNames[new Date().getMonth() - 1].slice(0, 3)}`}
+          {`${new Date(messages[index]?.timestamp ?? messages[index]?.createdAt).getDate()} ${monthNames[
+            new Date(messages[index]?.timestamp ?? messages[index]?.createdAt).getMonth() - 1
+          ].slice(0, 3)}`}
         </Text>
       </HStack>
     </CellMeasurer>
