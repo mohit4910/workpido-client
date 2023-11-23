@@ -4,14 +4,39 @@ import { Box, Input, Text } from "@chakra-ui/react";
 import { ContactCard } from "./ContactCard";
 import { API } from "@/lib/api";
 import { toast } from "react-toastify";
+import useAuth from "@/hooks/useAuth";
+import Pusher from "pusher-js";
 
 export const ContactList = () => {
   // Sample contacts, replace with your data
+  const { user } = useAuth();
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
     fetchChats();
   }, []);
+
+  // pusher config
+  useEffect(() => {
+    if (!user?.username) return;
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+      cluster: "ap2",
+    });
+
+    const channel = pusher.subscribe(user?.username);
+
+    channel.bind("chat-updated", function (data) {
+      // Handle the new message data and update the UI
+      fetchChats();
+    });
+
+    // Clean up subscriptions on component unmount
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [user]);
 
   async function fetchChats() {
     try {
