@@ -52,7 +52,7 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
               marginTop={4}
               maxW={"xs"}
               display={"flex"}
-              flexDir={"column"}
+              flexDir={"row"}
               alignItems={"flex-start"}
               justifyContent={"flex-start"}
               gap={2}
