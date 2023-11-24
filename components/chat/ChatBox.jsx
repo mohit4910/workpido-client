@@ -102,7 +102,7 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
             </Text>
           </Box>
           <Spacer />
-          <HStack gap={4}>
+          {/* <HStack gap={4}>
             <FiSearch size={20} cursor={"pointer"} color={"#e2e2e2"} />
             <Button
               size={"sm"}
@@ -111,10 +111,10 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
             >
               Order
             </Button>
-          </HStack>
+          </HStack> */}
         </HStack>
       </Box>
-      <Box h={"80%"} overflowY={"scroll"}>
+      <Box h={"80%"} overflowY={"scroll"} overflowX={'hidden'}>
         <AutoSizer>
           {({ height, width }) => (
             <List
