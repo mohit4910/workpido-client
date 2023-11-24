@@ -30,7 +30,7 @@ const GigAccordion = ({ children, step, title }) => {
                   rounded={"full"}
                   display={"grid"}
                   placeContent={"center"}
-                  bgColor={isExpanded ? "facebook.500" : "facebook.100"}
+                  bgColor={isExpanded ? "yellow.500" : "facebook.100"}
                 >
                   <Text
                     fontSize={"lg"}
@@ -40,7 +40,7 @@ const GigAccordion = ({ children, step, title }) => {
                     {step}
                   </Text>
                 </Box>
-                <Text fontSize={"lg"} fontWeight={"semibold"}>
+                <Text fontSize={"lg"} fontWeight={"medium"}>
                   {title}
                 </Text>
               </HStack>

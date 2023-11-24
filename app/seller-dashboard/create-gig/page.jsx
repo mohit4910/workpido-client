@@ -261,7 +261,7 @@ const CreateGig = () => {
 
   return (
     <>
-      <Box p={[4, 8, 12]} bg={'#f6f6f6'}>
+      <Box p={[4, 8, 12]} bg={"#f6f6f6"}>
         <Text fontWeight={"medium"} fontSize={["3xl", "2xl"]}>
           Create New Gig
         </Text>
@@ -655,15 +655,21 @@ const CreateGig = () => {
             </GigAccordion>
           </Accordion>
           <HStack w={"full"} justifyContent={"flex-end"} mt={8}>
-            <Button onClick={Formik.handleReset} isLoading={loading}>
+            <Button
+              onClick={Formik.handleReset}
+              isLoading={loading}
+              bgColor={"#FFF"}
+              fontSize={"sm"}
+            >
               Reset
             </Button>
             <Button
-              colorScheme="whatsapp"
+              colorScheme="yellow"
               onClick={Formik.handleSubmit}
               isLoading={loading}
+              fontSize={"sm"}
             >
-              Submit for Review
+              Submit
             </Button>
           </HStack>
         </Box>
