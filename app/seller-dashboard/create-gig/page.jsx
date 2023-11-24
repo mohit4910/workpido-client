@@ -467,7 +467,7 @@ const CreateGig = () => {
                         placeholder="Please Select"
                       >
                         <option value="fixed">Fixed Price</option>
-                        <option value="hourly">Hourly Rate</option>
+                        {/* <option value="hourly">Hourly Rate</option> */}
                         <option value="plans">Plan Based</option>
                       </Select>
                     </HStack>
@@ -547,6 +547,8 @@ const CreateGig = () => {
                             onBlur={async () => {
                               if (Formik.values.totalPlans < 1)
                                 await Formik.setFieldValue("totalPlans", 1);
+                              if (Formik.values.totalPlans > 3)
+                                await Formik.setFieldValue("totalPlans", 3);
                             }}
                           />
                         </HStack>

@@ -205,7 +205,7 @@ const page = ({ params }) => {
             p={6}
             rounded={4}
             boxShadow={"base"}
-            className=" mx-auto w-screen md:my-10 flex-col md:flex-row"
+            className=" mx-auto md:my-10 flex-col md:flex-row"
             bgColor={"#fff"}
           >
             {/* User Card */}
@@ -226,15 +226,15 @@ const page = ({ params }) => {
                   {userData?.profession}
                 </Text>
               </Box>
-              <Flex className="items-center gap-1">
+              <Flex className="items-center gap-3">
                 <BsFillTelephoneFill color="gray" />
                 <Text>Phone Verified</Text>
               </Flex>
-              <Flex className="items-center gap-1">
+              <Flex className="items-center gap-3">
                 <ImLocation color="gray" />
                 <Text>{userData?.country || "India"}</Text>
               </Flex>
-              <Flex className="items-center gap-1">
+              <Flex className="items-center gap-3">
                 <PiClockCountdownBold color="gray" />
                 <Text>
                   Joined{" "}
@@ -244,11 +244,11 @@ const page = ({ params }) => {
                   })}
                 </Text>
               </Flex>
-              <Flex className="items-center gap-1">
+              <Flex className="items-center gap-3">
                 <RiRadioButtonLine color="green" />
                 <Text>Online</Text>
               </Flex>
-              <Flex className="items-center gap-1 hover:cursor-pointer">
+              <Flex className="items-center gap-3 hover:cursor-pointer">
                 <ImEyeBlocked color="red" />
                 <Text>Block this Seller</Text>
               </Flex>

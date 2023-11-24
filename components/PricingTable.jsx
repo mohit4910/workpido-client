@@ -172,13 +172,13 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
   return (
     <>
       <Box>
-        <TableContainer>
-          <Table size={size || "sm"} variant={"striped"}>
-            <Thead bgColor={"yellow.300"}>
+        <TableContainer border={'1px'} borderColor={'#e2e2e2'} roundedTop={6}>
+          <Table size={size || "md"}>
+            <Thead bgColor={"#f6f6f6"}>
               <Tr>
-                <Th>#</Th>
+                <Th borderRight={'1px'} py={6} color={'#000'}>#</Th>
                 {tableData?.plans?.map((data, key) => (
-                  <Th key={key}>
+                  <Th borderRight={'1px'} key={key} py={6} color={'#000'}>
                     <EditableData
                       isViewOnly={isViewOnly}
                       defaultValue={data}
@@ -198,7 +198,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
             <Tbody>
               {tableData?.attributes?.map((attribute, i) => (
                 <Tr key={i}>
-                  <Td>
+                  <Td borderRight={'1px'}>
                     <EditableData
                       isViewOnly={isViewOnly}
                       defaultValue={attribute}
@@ -213,7 +213,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
                   </Td>
 
                   {tableData?.data[attribute]?.map((data, key) => (
-                    <Td key={key}>
+                    <Td borderRight={'1px'} key={key}>
                       <EditableData
                         isViewOnly={isViewOnly}
                         defaultValue={data ?? ""}
