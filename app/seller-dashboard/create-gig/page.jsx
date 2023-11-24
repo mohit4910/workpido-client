@@ -172,9 +172,9 @@ const CreateGig = () => {
           field: "attachments",
           path: "/gigs/attachments",
         });
-        push("/seller-dashboard/create-gig/success");
+        push(`/seller-dashboard/gig/preview/${recentGigId}`);
       } else {
-        push("/seller-dashboard/create-gig/success");
+        push(`/seller-dashboard/gig/preview/${recentGigId}`);
       }
     } catch (error) {
       // Handle any unexpected errors that may occur.
@@ -282,12 +282,13 @@ const CreateGig = () => {
                       maxLength={70}
                       h={20}
                       fontSize={"xl"}
-                      fontWeight={"medium"}
+                      fontWeight={"normal"}
                       resize={"none"}
                       w={"full"}
                       name="title"
                       onChange={Formik.handleChange}
                       placeholder="I will create a professional website..."
+                      _placeholder={{fontWeight: 'normal'}}
                     />
                   </HStack>
                 </FormControl>
@@ -298,12 +299,13 @@ const CreateGig = () => {
                       flex={5}
                       maxLength={400}
                       h={36}
-                      fontWeight={"medium"}
+                      fontWeight={"normal"}
                       resize={"none"}
                       w={"full"}
                       name="overview"
                       onChange={Formik.handleChange}
                       placeholder="A brief overview about your Gig..."
+                      _placeholder={{fontWeight: 'normal'}}
                     />
                   </HStack>
                 </FormControl>

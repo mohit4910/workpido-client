@@ -23,7 +23,7 @@ const GigAccordion = ({ children, step, title }) => {
       >
         {({ isExpanded }) => (
           <>
-            <AccordionButton>
+            <AccordionButton borderBottom={isExpanded ? '1px' : '0'} pb={isExpanded ? 4 : 2}>
               <HStack w={"full"} gap={8}>
                 <Box
                   boxSize={"12"}
