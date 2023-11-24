@@ -147,10 +147,10 @@ export default function WithSubnavigation() {
                   fontWeight={400}
                   variant={"link"}
                   _hover={"none"}
-                  href={"#"}
+                  href={"/manage-gigs"}
                   color="white"
                 >
-                  Kworks
+                  Gigs
                 </Button>
               </Hide>
               <Hide below="md">
