@@ -193,25 +193,34 @@ const page = ({ params }) => {
   }
 
   return (
-    <Container maxW={["full", "8xl"]}>
-      <main className="relative mx-auto lg:container overflow-x-hidden min-h-screen">
+    <main
+      className="relative mx-auto overflow-x-hidden min-h-screen"
+      style={{ backgroundColor: "#f6f6f6" }}
+    >
+      <Container maxW={["full", "7xl"]}>
         {/* Seller Details */}
         <Flex className="w-full flex-col md:flex-row">
           {/* Main Content */}
-          <Flex className=" mx-auto w-screen md:my-10 md:w-[65%] flex-col md:flex-row">
+          <Flex
+            p={6}
+            rounded={4}
+            boxShadow={"base"}
+            className=" mx-auto w-screen md:my-10 flex-col md:flex-row"
+            bgColor={"#fff"}
+          >
             {/* User Card */}
-            <Flex className="flex-col items-center md:items-start bg-white px-2 md:w-1/3 w-full gap-2">
-              <ZoomableImage src={avatarUrl} />
+            <Flex className="flex-col items-center md:items-start md:w-1/3 w-full gap-2">
+                <ZoomableImage src={avatarUrl} />
               <Box className="my-3 text-center md:text-left">
-                <Text className="md:block font-bold text-2xl my-2">
+                <Text className="md:block font-medium text-2xl my-2" textTransform={'uppercase'}>
                   {userData?.username}
                 </Text>
-                <Heading className="font-bold md:hidden text-emerald-600 text-4xl my-2">
+                <Heading className="font-semibold md:hidden text-emerald-600 text-4xl my-2">
                   {userData?.displayName}
                 </Heading>
                 {/*Seller Profession */}
                 <Text
-                  className="md:hidden font-bold text-xl  my-2"
+                  className="md:hidden font-medium text-xl my-2"
                   textTransform={"capitalize"}
                 >
                   {userData?.profession}
@@ -248,27 +257,27 @@ const page = ({ params }) => {
             <Box className="bg-white md:w-2/3 w-full flex-2">
               <Box className="p-5 overflow-hidden">
                 {/*Seller Full Name */}
-                <Heading className="hidden md:block font-semibold text-emerald-600 text-4xl text-center md:text-left my-3">
+                <Heading className="hidden md:block font-medium text-emerald-600 text-4xl text-center md:text-left my-3">
                   {userData?.displayName}
                 </Heading>
                 {/*Seller Profession */}
                 <Text
-                  className=" hidden md:block font-bold text-xl text-center md:text-left my-3"
+                  className=" hidden md:block font-medium text-xl text-center md:text-left my-3"
                   textTransform={"capitalize"}
                 >
                   {userData?.profession}
                 </Text>
                 {/* About the Seller */}
                 <Text className="my-3">{userData?.bio}</Text>
-                <Box>
-                  <Text className="md:block font-bold text-lg my-3">
+                <Box mt={8}>
+                  <Text className="md:block font-medium text-lg my-3">
                     Skills
                   </Text>
                   {/* About the Seller */}
                   <Flex className="gap-2 flex-wrap">
                     {userData?.skills ? (
                       userData?.skills?.split(",")?.map((skill, key) => (
-                        <span className="p-1 m-1 border rounded" key={key}>
+                        <span className="p-1 px-3 m-1 border rounded" key={key}>
                           {skill?.trim()}
                         </span>
                       ))
@@ -384,13 +393,16 @@ const page = ({ params }) => {
             align="center"
             justify="center"
             bg={"brand.primary"}
-            className="md:py-10 md:px-3 z-50 w-screen md:w-1/3 md:bg-[#f6f6f6] fixed bottom-0 left-0 right-0 md:relative md:mx-auto md:mt-4"
+            className="md:py-10 md:px-3 z-50 w-screen md:w-1/3 fixed bottom-0 left-0 right-0 md:relative md:mx-auto md:mt-4"
           >
-            <ContactSeller className="md:my-5 w-full px-2 py-10 text-lg" username={username} />
+            <ContactSeller
+              className="md:my-5 w-full px-2 py-10 text-lg"
+              username={username}
+            />
           </Flex>
         )}
-      </main>
-    </Container>
+      </Container>
+    </main>
   );
 };
 

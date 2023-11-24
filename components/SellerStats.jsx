@@ -64,7 +64,7 @@ const SellerStats = ({ seller }) => {
         </FormLabel>
         <Switch
           id="email-alerts"
-          colorScheme="green"
+          colorScheme="yellow"
           isChecked={acceptingOrders}
           onChange={(e) => handleUpdate({ acceptingOrders: e.target.checked })}
         />
@@ -76,7 +76,7 @@ const SellerStats = ({ seller }) => {
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
-            colorScheme={"green"}
+            colorScheme={"yellow"}
             width={"120px"}
             className="h-2 rounded-full"
           />
@@ -88,7 +88,7 @@ const SellerStats = ({ seller }) => {
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
-            colorScheme={"green"}
+            colorScheme={"yellow"}
             width={"120px"}
             className="h-2 rounded-full"
           />
@@ -100,7 +100,7 @@ const SellerStats = ({ seller }) => {
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
-            colorScheme={"green"}
+            colorScheme={"yellow"}
             width={"120px"}
             className="h-2 rounded-full"
           />
@@ -112,7 +112,7 @@ const SellerStats = ({ seller }) => {
         <Stack direction={"row"} spacing={2} align={"center"}>
           <Progress
             value={100}
-            colorScheme={"green"}
+            colorScheme={"yellow"}
             width={"120px"}
             className="h-2 rounded-full"
           />

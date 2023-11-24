@@ -87,7 +87,7 @@ const SignupModal = () => {
             setFieldValue,
           }) => (
             <Form>
-              <HStack rounded={4} overflow={'hidden'} mb={4} gap={0} border={'0.5px solid #999'}>
+              <HStack rounded={4} overflow={'hidden'} mb={4} gap={0} border={'0.5px solid #e2e2e2'}>
                 <Button
                   bgColor={
                     values.defaultDashboard == "buyer"

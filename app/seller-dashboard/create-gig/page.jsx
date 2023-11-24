@@ -261,8 +261,8 @@ const CreateGig = () => {
 
   return (
     <>
-      <Box p={[4, 8, 12]}>
-        <Text fontWeight={"semibold"} fontSize={"2xl"}>
+      <Box p={[4, 8, 12]} bg={'#f6f6f6'}>
+        <Text fontWeight={"medium"} fontSize={["3xl", "2xl"]}>
           Create New Gig
         </Text>
         <br />

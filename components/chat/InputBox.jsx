@@ -37,7 +37,7 @@ export const InputBox = ({ addMessage }) => {
       <HStack pt="4" borderTop={"1px"}>
         <BsPaperclip
           size={24}
-          color={"#999"}
+          color={"#e2e2e2"}
           cursor={"pointer"}
           onClick={onOpen}
         />

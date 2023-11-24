@@ -12,10 +12,12 @@ const page = ({ params }) => {
   const { me, user } = useAuth();
   const { uploadAndAttachMedia } = useApiHandler();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState(null);
   const [chatNotFound, setChatNotFound] = useState(false);
+
+  const [myChat, setMyChat] = useState(false);
 
   const { roomId } = params;
 
@@ -51,10 +53,20 @@ const page = ({ params }) => {
   };
 
   useEffect(() => {
+    if (roomId == "me" || roomId == user?.username) {
+      setLoading(true);
+      setMyChat(true);
+      return;
+    }
     getChatInfo();
-  }, []);
+  }, [roomId]);
 
   useEffect(() => {
+    if (roomId == "me" || roomId == user?.username) {
+      setLoading(true);
+      setMyChat(true);
+      return;
+    }
     getChatMessages();
   }, []);
 
@@ -123,7 +135,13 @@ const page = ({ params }) => {
     <>
       {loading ? (
         <Box w={"full"} h={"full"} display={"grid"} placeContent={"center"}>
-          {chatNotFound ? <Text>User not found</Text> : <Spinner />}
+          {chatNotFound ? (
+            <Text>User not found</Text>
+          ) : myChat ? (
+            <Text></Text>
+          ) : (
+            <Spinner />
+          )}
         </Box>
       ) : (
         <ChatBox

@@ -190,7 +190,7 @@ const EditProfile = () => {
               overflow={"hidden"}
               mb={4}
               gap={0}
-              border={"0.5px solid #999"}
+              border={"0.5px solid #e2e2e2"}
             >
               <Button
                 size={"sm"}
@@ -244,7 +244,7 @@ const EditProfile = () => {
               overflow={"hidden"}
               mb={4}
               gap={0}
-              border={"0.5px solid #999"}
+              border={"0.5px solid #e2e2e2"}
             >
               <Button
                 size={"sm"}

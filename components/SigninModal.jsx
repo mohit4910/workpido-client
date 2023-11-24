@@ -91,7 +91,6 @@ const SigninModal = () => {
                     <Input.Free
                       name="identifier"
                       placeholder="Email"
-                      label="Email"
                       value={values.identifier}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -104,7 +103,6 @@ const SigninModal = () => {
                       type="password"
                       name="password"
                       placeholder="Password"
-                      label="Password"
                       value={values.password}
                       onChange={handleChange}
                       onBlur={handleBlur}

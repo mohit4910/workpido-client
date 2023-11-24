@@ -13,7 +13,14 @@ import {
 const GigAccordion = ({ children, step, title }) => {
   return (
     <>
-      <AccordionItem border={"none"} my={4}>
+      <AccordionItem
+        border={"none"}
+        my={4}
+        bgColor={"#FFF"}
+        py={2}
+        rounded={"6"}
+        boxShadow={"base"}
+      >
         {({ isExpanded }) => (
           <>
             <AccordionButton>

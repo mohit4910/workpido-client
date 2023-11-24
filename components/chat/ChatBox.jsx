@@ -75,7 +75,7 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
             </Box>
           ) : null}
         </Box>
-        <Text fontSize={"xs"} color={"#999"}>
+        <Text fontSize={"xs"} color={"#e2e2e2"}>
           {`${new Date(
             messages[index]?.timestamp ?? messages[index]?.createdAt
           ).getDate()} ${monthNames[
@@ -103,7 +103,7 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
           </Box>
           <Spacer />
           <HStack gap={4}>
-            <FiSearch size={20} cursor={"pointer"} color={"#999"} />
+            <FiSearch size={20} cursor={"pointer"} color={"#e2e2e2"} />
             <Button
               size={"sm"}
               colorScheme="whatsapp"

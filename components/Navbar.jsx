@@ -11,6 +11,7 @@ import {
   Button,
   Center,
   Collapse,
+  Container,
   Flex,
   HStack,
   Hide,
@@ -61,147 +62,151 @@ export default function WithSubnavigation() {
   }, [isLoggedIn]);
 
   return (
-    <Box>
-      <Flex
-        bg={"#333333"}
-        color={"#fff"}
-        minH={"60px"}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
-        align={"center"}
-      >
+    <Box bg={"#333333"} color={"#fff"}>
+      <Container maxW={["full", "3xl", "5xl", "7xl"]}>
         <Flex
-          flex={{ base: 1, md: "auto" }}
-          ml={{ base: -2 }}
-          display={{ base: "flex", md: "none" }}
+          minH={"60px"}
+          py={{ base: 2 }}
+          px={{ base: 4 }}
+          // borderBottom={1}
+          // borderStyle={"solid"}
+          // borderColor={useColorModeValue("gray.200", "gray.900")}
+          align={"center"}
         >
-          <IconButton
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-            }
-            variant={"ghost"}
-            aria-label={"Toggle Navigation"}
-          />
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Flex as={"a"} href="/" alignItems={"center"}>
-            <Image
-              // textAlign={useBreakpointValue({ base: "center", md: "left" })}
-              fontFamily={"heading"}
-              color={useColorModeValue("gray.800", "white")}
-              src={logo}
-              // className="h-auto w-30"
-              height={32}
-              alt={"workpido"}
+          <Flex
+            flex={{ base: 1, md: "auto" }}
+            ml={{ base: -2 }}
+            display={{ base: "flex", md: "none" }}
+          >
+            <IconButton
+              onClick={onToggle}
+              icon={
+                isOpen ? (
+                  <CloseIcon w={3} h={3} />
+                ) : (
+                  <HamburgerIcon w={5} h={5} />
+                )
+              }
+              variant={"ghost"}
+              aria-label={"Toggle Navigation"}
             />
-            <span className="ml-0.5 text-2xl font-bold tracking-wider text-white">
-              WORKPIDO
-            </span>
           </Flex>
+          <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+            <Flex as={"a"} href="/" alignItems={"center"}>
+              <Image
+                // textAlign={useBreakpointValue({ base: "center", md: "left" })}
+                fontFamily={"heading"}
+                color={useColorModeValue("gray.800", "white")}
+                src={logo}
+                // className="h-auto w-30"
+                height={32}
+                alt={"workpido"}
+              />
+              <span className="ml-0.5 text-2xl font-bold tracking-wider text-white">
+                WORKPIDO
+              </span>
+            </Flex>
 
-          {/* <Flex display={{ base: "none", md: "flex" }} ml={10}>
+            {/* <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
           </Flex> */}
-        </Flex>
+          </Flex>
 
-        {loggedIn == null ? null : loggedIn == false ? (
-          <Stack
-            flex={{ base: 1, md: 0 }}
-            justify={"flex-end"}
-            direction={"row"}
-            spacing={6}
-          >
-            <SigninModal />
-            <SignupModal />
-
-            <Button
-              as={"a"}
-              fontSize={"sm"}
-              fontWeight={400}
-              variant={"link"}
-              href={"/for-freelancers"}
-              color="white"
+          {loggedIn == null ? null : loggedIn == false ? (
+            <Stack
+              flex={{ base: 1, md: 0 }}
+              justify={"flex-end"}
+              direction={"row"}
+              spacing={6}
             >
-              Are you a freelancer?
-            </Button>
-          </Stack>
-        ) : (
-          <Stack
-            flex={{ base: 1, md: 0 }}
-            justify={"flex-end"}
-            direction={"row"}
-            spacing={6}
-          >
-            <Hide below="md">
+              <SigninModal />
+              <SignupModal />
+
               <Button
                 as={"a"}
                 fontSize={"sm"}
                 fontWeight={400}
                 variant={"link"}
-                _hover={'none'}
-                href={"#"}
+                href={"/for-freelancers"}
                 color="white"
               >
-                Kworks
+                Are you a freelancer?
               </Button>
-            </Hide>
-            <Hide below="md">
-              <Button
-                as={"a"}
-                fontSize={"sm"}
-                fontWeight={400}
-                variant={"link"}
-                _hover={'none'}
-                href={"#"}
-                color="white"
-              >
-                Orders
-              </Button>
-            </Hide>
-            <Hide below="md">
-              <Button
-                as={"a"}
-                fontSize={"sm"}
-                fontWeight={400}
-                variant={"link"}
-                _hover={'none'}
-                href={"#"}
-                color="white"
-              >
-                Chat
-              </Button>
-            </Hide>
-            <Hide below="md">
-              <HStack display={["none", "flex"]}>
-                <MoneyRecive size="24" color="#F4CE14" />
-                <Text fontSize={"sm"} color={"#FFF"}>
-                  $1200
-                </Text>
-              </HStack>
-            </Hide>
-            {currentRole == "buyer" ? (
+            </Stack>
+          ) : (
+            <Stack
+              flex={{ base: 1, md: 0 }}
+              justify={"flex-end"}
+              direction={"row"}
+              spacing={6}
+            >
               <Hide below="md">
-                <IconButton
-                  p={0}
+                <Button
+                  as={"a"}
+                  fontSize={"sm"}
+                  fontWeight={400}
                   variant={"link"}
+                  _hover={"none"}
                   href={"#"}
-                  icon={<ShoppingCart size="24" color="#FAFAFA" />}
-                />
+                  color="white"
+                >
+                  Kworks
+                </Button>
               </Hide>
-            ) : null}
-            <NavAvatar
-              user={user}
-              currentRole={currentRole}
-              onLogout={onLogout}
-              onChangeRole={(role) => onChangeRole(role)}
-            />
-          </Stack>
-        )}
-      </Flex>
+              <Hide below="md">
+                <Button
+                  as={"a"}
+                  fontSize={"sm"}
+                  fontWeight={400}
+                  variant={"link"}
+                  _hover={"none"}
+                  href={"#"}
+                  color="white"
+                >
+                  Orders
+                </Button>
+              </Hide>
+              <Hide below="md">
+                <Button
+                  as={"a"}
+                  fontSize={"sm"}
+                  fontWeight={400}
+                  variant={"link"}
+                  _hover={"none"}
+                  href={"/inbox/me"}
+                  color="white"
+                >
+                  Chat
+                </Button>
+              </Hide>
+              <Hide below="md">
+                <HStack display={["none", "flex"]}>
+                  <MoneyRecive size="24" color="#F4CE14" />
+                  <Text fontSize={"sm"} color={"#FFF"}>
+                    $1200
+                  </Text>
+                </HStack>
+              </Hide>
+              {currentRole == "buyer" ? (
+                <Hide below="md">
+                  <IconButton
+                    p={0}
+                    variant={"link"}
+                    href={"#"}
+                    icon={<ShoppingCart size="24" color="#FAFAFA" />}
+                  />
+                </Hide>
+              ) : null}
+              <NavAvatar
+                user={user}
+                currentRole={currentRole}
+                onLogout={onLogout}
+                onChangeRole={(role) => onChangeRole(role)}
+              />
+            </Stack>
+          )}
+        </Flex>
+      </Container>
       <Flex
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
@@ -214,7 +219,9 @@ export default function WithSubnavigation() {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
-        <DesktopNav categories={categories} />
+        <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+          <DesktopNav categories={categories} />
+        </Container>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
         <MobileNav categories={categories} />

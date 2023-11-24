@@ -7,7 +7,7 @@ const page = ({ children }) => {
   return (
     <>
       <Box p={[4]} bgColor={"#f6f6f6"}>
-        <Container maxW={["full", "4xl", "6xl"]}>
+        <Container maxW={["full", "4xl", "7xl"]}>
           <Flex
             h={["full", "xl", "2xl"]}
             rounded={"8"}
