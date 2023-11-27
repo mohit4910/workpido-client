@@ -16,12 +16,31 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import MyGigCard from "@/components/MyGigCard";
 import { API } from "@/lib/api";
 import { toast } from "react-toastify";
+import useAuth from "@/hooks/useAuth";
 
 const page = () => {
+  const { me } = useAuth();
+
   const [selectedTab, setSelectedTab] = useState("all");
   const [gigs, setGigs] = useState([]);
+  const [unfilteredGigs, setUnfilteredGigs] = useState([]);
+  const [acceptingOrders, setAcceptingOrders] = useState(false);
 
-  const statuses = [
+  const [search, setSearch] = useState("");
+
+  async function handleUpdate(data) {
+    try {
+      await API.updateMe(data);
+      await me();
+      setAcceptingOrders(!acceptingOrders);
+      toast.success("Updated successfully!");
+    } catch (error) {
+      toast.error("Could not update status");
+      console.log(error);
+    }
+  }
+
+  const tabs = [
     { name: "All", value: "all" },
     { name: "Active", value: "active" },
     { name: "In Review", value: "processing" },
@@ -33,11 +52,23 @@ const page = () => {
       try {
         const res = await API.myGigs(selectedTab);
         setGigs(res);
+        setUnfilteredGigs(res);
       } catch (error) {
         toast.error("Err while fetching gigs");
       }
     })();
   }, [selectedTab]);
+
+  useEffect(() => {
+    handleUpdate();
+  }, []);
+
+  useEffect(() => {
+    if (!search) setGigs(unfilteredGigs);
+    else {
+      setGigs(unfilteredGigs?.filter((gig) => gig?.title?.toLowerCase()?.includes(search?.toLowerCase())));
+    }
+  }, [search]);
 
   return (
     <>
@@ -68,12 +99,20 @@ const page = () => {
               bgColor={"#FFF"}
               rounded={"full"}
               placeholder="Search gig"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
             />
             <Spacer />
             <HStack gap={0}>
               <HStack pr={4} borderRightWidth={"0.5px"}>
                 <Text fontWeight={"medium"}>Accepting Orders</Text>
-                <Switch colorScheme="yellow" />
+                <Switch
+                  colorScheme="yellow"
+                  isChecked={acceptingOrders}
+                  onChange={(e) =>
+                    handleUpdate({ acceptingOrders: e.target.checked })
+                  }
+                />
               </HStack>
               <HStack pl={4} borderLeftWidth={"0.5px"}>
                 <Checkbox bgColor={"#FFF"} />
@@ -85,10 +124,10 @@ const page = () => {
 
           <Tabs
             colorScheme="yellow"
-            onChange={(index) => setSelectedTab(statuses[index]?.value)}
+            onChange={(index) => setSelectedTab(tabs[index]?.value)}
           >
             <TabList>
-              {statuses?.map((status, key) => (
+              {tabs?.map((status, key) => (
                 <Tab value={status?.value} key={key}>
                   {status?.name}
                 </Tab>
@@ -96,10 +135,25 @@ const page = () => {
             </TabList>
 
             <TabPanels>
-              {statuses?.map((status, key) => (
+              {tabs?.map((status, key) => (
                 <TabPanel key={key}>
                   {gigs?.map((gig, i) => (
-                    <MyGigCard key={i} title={gig?.title} />
+                    <MyGigCard
+                      key={i}
+                      title={gig?.title}
+                      banner={gig?.banner}
+                      views={gig?.views || "0"}
+                      currency={gig?.currency}
+                      price={
+                        gig?.pricingModel == "plans"
+                          ? gig?.startingPrice
+                          : gig?.pricingModel == "fixed"
+                          ? gig?.fixedPrice
+                          : gig?.hourlyPrice
+                      }
+                      orders={gig?.orders || "0"}
+                      earnings={gig?.earnings || "0"}
+                    />
                   ))}
                 </TabPanel>
               ))}

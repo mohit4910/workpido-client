@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 
-const OrderCard = () => {
+const OrderCard = ({ order }) => {
   let orderDetails = {
     artileName: "I will create responsive websites in Next.js",
     buyer: {
@@ -25,22 +25,29 @@ const OrderCard = () => {
           href={"/order-details"}
           className="hover:text-indigo-600 items-center"
         >
-          {orderDetails.artileName}
+          {order?.gig?.title}
         </Link>
       </Flex>
       {/* Status */}
       <Flex className="w-full lg:w-1/6 gap-2 items-end flex-col lg:order-last">
         <Text className="text-xs text-neutral-500">
-          {orderDetails.deliveryDate}
+          {order?.finishedAt
+            ? new Date(order?.finishedAt)?.toLocaleDateString()
+            : null}
         </Text>
-        {orderDetails.isCompleted && (
-          <Box className="py-1 px-2 border border-brand-primary rounded-md bg-brand-primary">
-            <Text className="text-xs text-white font-medium">Completed</Text>
-          </Box>
-        )}
-        {orderDetails.isCanceled && (
+
+        {orderDetails.isCanceled ? (
           <Box className="py-1 px-3 border border-red-700 rounded-md bg-red-700">
             <Text className="text-xs text-white font-medium">Canceled</Text>
+          </Box>
+        ) : (
+          <Box className="py-1 px-2 border border-brand-primary rounded-md bg-brand-primary">
+            <Text
+              className="text-xs text-white font-medium"
+              textTransform={"capitalize"}
+            >
+              {order?.status}
+            </Text>
           </Box>
         )}
       </Flex>
@@ -50,8 +57,8 @@ const OrderCard = () => {
         <Box className="items-center w-1/2 lg:px-2">
           <Link href={"/profile"}>
             <Stack my={4} direction={"row"} spacing={1} align={"center"}>
-              <Avatar size={"sm"} src={orderDetails.buyer.photoURL} />
-              <Text fontSize={"xs"}>{orderDetails.buyer.userName}</Text>
+              <Avatar size={"sm"} src={order?.buyer?.avatar?.url} />
+              <Text fontSize={"xs"}>{order?.buyer?.username}</Text>
             </Stack>
           </Link>
         </Box>
@@ -61,7 +68,7 @@ const OrderCard = () => {
         </Flex>
         {/* Price */}
         <Box className="w-1/3 items-center">
-          <Text className="text-center">{orderDetails.price}</Text>
+          <Text className="text-center">{order?.amount}</Text>
         </Box>
       </Flex>
       {/* Review - only visible on smaller displays */}

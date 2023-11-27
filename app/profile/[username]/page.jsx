@@ -346,7 +346,7 @@ const page = ({ params }) => {
         {/* Reviews */}
         <Box className="mx-1 md:mx-5 my-3 w-full p-2 md:p-5">
           <Text className="font-bold text-lg lg:text-2xl my-3">
-            Reviews Left for geekguyadarsh
+            Reviews Left for {user?.username}
           </Text>
           <Accordion allowToggle className="w-full">
             <AccordionItem className="border-none">

@@ -26,7 +26,9 @@ const MyGigCard = ({
   price,
 }) => {
   const { getMediaUrl } = useApiHandler();
-  const [bannerUrl, setBannerUrl] = useState("https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png");
+  const [bannerUrl, setBannerUrl] = useState(
+    "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
+  );
 
   useEffect(() => {
     if (!banner) return;
@@ -41,6 +43,7 @@ const MyGigCard = ({
           <Image
             w={56}
             height={36}
+            objectFit={"cover"}
             src={
               bannerUrl ??
               "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
@@ -111,7 +114,8 @@ const MyGigCard = ({
                   Starting from
                 </Text>
                 <Text fontSize={"xs"} fontWeight={"semibold"}>
-                  {`${currency}${price}`}
+                  {currency}
+                  {price}
                 </Text>
               </VStack>
             </Stack>

@@ -160,7 +160,7 @@ export default function WithSubnavigation() {
                   fontWeight={400}
                   variant={"link"}
                   _hover={"none"}
-                  href={"#"}
+                  href={"/orders"}
                   color="white"
                 >
                   Orders
