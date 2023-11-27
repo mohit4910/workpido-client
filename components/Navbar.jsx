@@ -17,6 +17,10 @@ import {
   Hide,
   Icon,
   IconButton,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  InputRightElement,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -38,6 +42,7 @@ import NavAvatar from "./NavAvatar";
 import { useEffect, useState } from "react";
 import { API } from "@/lib/api";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -92,19 +97,35 @@ export default function WithSubnavigation() {
             />
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-            <Flex as={"a"} href="/" alignItems={"center"}>
-              <Image
-                // textAlign={useBreakpointValue({ base: "center", md: "left" })}
-                fontFamily={"heading"}
-                color={useColorModeValue("gray.800", "white")}
-                src={logo}
-                // className="h-auto w-30"
-                height={32}
-                alt={"workpido"}
-              />
-              <span className="ml-0.5 text-2xl font-bold tracking-wider text-white">
-                WORKPIDO
-              </span>
+            <Flex alignItems={"center"}>
+              <Link href={"/"}>
+                <Image
+                  // textAlign={useBreakpointValue({ base: "center", md: "left" })}
+                  fontFamily={"heading"}
+                  color={useColorModeValue("gray.800", "white")}
+                  src={logo}
+                  // className="h-auto w-30"
+                  height={32}
+                  alt={"workpido"}
+                />
+              </Link>
+              <Link href={"/"}>
+                <span className="ml-0.5 text-2xl font-bold tracking-wider text-white">
+                  WORKPIDO
+                </span>
+              </Link>
+              <InputGroup size={"sm"} ml={4}>
+                <Input
+                  w={48}
+                  bgColor={"#FFF"}
+                  color={"#000"}
+                  placeholder="Search"
+                />
+                <InputRightAddon
+                  children={"Search"}
+                  bgColor={"brand.primary"}
+                />
+              </InputGroup>
             </Flex>
 
             {/* <Flex display={{ base: "none", md: "flex" }} ml={10}>
