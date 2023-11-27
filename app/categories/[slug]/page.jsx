@@ -28,7 +28,6 @@ const Gigs = ({ params }) => {
       <Stack
         w={"full"}
         minH={"100vh"}
-        w={"full"}
         p={[4, 8, 12]}
         bg={"#F6F6F6"}
         direction={["column", "row"]}
