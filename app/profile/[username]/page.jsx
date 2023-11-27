@@ -210,9 +210,12 @@ const page = ({ params }) => {
           >
             {/* User Card */}
             <Flex className="flex-col items-center md:items-start md:w-1/3 w-full gap-2">
-                <ZoomableImage src={avatarUrl} />
+              <ZoomableImage src={avatarUrl} />
               <Box className="my-3 text-center md:text-left">
-                <Text className="md:block font-medium text-2xl my-2" textTransform={'uppercase'}>
+                <Text
+                  className="md:block font-medium text-2xl my-2"
+                  textTransform={"uppercase"}
+                >
                   {userData?.username}
                 </Text>
                 <Heading className="font-semibold md:hidden text-emerald-600 text-4xl my-2">

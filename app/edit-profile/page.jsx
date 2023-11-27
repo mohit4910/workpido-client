@@ -353,7 +353,7 @@ const EditProfile = () => {
               </Box>
             </TabPanel>
             <TabPanel>
-              <p>three!</p>
+              <p>Withdrawal</p>
             </TabPanel>
           </TabPanels>
         </Tabs>
