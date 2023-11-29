@@ -307,14 +307,53 @@ const DesktopNav = ({ categories }) => {
                 rounded={"none"}
                 minW={"xs"}
               >
-                <Stack>
-                  {navItem?.subCategories?.map((child, key) => (
-                    <DesktopSubNav
-                      key={key}
-                      href={child?.frontendLink ?? "#"}
-                      {...child}
-                    />
-                  ))}
+                <Stack
+                  direction={"row"}
+                  alignItems={"flex-start"}
+                  justifyContent={"flex-start"}
+                >
+                  {navItem?.subCategories?.length > 5
+                    ? navItem?.subCategories
+                        ?.splice(
+                          0,
+                          (navItem?.subCategories?.length / 2) % 1 !== 0
+                            ? Math.ceil(navItem?.subCategories?.length / 2)
+                            : navItem?.subCategories?.length / 2
+                        )
+                        ?.map((child, key) => (
+                          <DesktopSubNav
+                            key={key}
+                            href={child?.frontendLink ?? "#"}
+                            {...child}
+                          />
+                        ))
+                    : navItem?.subCategories?.map((child, key) => (
+                        <DesktopSubNav
+                          key={key}
+                          href={child?.frontendLink ?? "#"}
+                          {...child}
+                        />
+                      ))}
+
+                  {navItem?.subCategories?.length > 5 && (
+                    <Box p={"0.5"} bgColor={"#e2e2e2"} h={"full"}></Box>
+                  )}
+
+                  {navItem?.subCategories?.length > 5 &&
+                    navItem?.subCategories
+                      ?.splice(
+                        (navItem?.subCategories?.length / 2) % 1 !== 0
+                          ? Math.ceil(navItem?.subCategories?.length / 2)
+                          : navItem?.subCategories?.length / 2,
+                        navItem?.subCategories?.length
+                      )
+                      ?.map((child, key) => (
+                        <DesktopSubNav
+                          key={key}
+                          href={child?.frontendLink ?? "#"}
+                          {...child}
+                        />
+                      ))}
                 </Stack>
               </PopoverContent>
             ) : null}
@@ -337,11 +376,7 @@ const DesktopSubNav = ({ title, frontendLink }) => {
     >
       <Stack direction={"row"} align={"center"}>
         <Box>
-          <Text
-            transition={"all .3s ease"}
-            _groupHover={{ color: "blue.400" }}
-            fontWeight={500}
-          >
+          <Text transition={"all .3s ease"} _groupHover={{ color: "blue.400" }}>
             {title}
           </Text>
           {/* <Text fontSize={"sm"}>{subLabel}</Text> */}
