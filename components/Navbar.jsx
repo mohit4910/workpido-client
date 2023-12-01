@@ -56,6 +56,7 @@ export default function WithSubnavigation() {
       try {
         const res = await API.getAllCategories();
         setCategories(res);
+        sessionStorage.setItem("categories", JSON.stringify(res));
       } catch (error) {
         toast.warn("Couldn't fetch categories");
       }
@@ -96,8 +97,8 @@ export default function WithSubnavigation() {
               aria-label={"Toggle Navigation"}
             />
           </Flex>
-          <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-            <Flex alignItems={"center"}>
+          <Flex flex={{ base: 1 }} justifyContent={["start"]}>
+            <Flex alignItems={"center"} justifyContent={'flex-start'}>
               <Link href={"/"}>
                 <Image
                   // textAlign={useBreakpointValue({ base: "center", md: "left" })}
@@ -114,23 +115,22 @@ export default function WithSubnavigation() {
                   WORKPIDO
                 </span>
               </Link>
-              <InputGroup size={"sm"} ml={4}>
-                <Input
-                  w={48}
-                  bgColor={"#FFF"}
-                  color={"#000"}
-                  placeholder="Search"
-                />
-                <InputRightAddon
-                  children={"Search"}
-                  bgColor={"brand.primary"}
-                />
-              </InputGroup>
+              <Hide below="md">
+                <InputGroup size={"sm"} ml={4}>
+                  <Input
+                    w={48}
+                    bgColor={"#FFF"}
+                    color={"#000"}
+                    placeholder="Search"
+                  />
+                  <InputRightAddon
+                    children={"Search"}
+                    bgColor={"brand.primary"}
+                    cursor={"pointer"}
+                  />
+                </InputGroup>
+              </Hide>
             </Flex>
-
-            {/* <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <DesktopNav />
-          </Flex> */}
           </Flex>
 
           {loggedIn == null ? null : loggedIn == false ? (
@@ -262,6 +262,7 @@ const DesktopNav = ({ categories }) => {
       justify={"space-between"}
       w={"full"}
       overflowX="hidden"
+      display={['none', 'flex']}
     >
       {categories?.map((navItem, i) => (
         <Box
@@ -309,7 +310,7 @@ const DesktopNav = ({ categories }) => {
                 w={"lg"}
               >
                 <Stack
-                  w={"lg"}
+                  w={["full", "lg"]}
                   gap={0}
                   direction={
                     navItem?.subCategories?.length > 5 ? "row" : "column"
@@ -324,7 +325,7 @@ const DesktopNav = ({ categories }) => {
                         navItem?.subCategories?.length > 5 ? "50%" : "full"
                       }
                       key={key}
-                      hasBorder={key %2 === 0}
+                      hasBorder={key % 2 === 0}
                       href={child?.frontendLink ?? "#"}
                       {...child}
                     />
@@ -351,7 +352,7 @@ const DesktopSubNav = ({ title, frontendLink, inheritedWidth, hasBorder }) => {
       w={inheritedWidth ?? "full"}
       _hover={{ color: "blue.400", borderLeft: "3px solid #177de5" }}
       borderRight={hasBorder ? "1px" : "none"}
-      borderRightColor={'#E2E2E2'}
+      borderRightColor={"#E2E2E2"}
     >
       <Stack direction={"row"} align={"center"}>
         <Box>
@@ -432,245 +433,3 @@ const MobileNavItem = ({ title, subCategories, frontendLink }) => {
     </Stack>
   );
 };
-
-const NAV_ITEMS = [
-  {
-    label: "Design",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "/categories/design",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-    ],
-  },
-  {
-    label: "Development & IT",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "/categories/new",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "/categories/new",
-      },
-      {
-        label: "Web Development",
-        subLabel: "Find professional web developers",
-        href: "/categories/web-development",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-    ],
-  },
-  {
-    label: "Writing",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-    ],
-  },
-  {
-    label: "SEO & Traffic",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "/categories/new",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-    ],
-  },
-  {
-    label: "Digital Marketing",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-    ],
-  },
-  {
-    label: "Audio & Video",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "/categories/new",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-    ],
-  },
-  {
-    label: "Business & Lifestyle",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "/categories/new",
-      },
-    ],
-  },
-
-  //   {
-  //     label: "Learn Design",
-  //     href: "#",
-  //   },
-  //   {
-  //     label: "Hire Designers",
-  //     href: "#",
-  //   },
-];

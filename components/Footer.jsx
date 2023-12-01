@@ -43,7 +43,7 @@ const ListHeader = ({ children }) => {
 export default function Footer() {
   return (
     <Box bg={"white"} color={"black"} marginTop={10}>
-      <Container as={Stack} maxW={"6xl"} py={10}>
+      <Container as={Stack} maxW={["full", "3xl", "5xl", "7xl"]} py={10}>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={"flex-start"}>
             <ListHeader>Product</ListHeader>

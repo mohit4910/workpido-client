@@ -2,13 +2,23 @@
 import React, { useState, useEffect } from "react";
 import GigCard from "@/components/GigCard";
 import { API } from "@/lib/api";
-import { Box, Flex, Grid, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import GigFilters from "@/components/GigFilters";
 
 const Gigs = ({ params }) => {
   const { slug } = params;
   const [gigs, setGigs] = useState([]);
+  const [services, setServices] = useState([]);
 
   const readData = async () => {
     try {
@@ -19,59 +29,78 @@ const Gigs = ({ params }) => {
     }
   };
 
+  const getServices = async () => {
+    try {
+      const res = await API.getSubcategoryServices(
+        slug?.replace(/-/g, " ")?.toLowerCase()
+      );
+      setServices(res);
+    } catch (error) {
+      console.log("There was an error fetching services");
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     readData();
   }, []);
 
+  useEffect(() => {
+    getServices();
+  }, []);
+
   return (
     <>
-      <Stack
-        w={"full"}
-        minH={"100vh"}
-        p={[4, 8, 12]}
-        bg={"#F6F6F6"}
-        direction={["column", "row"]}
-        alignItems={"flex-start"}
-        justifyContent={"flex-start"}
-        gap={8}
-      >
-        <Box w={["full", "64"]} pt={2}>
-          <GigFilters />
-        </Box>
-        <Box>
-          <div className="mb-8">
-            <Text fontSize={26} fontWeight={600} textTransform={"capitalize"}>
-              {slug?.replace(/-/g, " ")}
-            </Text>
-            <Flex mt={3}>
-              <Text className="px-4 py-2 mr-4 text-sm bg-white border border-[#dfe1e6] rounded-md">
-                New Logo
-              </Text>
-              <Text className="px-4 py-2 text-sm bg-white border border-[#dfe1e6] rounded-md">
-                Redesign & Editing
-              </Text>
-            </Flex>
+      <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+        <Box p={["4, 8, 16"]} my={8}>
+          <Text
+            fontSize={["2xl", 26]}
+            fontWeight={600}
+            textTransform={"capitalize"}
+          >
+            {slug?.replace(/-/g, " ")}
+          </Text>
+          <Flex
+            w={"full"}
+            mt={3}
+            gap={4}
+            direction={"row"}
+            overflowX={"scroll"}
+          >
+            {services?.map((item, key) => (
+              <Button
+                key={key}
+                bgColor={"#FFF"}
+                border={"1px"}
+                borderColor={"#e2e2e2"}
+                fontWeight={"normal"}
+                fontSize={["xs", "sm"]}
+                py={1}
+                textTransform={"capitalize"}
+                size={["sm", "md"]}
+              >
+                {item?.title}
+              </Button>
+            ))}
+          </Flex>
 
-            <Stack spacing={8} direction="row">
-              <Box minW="20%" bg="white" p={4} className="hidden">
-                {/* <Text fontSize={18} color="#ffa800">
-              Categories
-            </Text> */}
-                <Text fontWeight={600}>Price</Text>
-                <Text>$100</Text>
-                <Text>$100</Text>
-                <Text>$100</Text>
-                <Text>$100</Text>
-              </Box>
-              <Flex w={"full"} justify={"flex-start"} gap={8} flexWrap={"wrap"}>
-                {gigs?.map((gig, key) => (
-                  <GigCard key={key} gig={gig} />
-                ))}
-              </Flex>
-            </Stack>
-          </div>
+          <Stack
+            w={"full"}
+            spacing={8}
+            direction={["column", "row"]}
+            alignItems={"flex-start"}
+          >
+            <Box w={["full", "xs"]} pt={6}>
+              <GigFilters />
+            </Box>
+            <Flex w={"full"} justify={"flex-start"} gap={8} flexWrap={"wrap"}>
+              {gigs?.map((gig, key) => (
+                <GigCard key={key} gig={gig} />
+              ))}
+            </Flex>
+          </Stack>
         </Box>
-      </Stack>
+      </Container>
     </>
   );
 };

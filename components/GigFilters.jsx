@@ -10,6 +10,122 @@ import {
 } from "@chakra-ui/react";
 
 const Filters = () => {
+  const options = [
+    {
+      title: "Seller Level",
+      filters: [
+        {
+          label: "Rising Talent or Higher",
+        },
+        {
+          label: "Top Rated or Higher",
+        },
+        {
+          label: "Top Rated Plus",
+        },
+      ],
+    },
+    {
+      title: "Seller Activity",
+      filters: [
+        {
+          label: "Online",
+        },
+        {
+          label: "Online at most 1 day ago",
+        },
+        {
+          label: "Online at most 3 days ago",
+        },
+        {
+          label: "Online at most 1 week ago",
+        },
+        {
+          label: "Online at most 2 weeks ago",
+        },
+      ],
+    },
+    {
+      title: "Positive Reviews",
+      filters: [
+        {
+          label: "1 or more",
+        },
+        {
+          label: "5 or more",
+        },
+        {
+          label: "20 or more",
+        },
+        {
+          label: "100 or more",
+        },
+      ],
+    },
+    {
+      title: "Delivery Time",
+      filters: [
+        {
+          label: "Within 24 hours",
+        },
+        {
+          label: "Within 2 days",
+        },
+        {
+          label: "Within 3 days",
+        },
+        {
+          label: "Within 5 days",
+        },
+        {
+          label: "Within 10 days",
+        },
+      ],
+    },
+    {
+      title: "Orders in Progress",
+      filters: [
+        {
+          label: "None",
+        },
+        {
+          label: "Upto 1",
+        },
+        {
+          label: "Upto 3",
+        },
+        {
+          label: "Upto 5",
+        },
+        {
+          label: "Upto 8",
+        },
+      ],
+    },
+    {
+      title: "My View History",
+      filters: [
+        {
+          label: "Viewed",
+        },
+        {
+          label: "Not Viewed",
+        },
+      ],
+    },
+    {
+      title: "My Order History",
+      filters: [
+        {
+          label: "Ordered",
+        },
+        {
+          label: "Not Ordered",
+        },
+      ],
+    },
+  ];
+
   return (
     <>
       <VStack
@@ -37,78 +153,32 @@ const Filters = () => {
             $50-300
           </Text>
           <HStack w={"full"}>
-            <Input size={"xs"} placeholder="From" />
-            <Input size={"xs"} placeholder="To" />
+            <Input size={"xs"} placeholder="$ Min." />
+            <Input size={"xs"} placeholder="$ Max." />
           </HStack>
         </Box>
-
-        <Box w={"full"}>
-          <Text fontSize={"xs"} fontWeight={"semibold"}>
-            Seller Level
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Rising Talent or Higher
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Top Rated or Higher
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Top Rated Plus
-          </Text>
-        </Box>
-
-        <Box w={"full"}>
-          <Text fontSize={"xs"} fontWeight={"semibold"}>
-            Seller Activity
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Online
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Online at most 1 day ago
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Online at most 3 days ago
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Online at most 1 week ago
-          </Text>
-          <Text
-            fontSize={"xs"}
-            _hover={{ color: "brand.primary" }}
-            cursor={"pointer"}
-          >
-            Online at most 2 weeks ago
-          </Text>
-        </Box>
+        {options.map((item, key) => (
+          <Box w={"full"} key={key}>
+            <Text
+              fontSize={"xs"}
+              fontWeight={"semibold"}
+              textTransform={"capitalize"}
+            >
+              {item?.title}
+            </Text>
+            {item?.filters?.map((filter, i) => (
+              <Text
+                fontSize={"xs"}
+                _hover={{ color: "brand.primary" }}
+                cursor={"pointer"}
+                textTransform={"capitalize"}
+                key={i}
+              >
+                {filter?.label}
+              </Text>
+            ))}
+          </Box>
+        ))}
       </VStack>
     </>
   );
