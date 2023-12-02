@@ -20,6 +20,12 @@ import {
   InputRightAddon,
   InputLeftAddon,
   Modal,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  Image,
+  PopoverBody,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
@@ -35,6 +41,7 @@ import { API_BASE_URL } from "@/lib/constants";
 import Cookies from "js-cookie";
 import useApiHandler from "@/hooks/useApiHandler";
 import { useRouter } from "next/navigation";
+import CreateGigPopup from "@/components/CreateGigPopup";
 
 const CreateGig = () => {
   const { user } = useAuth();
@@ -268,87 +275,145 @@ const CreateGig = () => {
         <br />
         <br />
 
-        <Box w={["full", "3xl", "4xl"]}>
+        <Box pos={"relative"}>
           <Accordion allowMultiple>
             {/* Title & Category */}
             <GigAccordion step={1} title={"Title & Category"}>
-              <Box py={4}>
-                <FormControl py={2}>
-                  <HStack alignItems={"flex-start"}>
-                    <FormLabel flex={1}>Title</FormLabel>
-                    <Textarea
-                      flex={5}
-                      noOfLines={2}
-                      maxLength={70}
-                      h={20}
-                      fontSize={"xl"}
-                      fontWeight={"normal"}
-                      resize={"none"}
-                      w={"full"}
-                      name="title"
-                      onChange={Formik.handleChange}
-                      placeholder="I will create a professional website..."
-                      _placeholder={{fontWeight: 'normal'}}
-                    />
-                  </HStack>
+              <Box pos={"relative"} overflowY={"visible"}>
+                <FormControl py={4}>
+                  <CreateGigPopup
+                    trigger={
+                      <HStack alignItems={"flex-start"}>
+                        <FormLabel flex={1}>Title</FormLabel>
+                        <Textarea
+                          flex={5}
+                          noOfLines={2}
+                          maxLength={70}
+                          h={20}
+                          fontSize={"xl"}
+                          fontWeight={"normal"}
+                          resize={"none"}
+                          w={"full"}
+                          name="title"
+                          onChange={Formik.handleChange}
+                          placeholder="I will create a professional website..."
+                          _placeholder={{ fontWeight: "normal" }}
+                        />
+                      </HStack>
+                    }
+                    body={
+                      <>
+                        <Text fontSize={"sm"} mb={4} fontWeight={"semibold"}>
+                          Title of your Gig
+                        </Text>
+                        <Text fontSize={"xs"}>
+                          Your kwork's title should clearly summarize the
+                          essence of the service you are providing. <br />
+                          The title should reflect what the buyer will receive
+                          for exactly one kwork without any extra options. If
+                          you are creating a kwork with different package
+                          options, your title should reflect what the buyer will
+                          receive should they order the Basic package.
+                        </Text>
+                      </>
+                    }
+                  />
                 </FormControl>
-                <FormControl py={2}>
-                  <HStack alignItems={"flex-start"}>
-                    <FormLabel flex={1}>Brief Overview</FormLabel>
-                    <Textarea
-                      flex={5}
-                      maxLength={400}
-                      h={36}
-                      fontWeight={"normal"}
-                      resize={"none"}
-                      w={"full"}
-                      name="overview"
-                      onChange={Formik.handleChange}
-                      placeholder="A brief overview about your Gig..."
-                      _placeholder={{fontWeight: 'normal'}}
-                    />
-                  </HStack>
+                <FormControl py={4}>
+                  <CreateGigPopup
+                    // arrowColor={"#FFF"}
+                    trigger={
+                      <HStack alignItems={"flex-start"}>
+                        <FormLabel flex={1}>Brief Overview</FormLabel>
+                        <Textarea
+                          flex={5}
+                          maxLength={400}
+                          h={36}
+                          fontWeight={"normal"}
+                          resize={"none"}
+                          w={"full"}
+                          name="overview"
+                          onChange={Formik.handleChange}
+                          placeholder="A brief overview about your Gig..."
+                          _placeholder={{ fontWeight: "normal" }}
+                        />
+                      </HStack>
+                    }
+                    body={
+                      <>
+                        <Text fontSize={"sm"} mb={4} fontWeight={"semibold"}>
+                          Brief about your Gig
+                        </Text>
+                        <Text fontSize={"xs"}>
+                          Tell buyers about your Gig in brief. This is often
+                          visible to Search engines
+                        </Text>
+                      </>
+                    }
+                  />
                 </FormControl>
                 <HStack alignItems={"flex-start"} py={4}>
                   <FormLabel flex={1}>Category</FormLabel>
-                  <HStack gap={8} flex={5}>
-                    <FormControl>
-                      <Select
-                        placeholder={"Select Category"}
-                        name="category"
-                        onChange={Formik.handleChange}
-                        value={Formik.values.category}
-                      >
-                        {categories?.map((item, key) => {
-                          return (
-                            <option key={key} value={item.value}>
-                              {item.label}
-                            </option>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <Select
-                        placeholder={"Select Sub Category"}
-                        name="subCategory"
-                        onChange={Formik.handleChange}
-                        value={Formik.values.subCategory}
-                      >
-                        {subCategories?.map((item, key) => {
-                          return (
-                            <option key={key} value={item.value}>
-                              {item.label}
-                            </option>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </HStack>
+                  <CreateGigPopup
+                    arrowColor={"#FFF"}
+                    trigger={
+                      <HStack gap={8} flex={5}>
+                        <FormControl>
+                          <Select
+                            placeholder={"Select Category"}
+                            name="category"
+                            onChange={Formik.handleChange}
+                            value={Formik.values.category}
+                          >
+                            {categories?.map((item, key) => {
+                              return (
+                                <option key={key} value={item.value}>
+                                  {item.label}
+                                </option>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                        <FormControl>
+                          <Select
+                            placeholder={"Select Sub Category"}
+                            name="subCategory"
+                            onChange={Formik.handleChange}
+                            value={Formik.values.subCategory}
+                          >
+                            {subCategories?.map((item, key) => {
+                              return (
+                                <option key={key} value={item.value}>
+                                  {item.label}
+                                </option>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </HStack>
+                    }
+                    body={
+                      <>
+                        <Text fontSize={"sm"} mb={4} fontWeight={"semibold"}>
+                          Select the category most relevant to your kwork.
+                        </Text>
+                        <Text fontSize={"xs"}>
+                          Selecting the right category makes it easier for
+                          buyers to find and order your service. With hundreds
+                          of categories and subcategories on our platform,
+                          there's definitely a home for your kwork!
+                        </Text>
+                      </>
+                    }
+                  />
                 </HStack>
 
                 {services?.length ? (
-                  <FormControl py={4}>
+                  <FormControl
+                    w={["full", "3xl", "4xl"]}
+                    p={4}
+                    bgColor={"#FFF"}
+                  >
                     <HStack>
                       <FormLabel flex={1}>Services</FormLabel>
                       <Box flex={5}>
@@ -379,7 +444,11 @@ const CreateGig = () => {
                 ) : null}
 
                 {attributes?.length ? (
-                  <FormControl py={4}>
+                  <FormControl
+                    w={["full", "3xl", "4xl"]}
+                    p={4}
+                    bgColor={"#FFF"}
+                  >
                     <HStack>
                       <FormLabel flex={1}>Attributes</FormLabel>
                       <Box flex={5}>
@@ -420,7 +489,7 @@ const CreateGig = () => {
 
             {/* Description & Files */}
             <GigAccordion step={2} title={"Description & Files"}>
-              <Box py={4}>
+              <Box>
                 <Box py={4}>
                   <Text fontWeight={"semibold"}>Upload Banner Images</Text>
                   <FileDropzone
@@ -428,17 +497,34 @@ const CreateGig = () => {
                   />
                 </Box>
 
-                <Box py={4}>
-                  <Text fontWeight={"medium"} pb={4}>
-                    Detailed Description
-                  </Text>
-                  <SunEditor
-                    onChange={(value) =>
-                      Formik.setFieldValue("description", value)
-                    }
-                    height="520px"
-                  />
-                </Box>
+                <CreateGigPopup
+                  trigger={
+                    <Box py={4}>
+                      <Text fontWeight={"medium"} pb={4}>
+                        Description
+                      </Text>
+                      <SunEditor
+                        onChange={(value) =>
+                          Formik.setFieldValue("description", value)
+                        }
+                        height="520px"
+                      />
+                    </Box>
+                  }
+                  body={
+                    <>
+                      <Text fontSize={"sm"} mb={4} fontWeight={"semibold"}>
+                        Tell buyers about you and your kwork.
+                      </Text>
+                      <Text fontSize={"xs"}>
+                        This is your chance to be creative! What sets you apart
+                        from other freelancers? Should buyers choose you for
+                        your experience, specialized knowledge, or something
+                        else?
+                      </Text>
+                    </>
+                  }
+                />
 
                 <Box py={4}>
                   <Text fontWeight={"semibold"}>
@@ -455,23 +541,46 @@ const CreateGig = () => {
 
             {/* Pricing */}
             <GigAccordion step={3} title={"Pricing"}>
-              <Box py={4}>
+              <Box>
                 <FormControl py={4}>
-                  <HStack>
-                    <FormLabel flex={1}>Pricing Model</FormLabel>
-                    <HStack flex={5} gap={8}>
-                      <Select
-                        maxW={"xs"}
-                        name="pricingModel"
-                        onChange={Formik.handleChange}
-                        placeholder="Please Select"
-                      >
-                        <option value="fixed">Fixed Price</option>
-                        {/* <option value="hourly">Hourly Rate</option> */}
-                        <option value="plans">Plan Based</option>
-                      </Select>
-                    </HStack>
-                  </HStack>
+                  <CreateGigPopup
+                    trigger={
+                      <HStack>
+                        <FormLabel flex={1}>Pricing Model</FormLabel>
+                        <HStack flex={5} gap={8}>
+                          <Select
+                            maxW={"xs"}
+                            name="pricingModel"
+                            onChange={Formik.handleChange}
+                            placeholder="Please Select"
+                          >
+                            <option value="fixed">Fixed Price</option>
+                            {/* <option value="hourly">Hourly Rate</option> */}
+                            <option value="plans">Plan Based</option>
+                          </Select>
+                        </HStack>
+                      </HStack>
+                    }
+                    body={
+                      <>
+                        <Text fontSize={"sm"} fontWeight={"semibold"}>
+                          Chose Your Pricing Model
+                        </Text>
+                        <br />
+                        <Text fontSize={"xs"}>
+                          <span style={{ fontWeight: "bold" }}>Fixed: </span>
+                          You'll charge the customer a fixed amount for this Gig
+                        </Text>
+                        <Text fontSize={"xs"}>
+                          <span style={{ fontWeight: "bold" }}>
+                            Plan Based:{" "}
+                          </span>
+                          You'll be able to create different plans for different
+                          requirements.
+                        </Text>
+                      </>
+                    }
+                  />
                 </FormControl>
 
                 {Formik.values.pricingModel == "fixed" ? (
@@ -601,20 +710,32 @@ const CreateGig = () => {
 
                 {Formik.values.pricingModel == "plans" ? null : (
                   <FormControl py={4}>
-                    <HStack>
-                      <FormLabel flex={1}>Delivery Days</FormLabel>
-                      <HStack flex={5}>
-                        <InputGroup w={"xs"}>
-                          <Input
-                            type="number"
-                            name="deliveryDays"
-                            onChange={Formik.handleChange}
-                            placeholder="Max. delivery days"
-                          />
-                          <InputRightAddon children={"Days"} />
-                        </InputGroup>
-                      </HStack>
-                    </HStack>
+                    <CreateGigPopup
+                      trigger={
+                        <HStack>
+                          <FormLabel flex={1}>Delivery Days</FormLabel>
+                          <HStack flex={5}>
+                            <InputGroup w={"xs"}>
+                              <Input
+                                type="number"
+                                name="deliveryDays"
+                                onChange={Formik.handleChange}
+                                placeholder="Max. delivery days"
+                              />
+                              <InputRightAddon children={"Days"} />
+                            </InputGroup>
+                          </HStack>
+                        </HStack>
+                      }
+                      body={
+                        <>
+                          <Text fontSize={"xs"}>
+                            Enter the number pf days you can comfortably finish
+                            your Gig in.
+                          </Text>
+                        </>
+                      }
+                    />
                   </FormControl>
                 )}
 
@@ -645,20 +766,40 @@ const CreateGig = () => {
 
             {/* Client Requirements */}
             <GigAccordion step={4} title={"Requirements from Client"}>
-              <Box py={4}>
-                <Text fontSize={"md"} fontWeight={"medium"} pb={4}>
-                  What details do you need from your client?
-                </Text>
-                <SunEditor
-                  onChange={(value) =>
-                    Formik.setFieldValue("requirements", value)
-                  }
-                  height="520px"
-                />
-              </Box>
+              <CreateGigPopup
+                trigger={
+                  <Box py={4}>
+                    <Text fontSize={"md"} fontWeight={"medium"} pb={4}>
+                      What details do you need from your client?
+                    </Text>
+                    <SunEditor
+                      onChange={(value) =>
+                        Formik.setFieldValue("requirements", value)
+                      }
+                      height="520px"
+                    />
+                  </Box>
+                }
+                body={
+                  <>
+                    <Text fontSize={"sm"} fontWeight={"semibold"}>
+                      Indicate everything you need from the buyer to complete
+                      their order successfully.
+                    </Text>
+                    <br />
+                    <Text fontSize={"xs"}>
+                      If possible, make a list of questions, materials,
+                      documentation, and other information you need. Being
+                      thorough here saves you hours of back-and-forth in the
+                      future and allows you to get started on orders
+                      immediately.
+                    </Text>
+                  </>
+                }
+              />
             </GigAccordion>
           </Accordion>
-          <HStack w={"full"} justifyContent={"flex-end"} mt={8}>
+          <HStack w={["full", "3xl", "4xl"]} justifyContent={"flex-end"} mt={8}>
             <Button
               onClick={Formik.handleReset}
               isLoading={loading}

@@ -13,17 +13,17 @@ import {
 const GigAccordion = ({ children, step, title }) => {
   return (
     <>
-      <AccordionItem
-        border={"none"}
-        my={4}
-        bgColor={"#FFF"}
-        py={2}
-        rounded={"6"}
-        boxShadow={"base"}
-      >
+      <AccordionItem border={"none"} my={4} py={2} overflowY={"visible"}>
         {({ isExpanded }) => (
           <>
-            <AccordionButton borderBottom={isExpanded ? '1px' : '0'} pb={isExpanded ? 4 : 2}>
+            <AccordionButton
+              borderBottom={isExpanded ? "1px" : "0"}
+              py={4}
+              w={["full", "3xl", "4xl"]}
+              rounded={"6"}
+              boxShadow={"base"}
+              bgColor={"#FFF"}
+            >
               <HStack w={"full"} gap={8}>
                 <Box
                   boxSize={"12"}
@@ -46,7 +46,11 @@ const GigAccordion = ({ children, step, title }) => {
               </HStack>
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel pb={4}>{children}</AccordionPanel>
+            <AccordionPanel p={0} overflowY={"visible"}>
+              <Box w={["full", "3xl", "4xl"]} px={6} py={8} bgColor={"#FFF"}>
+                {children}
+              </Box>
+            </AccordionPanel>
           </>
         )}
       </AccordionItem>
