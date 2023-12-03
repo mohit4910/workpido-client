@@ -19,13 +19,6 @@ import {
   InputGroup,
   InputRightAddon,
   InputLeftAddon,
-  Modal,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  Image,
-  PopoverBody,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
@@ -69,7 +62,7 @@ const CreateGig = () => {
       pricingModel: "",
       fixedPrice: null,
       hourlyPrice: null,
-      startingPrice: null,
+      minPrice: null,
       totalPlans: "1",
       pricingTable: null,
       revisions: null,
@@ -249,7 +242,7 @@ const CreateGig = () => {
     if (!Formik.values.pricingModel) {
       Formik.setFieldValue("fixedPrice", "");
       Formik.setFieldValue("hourlyPrice", "");
-      Formik.setFieldValue("startingPrice", "");
+      Formik.setFieldValue("minPrice", "");
     }
   }, [Formik.values.pricingModel]);
 
@@ -671,7 +664,7 @@ const CreateGig = () => {
                             <InputLeftAddon children={user?.currency?.symbol} />
                             <Input
                               type="number"
-                              name="startingPrice"
+                              name="minPrice"
                               onChange={Formik.handleChange}
                               placeholder="Starting price"
                             />

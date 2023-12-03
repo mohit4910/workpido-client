@@ -31,6 +31,14 @@ export const ContactList = () => {
       fetchChats();
     });
 
+    pusher.connection.bind("disconnect", async () => {
+      await API.updateMe({ online: false });
+    });
+
+    pusher.connection.bind("connect", async () => {
+      await API.updateMe({ online: true });
+    });
+
     // Clean up subscriptions on component unmount
     return () => {
       channel.unbind_all();
