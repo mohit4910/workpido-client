@@ -105,6 +105,8 @@ const Catalog = () => (
 );
 
 export default function Home() {
+
+  const [search, setSearch] = useState("")
   
   return (
     <main className="flex flex-col items-center justify-between min-h-screen mb-10">
@@ -134,6 +136,8 @@ export default function Home() {
                     type="text"
                     placeholder={`Try "social media design"`}
                     className="h-full text-base border-none outline-none"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                 </Flex>
                 <Button
@@ -146,6 +150,7 @@ export default function Home() {
                   _hover={{
                     bg: "green.300",
                   }}
+                  onClick={() => push(`./search?search=${search}`)}
                 >
                   Search
                 </Button>
