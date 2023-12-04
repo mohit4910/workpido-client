@@ -11,7 +11,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-const Filters = ({ category }) => {
+const Filters = ({ category, inSearch }) => {
   const query = useSearchParams();
   const { push, replace } = useRouter();
   const filters = query.entries();
@@ -182,7 +182,11 @@ const Filters = ({ category }) => {
     if (urlFilters?.maxPrice) setMaxPrice(urlFilters?.maxPrice);
 
     const queryParams = new URLSearchParams(urlFilters);
-    push(`/categories/${category}?${queryParams?.toString()}`);
+    push(
+      `${
+        inSearch ? `/search` : `/categories/${category}`
+      }?${queryParams?.toString()}`
+    );
 
     console.log("URL Filters Changed");
     console.log(queryParams.toString());
@@ -305,7 +309,7 @@ const Filters = ({ category }) => {
   );
 };
 
-const GigFilters = ({ category }) => {
+const GigFilters = ({ category, inSearch = false }) => {
   return (
     <>
       <Hide above="md">
@@ -320,14 +324,14 @@ const GigFilters = ({ category }) => {
               </AccordionButton>
             </h2>
             <AccordionPanel p={4}>
-              <Filters category={category} />
+              <Filters category={category} inSearch={inSearch} />
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
       </Hide>
       <Hide below="md">
         <Box w={"full"} p={"4"} bgColor={"#FFF"} rounded={4} boxShadow={"base"}>
-          <Filters category={category} />
+          <Filters category={category} inSearch={inSearch} />
         </Box>
       </Hide>
     </>

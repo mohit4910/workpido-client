@@ -43,12 +43,15 @@ import { useEffect, useState } from "react";
 import { API } from "@/lib/api";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
-  const [loggedIn, setLoggedIn] = useState(null);
   const { isLoggedIn, user, currentRole, onLogout, onChangeRole } = useAuth();
+  const { push } = useRouter();
 
+  const [loggedIn, setLoggedIn] = useState(null);
+  const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -98,7 +101,7 @@ export default function WithSubnavigation() {
             />
           </Flex>
           <Flex flex={{ base: 1 }} justifyContent={["start"]}>
-            <Flex alignItems={"center"} justifyContent={'flex-start'}>
+            <Flex alignItems={"center"} justifyContent={"flex-start"}>
               <Link href={"/"}>
                 <Image
                   // textAlign={useBreakpointValue({ base: "center", md: "left" })}
@@ -122,11 +125,14 @@ export default function WithSubnavigation() {
                     bgColor={"#FFF"}
                     color={"#000"}
                     placeholder="Search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                   <InputRightAddon
                     children={"Search"}
                     bgColor={"brand.primary"}
                     cursor={"pointer"}
+                    onClick={() => push(`./search?search=${search}`)}
                   />
                 </InputGroup>
               </Hide>
@@ -262,7 +268,7 @@ const DesktopNav = ({ categories }) => {
       justify={"space-between"}
       w={"full"}
       overflowX="hidden"
-      display={['none', 'flex']}
+      display={["none", "flex"]}
     >
       {categories?.map((navItem, i) => (
         <Box
