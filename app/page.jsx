@@ -105,14 +105,7 @@ const Catalog = () => (
 );
 
 export default function Home() {
-  const getData = async () => {
-    let res = await API.getGigs();
-    console.log(res);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  
   return (
     <main className="flex flex-col items-center justify-between min-h-screen mb-10">
       {/* Banner */}
