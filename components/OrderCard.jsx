@@ -4,39 +4,28 @@ import React from "react";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 
 const OrderCard = ({ order }) => {
-  let orderDetails = {
-    artileName: "I will create responsive websites in Next.js",
-    buyer: {
-      fullName: "Adarsh Prakash",
-      userName: "geekguyadarsh",
-      photoURL: "https://avatars0.githubusercontent.com/u/1164541?v=4",
-    },
-    deliveryDate: "August 15, 2023",
-    price: "$15",
-    isCompleted: true,
-    isCanceled: false,
-  };
+  
   return (
     <Flex className="w-[95%] mx-auto bg-white shadow-lg lg:rounded-none border rounded-lg shadow-stone-400/40 px-3 py-2 flex-col lg:flex-row gap-2">
       {/* Name */}
 
       <Flex className="w-full lg:items-center lg:w-2/6">
         <Link
-          href={"/order-details"}
+          href={`/order-details/${order?.orderId}`}
           className="hover:text-indigo-600 items-center"
         >
           {order?.gig?.title}
         </Link>
       </Flex>
       {/* Status */}
-      <Flex className="w-full lg:w-1/6 gap-2 items-end flex-col lg:order-last">
+      <Flex className="w-full lg:w-1/6 gap-2 items-center flex-col lg:order-last">
         <Text className="text-xs text-neutral-500">
           {order?.finishedAt
             ? new Date(order?.finishedAt)?.toLocaleDateString()
             : null}
         </Text>
 
-        {orderDetails.isCanceled ? (
+        {order?.status == "cancelled" ? (
           <Box className="py-1 px-3 border border-red-700 rounded-md bg-red-700">
             <Text className="text-xs text-white font-medium">Canceled</Text>
           </Box>
