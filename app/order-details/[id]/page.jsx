@@ -41,24 +41,25 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import parse from "html-react-parser";
 import { FaFile, FaQuestion, FaUserCircle } from "react-icons/fa";
-import { GiCheckMark } from "react-icons/gi";
 import { LuFileStack } from "react-icons/lu";
 import { TbWriting } from "react-icons/tb";
 import AppModal from "@/components/AppModal";
 import { useFormik } from "formik";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
-import { FiPaperclip } from "react-icons/fi";
 import { toast } from "react-toastify";
-import { BsTrash2Fill } from "react-icons/bs";
+import { BsSend, BsSendFill, BsTrash2Fill } from "react-icons/bs";
 
 const page = ({ params }) => {
   const { id } = params;
-  const { replace, push, refresh } = useRouter();
+  const { replace, refresh } = useRouter();
   const { getMediaUrl, uploadAndAttachMedia } = useApiHandler();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [sellerAvatar, setSellerAvatar] = useState("");
+  const [buyerAvatar, setBuyerAvatar] = useState("");
+  const [orderUpdates, setOrderUpdates] = useState([]);
+  const [msg, setMsg] = useState("");
   const [bannerUrl, setBannerUrl] = useState();
   const [files, setFiles] = useState([]);
   const [orderDetails, setOrderDetails] = useState(null);
@@ -87,8 +88,14 @@ const page = ({ params }) => {
   useEffect(() => {
     if (orderDetails?.id) {
       let attachments = [];
-      const avatarUrl = getMediaUrl(orderDetails?.gig?.seller?.avatar?.url);
-      setSellerAvatar(avatarUrl);
+
+      const sellerAvatarUrl = getMediaUrl(
+        orderDetails?.gig?.seller?.avatar?.url
+      );
+      setSellerAvatar(sellerAvatarUrl);
+
+      const buyerAvatarUrl = getMediaUrl(orderDetails?.buyer?.avatar?.url);
+      setBuyerAvatar(buyerAvatarUrl);
 
       if (orderDetails?.gig?.banners?.length) {
         const firstBanner = getMediaUrl(orderDetails?.gig?.banners[0]?.url);
@@ -104,6 +111,7 @@ const page = ({ params }) => {
       }
 
       setActiveStep(orderDetails == "requirements submitted" ? 2 : 1);
+      fetchOrderUpdates(orderDetails?.id);
     }
   }, [orderDetails]);
 
@@ -165,7 +173,7 @@ const page = ({ params }) => {
     try {
       await API.updateOrder(orderDetails?.id, {
         data: {
-          status: "camcelled",
+          status: "cancelled",
           review: reason,
         },
       });
@@ -187,6 +195,29 @@ const page = ({ params }) => {
         // push("/system/error")
         console.log(error);
       }
+    }
+  }
+
+  async function fetchOrderUpdates(id) {
+    try {
+      const res = await API.getOrderUpdates(id || orderDetails?.id);
+      setOrderUpdates(res);
+    } catch (error) {
+      toast.error("Error while fetching updates");
+    }
+  }
+
+  async function postOrderUpdate() {
+    try {
+      await API.postOrderUpdate({
+        message: msg,
+        orderId: orderDetails?.id,
+      });
+      setMsg("");
+      await fetchOrderUpdates();
+      toast.success("Update posted successfully!");
+    } catch (error) {
+      toast.error("Error while posting update");
     }
   }
 
@@ -270,44 +301,76 @@ const page = ({ params }) => {
               <br />
             </Flex>
           </Flex>
+          <HStack>
+            {orderDetails?.status == "pending requirements" ? (
+              <Button
+                p={"2.5"}
+                w={"48"}
+                fontSize={"sm"}
+                bgColor={"orange.400"}
+                colorScheme="'orange"
+                color={"#FFF"}
+                fontWeight={"medium"}
+                onClick={onOpen}
+              >
+                Submit Requirements
+              </Button>
+            ) : null}
 
-          {orderDetails?.status == "pending requirements" ? (
-            <Button
-              p={"2.5"}
-              w={"48"}
-              fontSize={"sm"}
-              bgColor={"orange.400"}
-              colorScheme="'orange"
-              color={"#FFF"}
-              fontWeight={"medium"}
-              onClick={onOpen}
-            >
-              Submit Requirements
-            </Button>
-          ) : null}
-
-          {orderDetails?.status == "completed" ||
-          orderDetails?.status == "cancelled" ? null : (
-            <Button
-              p={"2.5"}
-              w={"48"}
-              fontSize={"sm"}
-              bgColor={"red.400"}
-              colorScheme="'red"
-              fontWeight={"medium"}
-              onClick={() => setCancelOrderModal(true)}
-            >
-              Cancel Order
-            </Button>
-          )}
+            {orderDetails?.status == "completed" ||
+            orderDetails?.status == "cancelled" ? null : (
+              <Button
+                p={"2.5"}
+                w={"48"}
+                fontSize={"sm"}
+                bgColor={"red.400"}
+                colorScheme="'red"
+                fontWeight={"medium"}
+                onClick={() => setCancelOrderModal(true)}
+                color={"#FFF"}
+              >
+                Cancel Order
+              </Button>
+            )}
+          </HStack>
 
           {/* Order Updates */}
           <Flex className="w-full flex-col bg-white p-5 gap-5">
-            <Text className="bg-[#f8f8f8] p-2 -mx-5 text-neutral-700 sticky top-0">
+            {/* <Text className="bg-[#f8f8f8] p-2 -mx-5 text-neutral-700 sticky top-0">
               August 15
-            </Text>
-            <Message />
-            <Message />
+            </Text> */}
+            {orderUpdates.map((data, key) => (
+              <Message
+                key={key}
+                username={data?.sender?.username}
+                avatar={
+                  data?.sender?.id == orderDetails?.buyer?.id
+                    ? buyerAvatar
+                    : sellerAvatar
+                }
+                msg={data?.message}
+              />
+            ))}
+            <br />
+            {orderDetails?.status == "cancelled" ? null : (
+              <HStack gap={4}>
+                <Input
+                  w={"full"}
+                  placeholder="Type your message here..."
+                  value={msg}
+                  onChange={(e) => setMsg(e.target.value)}
+                />
+                <Button
+                  bgColor="brand.primary"
+                  colorScheme="orange"
+                  fontSize={"sm"}
+                  rightIcon={<BsSendFill />}
+                  onClick={postOrderUpdate}
+                >
+                  Send
+                </Button>
+              </HStack>
+            )}
           </Flex>
         </Flex>
         {/* SideBar - Comes Down on smaller displays */}
@@ -340,14 +403,12 @@ const page = ({ params }) => {
             </List>
             {/* Buyer Details */}
             <Flex className="justify-between py-4 border-y">
-              <Text>Buyer</Text>
+              <Text pr={3}>Buyer </Text>
               <Stack direction={"row-reverse"} spacing={2} align={"flex-start"}>
-                <Avatar size={"md"} src={sellerAvatar} />
+                <Avatar size={"md"} src={buyerAvatar} />
                 <Stack direction={"column"} spacing={0} fontSize={"lg"}>
                   <Link href={"/profile"} className="hover:text-indigo-600">
-                    <Text fontSize={"sm"}>
-                      {orderDetails?.gig?.seller?.username}
-                    </Text>
+                    <Text fontSize={"sm"}>{orderDetails?.buyer?.username}</Text>
                   </Link>
                   <Text fontSize={"xs"} className="text-neutral-500 text-right">
                     Offline 3d ago
@@ -356,17 +417,43 @@ const page = ({ params }) => {
               </Stack>
             </Flex>
             {/* Order Progress Bar */}
-            <Stepper
-              index={activeStep}
-              size={"sm"}
-              orientation="vertical"
-              height="300px"
-              colorScheme="green"
-              gap="0"
-              className="py-4"
-            >
-              {steps.map((step, index) => (
-                <Step key={index}>
+            {orderDetails?.status != "cancelled" ? (
+              <Stepper
+                index={orderDetails?.status == "cancelled" ? 1 : activeStep}
+                size={"sm"}
+                orientation="vertical"
+                height="300px"
+                colorScheme="green"
+                gap="0"
+                className="py-4"
+              >
+                {steps.map((step, index) => (
+                  <Step key={index}>
+                    <StepIndicator>
+                      <StepStatus
+                        complete={<StepIcon />}
+                        incomplete={<StepNumber />}
+                        active={<StepNumber />}
+                      />
+                    </StepIndicator>
+                    <Box overflowX={"hidden"}>
+                      <StepTitle>{step.title}</StepTitle>
+                    </Box>
+                    <StepSeparator />
+                  </Step>
+                ))}
+              </Stepper>
+            ) : (
+              <Stepper
+                index={2}
+                size={"sm"}
+                orientation="vertical"
+                height="300px"
+                colorScheme="green"
+                gap="0"
+                className="py-4"
+              >
+                <Step>
                   <StepIndicator>
                     <StepStatus
                       complete={<StepIcon />}
@@ -375,12 +462,25 @@ const page = ({ params }) => {
                     />
                   </StepIndicator>
                   <Box overflowX={"hidden"}>
-                    <StepTitle>{step.title}</StepTitle>
+                    <StepTitle>Order Created</StepTitle>
                   </Box>
                   <StepSeparator />
                 </Step>
-              ))}
-            </Stepper>
+                <Step>
+                  <StepIndicator>
+                    <StepStatus
+                      complete={<StepIcon />}
+                      incomplete={<StepNumber />}
+                      active={<StepNumber />}
+                    />
+                  </StepIndicator>
+                  <Box overflowX={"hidden"}>
+                    <StepTitle>Cancelled</StepTitle>
+                  </Box>
+                  <StepSeparator />
+                </Step>
+              </Stepper>
+            )}
           </Flex>
           {/* Three Drop-downs */}
           {/* Files */}
