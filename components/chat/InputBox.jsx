@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Input,
   Button,
@@ -17,10 +17,12 @@ import {
 import { BsPaperclip } from "react-icons/bs";
 import { VscSend } from "react-icons/vsc";
 import FileDropzone from "../FileDropzone";
+import { API } from "@/lib/api";
+import useAuth from "@/hooks/useAuth";
 
-export const InputBox = ({ addMessage }) => {
+export const InputBox = ({ addMessage, receiver }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { user } = useAuth();
   const [input, setInput] = useState("");
   const [files, setFiles] = useState(null);
 
@@ -31,6 +33,26 @@ export const InputBox = ({ addMessage }) => {
       onClose();
     }
   };
+
+  useEffect(() => {
+    if (input) {
+      isTyping(true);
+    } else {
+      isTyping(false);
+    }
+  }, [input]);
+
+  async function isTyping(status) {
+    try {
+      await API.typingStatus({
+        receiver: receiver,
+        sender: user?.username,
+        isTyping: status,
+      });
+    } catch (error) {
+      console.log("Error while updating typing status");
+    }
+  }
 
   return (
     <>

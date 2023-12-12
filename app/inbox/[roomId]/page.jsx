@@ -9,9 +9,9 @@ import { toast } from "react-toastify";
 import useApiHandler from "@/hooks/useApiHandler";
 
 const page = ({ params }) => {
-  const { me, user } = useAuth();
+  const { user } = useAuth();
   const { uploadAndAttachMedia } = useApiHandler();
-
+  const [typing, setTyping] = useState(false);
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
   const [receiver, setReceiver] = useState(null);
@@ -33,7 +33,7 @@ const page = ({ params }) => {
         content: text,
         receiver: { id: receiver?.id, username: receiver?.username },
       });
-      console.log(message);
+
       if (files?.length) {
         await uploadAndAttachMedia({
           files: files,
@@ -99,6 +99,12 @@ const page = ({ params }) => {
       console.log("New Message:", data.message);
     });
 
+    channel.bind("is-typing", function (data) {
+      // Handle the new message data and update the UI
+      const { isTyping, sender, receiver } = data;
+      setTyping(isTyping);
+    });
+
     // Clean up subscriptions on component unmount
     return () => {
       channel.unbind_all();
@@ -148,6 +154,7 @@ const page = ({ params }) => {
           messages={messages}
           addMessage={addMessage}
           receiver={receiver}
+          isTyping={typing}
         />
       )}
     </>

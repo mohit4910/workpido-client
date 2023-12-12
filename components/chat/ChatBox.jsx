@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
@@ -22,11 +22,13 @@ import {
 } from "react-virtualized";
 import Link from "next/link";
 
-export const ChatBox = ({ messages, addMessage, receiver }) => {
+export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
   const cache = new CellMeasurerCache({
     fixedWidth: true,
     defaultHeight: 50,
   });
+
+  
 
   const rowRenderer = ({ index, key, parent, style }) => (
     <CellMeasurer
@@ -95,7 +97,9 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
           <Avatar size={"sm"} name={receiver?.username} />
           <Box>
             <Text fontSize="12px" fontWeight={"semibold"}>
-              {receiver?.displayName || receiver?.username}
+              {isTyping
+                ? "Typing..."
+                : receiver?.displayName || receiver?.username}
             </Text>
             <Text fontSize="8px" fontWeight={"medium"} color={"gray.500"}>
               {receiver?.profession}
@@ -114,7 +118,7 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
           </HStack> */}
         </HStack>
       </Box>
-      <Box h={"80%"} overflowY={"scroll"} overflowX={'hidden'}>
+      <Box h={"80%"} overflowY={"scroll"} overflowX={"hidden"}>
         <AutoSizer>
           {({ height, width }) => (
             <List
@@ -128,7 +132,10 @@ export const ChatBox = ({ messages, addMessage, receiver }) => {
         </AutoSizer>
       </Box>
       <Box px={3}>
-        <InputBox addMessage={addMessage} />
+        <InputBox
+          addMessage={addMessage}
+          receiver={receiver?.username}
+        />
       </Box>
     </>
   );
