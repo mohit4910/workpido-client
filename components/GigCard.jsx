@@ -166,11 +166,7 @@ export default function GigCard({ gig }) {
                   Starting at{" "}
                   <span className="text-lg font-bold">
                     {gig?.seller?.currency?.symbol ?? "₹"}
-                    {gig?.pricingModel == "plans"
-                      ? gig?.startingPrice
-                      : gig?.pricingModel == "fixed"
-                      ? gig?.fixedPrice
-                      : gig?.hourlyPrice || "999"}
+                    {gig?.minPrice}
                   </span>
                 </Text>
               </Stack>

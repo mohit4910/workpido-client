@@ -4,19 +4,18 @@ body {
 
 /* For Webkit browsers (e.g., Chrome, Safari) */
 ::-webkit-scrollbar {
-    width: 6px;
-  }
+  width: 6px;
+}
 
-  ::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-  }
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
 
-  ::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 6px;
-  }
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+}
 
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
-
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
