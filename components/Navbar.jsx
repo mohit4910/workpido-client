@@ -71,169 +71,168 @@ export default function WithSubnavigation() {
   }, [isLoggedIn]);
 
   return (
-    <Box bg={"#333333"} color={"#fff"}>
-      <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+    <Box bg={"#FFF"} color={"#111"}>
+      <Flex
+        minH={"60px"}
+        p={4}
+        px={[4, 16, '7%']}
+        borderBottom={"0.75px"}
+        borderStyle={"solid"}
+        borderColor={"#bdbdbd"}
+        align={"center"}
+      >
         <Flex
-          minH={"60px"}
-          py={{ base: 2 }}
-          px={{ base: 4 }}
-          // borderBottom={1}
-          // borderStyle={"solid"}
-          // borderColor={useColorModeValue("gray.200", "gray.900")}
-          align={"center"}
+          flex={{ base: 1, md: "auto" }}
+          ml={{ base: -2 }}
+          display={{ base: "flex", md: "none" }}
         >
-          <Flex
-            flex={{ base: 1, md: "auto" }}
-            ml={{ base: -2 }}
-            display={{ base: "flex", md: "none" }}
-          >
-            <IconButton
-              onClick={onToggle}
-              icon={
-                isOpen ? (
-                  <CloseIcon w={3} h={3} />
-                ) : (
-                  <HamburgerIcon w={5} h={5} />
-                )
-              }
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Flex>
-          <Flex flex={{ base: 1 }} justifyContent={["start"]}>
-            <Flex alignItems={"center"} justifyContent={"flex-start"}>
-              <Link href={"/"}>
-                <Image
-                  // textAlign={useBreakpointValue({ base: "center", md: "left" })}
-                  fontFamily={"heading"}
-                  color={useColorModeValue("gray.800", "white")}
-                  src={logo}
-                  // className="h-auto w-30"
-                  height={32}
-                  alt={"workpido"}
+          <IconButton
+            onClick={onToggle}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
+            variant={"ghost"}
+            aria-label={"Toggle Navigation"}
+          />
+        </Flex>
+        <Flex flex={{ base: 1 }} justifyContent={["start"]}>
+          <Flex alignItems={"center"} justifyContent={"flex-start"}>
+            <Link href={"/"}>
+              <Image
+                // textAlign={useBreakpointValue({ base: "center", md: "left" })}
+                fontFamily={"heading"}
+                color={useColorModeValue("gray.800", "white")}
+                src={logo}
+                // className="h-auto w-30"
+                height={32}
+                alt={"workpido"}
+              />
+            </Link>
+            <Link href={"/"}>
+              <span
+                className="ml-0.5 text-2xl font-bold tracking-wider"
+                style={{ color: "#333" }}
+              >
+                WORKPIDO
+              </span>
+            </Link>
+            <Hide below="md">
+              <InputGroup size={"sm"} ml={4}>
+                <Input
+                  w={48}
+                  bgColor={"#FFF"}
+                  color={"#000"}
+                  placeholder="Search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-              </Link>
-              <Link href={"/"}>
-                <span className="ml-0.5 text-2xl font-bold tracking-wider text-white">
-                  WORKPIDO
-                </span>
-              </Link>
-              <Hide below="md">
-                <InputGroup size={"sm"} ml={4}>
-                  <Input
-                    w={48}
-                    bgColor={"#FFF"}
-                    color={"#000"}
-                    placeholder="Search"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                  <InputRightAddon
-                    children={"Search"}
-                    bgColor={"brand.primary"}
-                    cursor={"pointer"}
-                    onClick={() => push(`./search?search=${search}`)}
-                  />
-                </InputGroup>
-              </Hide>
-            </Flex>
+                <InputRightAddon
+                  children={"Search"}
+                  bgColor={"brand.primary"}
+                  color={"#FFF"}
+                  cursor={"pointer"}
+                  onClick={() => push(`./search?search=${search}`)}
+                />
+              </InputGroup>
+            </Hide>
           </Flex>
+        </Flex>
 
-          {loggedIn == null ? null : loggedIn == false ? (
-            <Stack
-              flex={{ base: 1, md: 0 }}
-              justify={"flex-end"}
-              direction={"row"}
-              spacing={6}
-            >
+        {loggedIn == null ? null : loggedIn == false ? (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
+          >
+            <HStack>
               <SigninModal />
               <SignupModal />
+            </HStack>
 
+            <Button
+              as={"a"}
+              fontSize={"sm"}
+              fontWeight={400}
+              variant={"link"}
+              href={"/for-freelancers"}
+              color={"#111"}
+            >
+              Are you a freelancer?
+            </Button>
+          </Stack>
+        ) : (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
+            color={'#000'}
+          >
+            <Hide below="md">
               <Button
                 as={"a"}
                 fontSize={"sm"}
                 fontWeight={400}
                 variant={"link"}
-                href={"/for-freelancers"}
-                color="white"
+                _hover={"none"}
+                href={"/manage-gigs"}
               >
-                Are you a freelancer?
+                Gigs
               </Button>
-            </Stack>
-          ) : (
-            <Stack
-              flex={{ base: 1, md: 0 }}
-              justify={"flex-end"}
-              direction={"row"}
-              spacing={6}
-            >
+            </Hide>
+            <Hide below="md">
+              <Button
+                as={"a"}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                _hover={"none"}
+                href={"/orders"}
+              >
+                Orders
+              </Button>
+            </Hide>
+            <Hide below="md">
+              <Button
+                as={"a"}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                _hover={"none"}
+                href={"/inbox/me"}
+              >
+                Chat
+              </Button>
+            </Hide>
+            <Hide below="md">
+              <HStack display={["none", "flex"]}>
+                <MoneyRecive size="24" color="#F4CE14" />
+                <Text fontSize={"sm"}>
+                  $1200
+                </Text>
+              </HStack>
+            </Hide>
+            {currentRole == "buyer" ? (
               <Hide below="md">
-                <Button
-                  as={"a"}
-                  fontSize={"sm"}
-                  fontWeight={400}
+                <IconButton
+                  p={0}
                   variant={"link"}
-                  _hover={"none"}
-                  href={"/manage-gigs"}
-                  color="white"
-                >
-                  Gigs
-                </Button>
+                  href={"#"}
+                  icon={<ShoppingCart size="24" color="#FAFAFA" />}
+                />
               </Hide>
-              <Hide below="md">
-                <Button
-                  as={"a"}
-                  fontSize={"sm"}
-                  fontWeight={400}
-                  variant={"link"}
-                  _hover={"none"}
-                  href={"/orders"}
-                  color="white"
-                >
-                  Orders
-                </Button>
-              </Hide>
-              <Hide below="md">
-                <Button
-                  as={"a"}
-                  fontSize={"sm"}
-                  fontWeight={400}
-                  variant={"link"}
-                  _hover={"none"}
-                  href={"/inbox/me"}
-                  color="white"
-                >
-                  Chat
-                </Button>
-              </Hide>
-              <Hide below="md">
-                <HStack display={["none", "flex"]}>
-                  <MoneyRecive size="24" color="#F4CE14" />
-                  <Text fontSize={"sm"} color={"#FFF"}>
-                    $1200
-                  </Text>
-                </HStack>
-              </Hide>
-              {currentRole == "buyer" ? (
-                <Hide below="md">
-                  <IconButton
-                    p={0}
-                    variant={"link"}
-                    href={"#"}
-                    icon={<ShoppingCart size="24" color="#FAFAFA" />}
-                  />
-                </Hide>
-              ) : null}
-              <NavAvatar
-                user={user}
-                currentRole={currentRole}
-                onLogout={onLogout}
-                onChangeRole={(role) => onChangeRole(role)}
-              />
-            </Stack>
-          )}
-        </Flex>
-      </Container>
+            ) : null}
+            <NavAvatar
+              user={user}
+              currentRole={currentRole}
+              onLogout={onLogout}
+              onChangeRole={(role) => onChangeRole(role)}
+            />
+          </Stack>
+        )}
+      </Flex>
+
       <Flex
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
@@ -246,7 +245,7 @@ export default function WithSubnavigation() {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
-        <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+        <Container maxW={["full", "87%"]}>
           <DesktopNav categories={categories} />
         </Container>
       </Flex>
@@ -283,13 +282,13 @@ const DesktopNav = ({ categories }) => {
             <PopoverTrigger>
               <Center
                 as="a"
-                p={2}
-                px={4}
+                py={2}
+                pt={3}
                 href={navItem?.frontendLink ?? "#"}
                 fontSize={"sm"}
                 fontWeight={400}
-                borderRight={`${categories?.length - 1 !== i && "1px"}`}
-                borderColor={"gray.300"}
+                // borderRight={`${categories?.length - 1 !== i && "1px"}`}
+                // borderColor={"gray.300"}
                 color={linkColor}
                 borderBottom={"3px solid transparent"}
                 _hover={{
@@ -301,7 +300,14 @@ const DesktopNav = ({ categories }) => {
                 w={"full"}
                 mx={"auto"}
               >
-                <Center whiteSpace={"nowrap"}>{navItem.title}</Center>
+                <Center
+                  w={"full"}
+                  whiteSpace={"nowrap"}
+                  borderRight={`${categories?.length - 1 !== i && "1px"}`}
+                  borderColor={"gray.300"}
+                >
+                  {navItem.title}
+                </Center>
               </Center>
             </PopoverTrigger>
 

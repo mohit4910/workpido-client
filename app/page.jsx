@@ -37,17 +37,10 @@ import SellerCard from "@/components/SellerCard";
 import ZoomableImage from "@/components/ZoomableImage";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import { API_BASE_URL } from "@/lib/constants";
 
-const ZoomImage = ({ src, alt }) => {
-  const [isZoomed, setIsZoomed] = useState(false);
-
-  const handleZoom = () => {
-    setIsZoomed(true);
-  };
-
-  const handleUnzoom = () => {
-    setIsZoomed(false);
-  };
+const ZoomImage = ({ src, alt, link }) => {
+  const [zoomed, setZoomed] = useState(false);
 
   return (
     <Box
@@ -56,58 +49,75 @@ const ZoomImage = ({ src, alt }) => {
       className="catalog"
       transition="0.3s ease-in-out"
       _hover={{ shadow: "xl", brightness: "0.2" }}
+      cursor={"pointer"}
+      as={"a"}
+      href={link ?? "#"}
+      pos={"relative"}
     >
       <Box textDecoration="none" _hover={{ textDecoration: "none" }}>
         <Image
           src={src}
           alt={alt}
           objectFit="cover"
-          transform="scale(1.0)"
+          transform={zoomed ? "scale(1.05)" : "scale(1.0)"}
           className="h-28 md:h-44 w-44 md:w-72"
           transition="0.3s ease-in-out"
-          _hover={{
-            transform: "scale(1.05)",
-          }}
         />
+      </Box>
+      <Box
+        pos={"absolute"}
+        w={"full"}
+        h={"100%"}
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        bgGradient="linear(blackAlpha.50 50%, blackAlpha.600 80%, blackAlpha.700 40%)"
+        p={4}
+        display={"flex"}
+        flexDirection={"row"}
+        alignItems={"flex-end"}
+        justifyContent={"flex-start"}
+        onMouseEnter={() => setZoomed(true)}
+        onMouseLeave={() => setZoomed(false)}
+      >
+        <Text fontSize={"lg"} color={"#FFF"}>
+          {alt}
+        </Text>
       </Box>
     </Box>
   );
 };
 
-const Catalog = () => (
-  <Flex w={"full"} justifyContent="center" flexWrap="wrap" className="gap-4">
-    <ZoomImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/seo_guest.webp?ver=1615534300"
-      alt="services"
-    />
-    <ZoomImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3_r/reklama-pr_guest.webp?ver=1628520228"
-      alt="services"
-    />
-    <ZoomImage src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/programming_guest.webp?ver=1615534237" />
-    <ZoomImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/design_guest.webp?ver=1615534203"
-      alt="services"
-    />
-    <ZoomImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/writing-translations_guest.webp?ver=1615534286"
-      alt="services"
-    />
-    <ZoomImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/audio-video_guest.webp?ver=1615534330"
-      alt="services"
-    />
-    <ZoomImage
-      src="https://cdn.kwork.com/files/category/collage/categories_first_level/en/t3/business_guest.webp?ver=1615534340"
-      alt="services"
-    />
-  </Flex>
-);
+const Catalog = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    setCategories(JSON.parse(sessionStorage.getItem("categories")));
+  }, []);
+
+  return (
+    <>
+      <Flex
+        w={"full"}
+        justifyContent="center"
+        flexWrap="wrap"
+        className="gap-4"
+      >
+        {categories?.map((data, key) => (
+          <ZoomImage
+            src={API_BASE_URL?.replace("/api", "") + data?.cover?.url}
+            alt={data?.title}
+          />
+        ))}
+      </Flex>
+    </>
+  );
+};
 
 export default function Home() {
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch] = useState("")
-  
   return (
     <main className="flex flex-col items-center justify-between min-h-screen mb-10">
       {/* Banner */}
@@ -327,7 +337,6 @@ export default function Home() {
                   alt=""
                 />
               </Tooltip>
-
               <Tooltip
                 hasArrow
                 label="Top Companies uses Workpido to get work done"

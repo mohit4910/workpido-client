@@ -57,11 +57,11 @@ const SigninModal = () => {
         display={{ base: "none", md: "inline-flex" }}
         fontSize={"sm"}
         fontWeight={"400"}
-        color={"white"}
+        color={"#111"}
         bg={"transparent"}
         _hover={{
           bg: "transparent",
-          color: "blue.500",
+          color: "brand.primary",
         }}
       >
         Login

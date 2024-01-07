@@ -199,7 +199,9 @@ const page = ({ params }) => {
     >
       <Container maxW={["full", "7xl"]}>
         {/* Seller Details */}
-        <Flex className="w-full flex-col md:flex-row">
+        <Flex
+          className="w-full flex-col md:flex-row justify-center"
+        >
           {/* Main Content */}
           <Flex
             p={6}
@@ -207,6 +209,7 @@ const page = ({ params }) => {
             boxShadow={"base"}
             className=" mx-auto md:my-10 flex-col md:flex-row"
             bgColor={"#fff"}
+            w={"full"}
           >
             {/* User Card */}
             <Flex className="flex-col items-center md:items-start md:w-1/3 w-full gap-2">
@@ -307,12 +310,12 @@ const page = ({ params }) => {
           </Flex>
           {/* SideBar - Only visible on large displays */}
 
-          <Box className="w-full md:w-[30%]  mx-auto my-10">
-            {/* Seller Contact Card */}
-            {username == "me" || username == user?.username ? null : (
+          {username == "me" || username == user?.username ? null : (
+            <Box className="w-full md:w-[30%]  mx-auto my-10">
+              {/* Seller Contact Card */}
               <SellerCard className="bg-transparent" />
-            )}
-          </Box>
+            </Box>
+          )}
         </Flex>
         {/* Portfolio */}
         <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
