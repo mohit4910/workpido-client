@@ -119,15 +119,17 @@ export default function WithSubnavigation() {
             <Hide below="md">
               <InputGroup size={"sm"} ml={4}>
                 <Input
-                  w={48}
+                  w={'xs'}
                   bgColor={"#FFF"}
                   color={"#000"}
                   placeholder="Search"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
+                  py={4}
                 />
                 <InputRightAddon
                   children={"Search"}
+                  py={4}
                   bgColor={"brand.primary"}
                   color={"#FFF"}
                   cursor={"pointer"}

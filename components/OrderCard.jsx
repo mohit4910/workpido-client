@@ -4,9 +4,14 @@ import React from "react";
 import { MdOutlineStickyNote2 } from "react-icons/md";
 
 const OrderCard = ({ order }) => {
-  
   return (
-    <Flex className="w-[95%] mx-auto bg-white shadow-lg lg:rounded-none border rounded-lg shadow-stone-400/40 px-3 py-2 flex-col lg:flex-row gap-2">
+    <Flex
+      w={"full"}
+      className="mx-auto bg-white lg:rounded-none border rounded-lg flex-col lg:flex-row gap-2"
+      boxShadow={"base"}
+      px={3}
+      py={[3, 0]}
+    >
       {/* Name */}
 
       <Flex className="w-full lg:items-center lg:w-2/6">
@@ -18,12 +23,12 @@ const OrderCard = ({ order }) => {
         </Link>
       </Flex>
       {/* Status */}
-      <Flex className="w-full lg:w-1/6 gap-2 items-center flex-col lg:order-last">
-        <Text className="text-xs text-neutral-500">
-          {order?.finishedAt
-            ? new Date(order?.finishedAt)?.toLocaleDateString()
-            : null}
-        </Text>
+      <Flex className="w-full lg:w-1/6 gap-2 items-center justify-center flex-col lg:order-last">
+        {order?.finishedAt ? (
+          <Text className="text-xs text-neutral-500">
+            {new Date(order?.finishedAt)?.toLocaleDateString()}
+          </Text>
+        ) : null}
 
         {order?.status == "cancelled" ? (
           <Box className="py-1 px-3 border border-red-700 rounded-md bg-red-700">

@@ -184,7 +184,7 @@ const Filters = ({ category, inSearch }) => {
     const queryParams = new URLSearchParams(urlFilters);
     push(
       `${
-        inSearch ? `/search` : `/categories/${category}`
+        inSearch ? `/search` : `/gigs/${category}`
       }?${queryParams?.toString()}`
     );
 

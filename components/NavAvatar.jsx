@@ -24,8 +24,14 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
       <Menu>
         <MenuButton>
           <HStack px={4}>
-            <Avatar name={user?.username} src={user?.avatar?.url} size={"sm"} />
-            <ArrowDown2 size="28" color="#FFF" />
+            <Link href={"/dashboard/seller-dashboard"}>
+              <Avatar
+                name={user?.username}
+                src={user?.avatar?.url}
+                size={"sm"}
+              />
+            </Link>
+            <ArrowDown2 size="28" color="#111" />
           </HStack>
         </MenuButton>
         <MenuList color={"#000"} fontSize={"sm"} zIndex={99999} pb={0}>
@@ -43,7 +49,7 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
               variant={"ghost"}
               color={currentRole == "buyer" ? "facebook.500" : "#000"}
               onClick={() => onChangeRole("buyer")}
-              fontWeight={'medium'}
+              fontWeight={"medium"}
             >
               Buyer
             </Button>
@@ -55,7 +61,7 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
               variant={"ghost"}
               color={currentRole == "seller" ? "facebook.500" : "#000"}
               onClick={() => onChangeRole("seller")}
-              fontWeight={'medium'}
+              fontWeight={"medium"}
             >
               Seller
             </Button>
@@ -70,7 +76,9 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
           <MenuItem py={1}>Cashflow</MenuItem>
           <MenuItem py={1}>Help</MenuItem>
           <hr />
-          <MenuItem py={1} onClick={() => onLogout()}>Signout</MenuItem>
+          <MenuItem py={1} onClick={() => onLogout()}>
+            Signout
+          </MenuItem>
         </MenuList>
       </Menu>
     </>

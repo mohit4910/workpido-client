@@ -72,7 +72,7 @@ const ZoomImage = ({ src, alt, link }) => {
         left={0}
         right={0}
         bottom={0}
-        bgGradient="linear(blackAlpha.50 50%, blackAlpha.600 80%, blackAlpha.700 40%)"
+        bgGradient="linear(blackAlpha.50 10%, blackAlpha.200 30%, blackAlpha.400 40%, blackAlpha.500 60%, blackAlpha.700 100%)"
         p={4}
         display={"flex"}
         flexDirection={"row"}
@@ -108,6 +108,7 @@ const Catalog = () => {
           <ZoomImage
             src={API_BASE_URL?.replace("/api", "") + data?.cover?.url}
             alt={data?.title}
+            link={`/category/${data?.id}`}
           />
         ))}
       </Flex>
