@@ -72,7 +72,9 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
               <Text>Profile</Text>
             </MenuItem>
           </Link>
-          <MenuItem py={1}>Settings</MenuItem>
+          <Link href="/edit-profile">
+            <MenuItem py={1}>Settings</MenuItem>
+          </Link>
           <MenuItem py={1}>Cashflow</MenuItem>
           <MenuItem py={1}>Help</MenuItem>
           <hr />
