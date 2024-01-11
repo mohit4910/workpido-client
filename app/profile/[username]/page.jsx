@@ -2,6 +2,7 @@
 import Loading from "@/app/loading";
 import ContactSeller from "@/components/ContactSeller";
 import GigCard from "@/components/GigCard";
+import Review from "@/components/Review";
 import SellerCard from "@/components/SellerCard";
 import ZoomableImage from "@/components/ZoomableImage";
 import useAuth from "@/hooks/useAuth";
@@ -27,6 +28,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { BsFillTelephoneFill, BsPen, BsPencil } from "react-icons/bs";
@@ -199,9 +201,7 @@ const page = ({ params }) => {
     >
       <Container maxW={["full", "7xl"]}>
         {/* Seller Details */}
-        <Flex
-          className="w-full flex-col md:flex-row justify-center"
-        >
+        <Flex className="w-full flex-col md:flex-row justify-center">
           {/* Main Content */}
           <Flex
             p={6}
@@ -311,16 +311,18 @@ const page = ({ params }) => {
           </Flex>
           {/* SideBar - Only visible on large displays */}
 
-          {username == "me" || username == user?.username ? null : (
-            <Box className="w-full md:w-[40%]  mx-auto my-10">
-              {/* Seller Contact Card */}
-              <SellerCard showAvatar={false} className="bg-transparent" />
-            </Box>
-          )}
+          <Box className="w-full md:w-[40%]  mx-auto my-10">
+            {/* Seller Contact Card */}
+            <SellerCard
+              showAvatar={false}
+              className="bg-transparent"
+              showSettings={username == "me" || username == user?.username}
+            />
+          </Box>
         </Flex>
         {/* Portfolio */}
         <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
-          <Text className="font-bold text-lg lg:text-2xl  my-3">Portfolio</Text>
+          <Text className="font-semibold text-lg lg:text-2xl  my-3">Portfolio</Text>
           <Stack spacing={8}>
             <Flex
               justify={"flex-start"}
@@ -335,8 +337,8 @@ const page = ({ params }) => {
         </Flex>
         {/* Other Works of the Seller */}
         <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
-          <Text className="font-bold text-lg lg:text-2xl my-3">
-            {`This User's Work`}
+          <Text className="font-semibold text-lg lg:text-2xl my-3">
+            This User's Work
           </Text>
           <Stack spacing={8}>
             <Flex
@@ -355,7 +357,17 @@ const page = ({ params }) => {
           <Text className="font-medium text-lg lg:text-2xl my-3">
             Reviews Left for {user?.username}
           </Text>
-          
+          <Box py={4}>
+            <Review
+              username={"adarshprakash"}
+              content={
+                "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur, modi."
+              }
+              replyContent={"Thank you for availing our services"}
+              gigTitle={"Gig title will appear here"}
+              gigId={"18"}
+            />
+          </Box>
         </Box>
         {/* contact Section */}
 

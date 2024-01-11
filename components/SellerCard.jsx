@@ -14,12 +14,12 @@ import {
 import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
-import { BsStarFill } from "react-icons/bs";
+import { BsGearFill, BsStarFill } from "react-icons/bs";
 import ContactSeller from "./ContactSeller";
 import useApiHandler from "@/hooks/useApiHandler";
 import useAuth from "@/hooks/useAuth";
 
-const SellerCard = ({ user, showAvatar = true, height }) => {
+const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
   const [avatarUrl, setAvatarUrl] = useState("");
   const { getAvatar } = useAuth();
 
@@ -29,7 +29,7 @@ const SellerCard = ({ user, showAvatar = true, height }) => {
   }, [user]);
 
   return (
-    <Card h={height ?? 'full'}>
+    <Card h={height ?? "full"}>
       <CardHeader>
         <Link href={"/profile"}>
           <Stack my={4} direction={"row"} spacing={2} align={"center"}>
@@ -41,7 +41,23 @@ const SellerCard = ({ user, showAvatar = true, height }) => {
           </Stack>
         </Link>
         <Box className="pr-6 pl-1">
-          <ContactSeller username={user?.username} />
+          {showSettings ? (
+            <Button
+              className="mx-2 w-full px-4 py-8 text-base flex flex-col"
+              as={"a"}
+              color={"white"}
+              bg={"brand.primary"}
+              href={"/edit-profile"}
+              _hover={{
+                bg: "green.300",
+              }}
+              leftIcon={<BsGearFill />}
+            >
+              Account Settings
+            </Button>
+          ) : (
+            <ContactSeller username={user?.username} />
+          )}
         </Box>
       </CardHeader>
       <CardBody>
