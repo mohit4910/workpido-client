@@ -259,6 +259,7 @@ const page = ({ params }) => {
                 <Text>Block this Seller</Text>
               </Flex>
             </Flex>
+
             {/* User Details */}
             <Box className="bg-white md:w-2/3 w-full flex-2">
               <Box className="p-5 overflow-hidden">
@@ -311,9 +312,9 @@ const page = ({ params }) => {
           {/* SideBar - Only visible on large displays */}
 
           {username == "me" || username == user?.username ? null : (
-            <Box className="w-full md:w-[30%]  mx-auto my-10">
+            <Box className="w-full md:w-[40%]  mx-auto my-10">
               {/* Seller Contact Card */}
-              <SellerCard className="bg-transparent" />
+              <SellerCard showAvatar={false} className="bg-transparent" />
             </Box>
           )}
         </Flex>
@@ -351,45 +352,10 @@ const page = ({ params }) => {
         </Flex>
         {/* Reviews */}
         <Box className="mx-1 md:mx-5 my-3 w-full p-2 md:p-5">
-          <Text className="font-bold text-lg lg:text-2xl my-3">
+          <Text className="font-medium text-lg lg:text-2xl my-3">
             Reviews Left for {user?.username}
           </Text>
-          <Accordion allowToggle className="w-full">
-            <AccordionItem className="border-none">
-              <Box className=" my-2 ">
-                <AccordionButton
-                  _expanded={{ color: "black" }}
-                  _disabled={{ color: "black" }}
-                  _hover={{ color: "black" }}
-                >
-                  <Text as="span" textAlign="left" className="text-xl">
-                    2 Reviews
-                  </Text>
-                  <AccordionIcon />
-                </AccordionButton>
-              </Box>
-              <AccordionPanel pb={4}>
-                <List>
-                  <ListItem className="my-3">
-                    <ListIcon as={FaUserCircle} color="black" />
-                    <span className="font-bold">Ashish P.</span>
-                    <Text>Excellent Work</Text>
-                  </ListItem>
-                  <ListItem className="my-3">
-                    <ListIcon as={FaUserCircle} color="black" />
-                    <span className="font-bold">Mark</span>
-                    <Text>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Provident cupiditate aliquam distinctio doloribus aut
-                      reprehenderit vero quam unde repudiandae! Provident
-                      placeat assumenda quidem consequatur ipsam cum, dolorem
-                      distinctio optio nulla!
-                    </Text>
-                  </ListItem>
-                </List>
-              </AccordionPanel>
-            </AccordionItem>
-          </Accordion>
+          
         </Box>
         {/* contact Section */}
 

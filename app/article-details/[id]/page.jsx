@@ -100,7 +100,7 @@ const ArticleDetails = ({ params }) => {
 
   return (
     <>
-      <Box w={"full"} bgColor={"#FFF"}>
+      <Box w={"full"} bgColor={"#F6F6F6"}>
         {/* Order Button Mobile-only */}
         <Flex className="z-50 md:hidden w-screen justify-evenly fixed bottom-0 left-0 right-0">
           <Button
@@ -136,14 +136,19 @@ const ArticleDetails = ({ params }) => {
           </Button>
         </Flex>
 
-        <Container maxW={["full", "3xl", "5xl", "7xl"]}>
-          <Flex className="mx-auto" gap={8} justifyContent={"space-between"}>
+        <Container maxW={["full", "3xl", "5xl", "7xl"]} mt={8}>
+          <Flex justifyContent={"center"}>
             {/* Main Content */}
-            <Box className="mx-auto" maxW={["full", "65%"]}>
+            <Box
+              className="mx-auto"
+              maxW={["full", "60%"]}
+              bgColor={"#FFF"}
+              boxShadow={"base"}
+            >
               {/* Article Details */}
               <Box className="w-full">
                 {/* Article Heading */}
-                <Flex className="flex-col gap-3 mb-2 py-5">
+                <Flex className="flex-col gap-3 mb-2 p-5">
                   <Text
                     className="w-fill text-xl md:text-2xl"
                     fontWeight={"semibold"}
@@ -207,7 +212,7 @@ const ArticleDetails = ({ params }) => {
                 {/* Article Image */}
                 <ImageSlider images={bannerImageUrls} height={"md"} />
                 {/* Article Text */}
-                <Box className="py-5 overflow-hidden">
+                <Box className="p-5 overflow-hidden">
                   {/* Article Description */}
                   <Text className="block font-semibold text-lg my-3">
                     Work Overview
@@ -226,16 +231,24 @@ const ArticleDetails = ({ params }) => {
 
                 {/* Article Ordering */}
                 {data?.pricingModel != "plans" ? (
-                  <Flex className="justify-center flex-col py-5">
+                  <Flex className="justify-center flex-col p-5" bgColor={'#FFF'} boxShadow={'base'}>
                     {/* Details */}
                     <Flex className="items-center justify-evenly">
                       <List className="flex items-center justify-end md:pr-5 md:justify-evenly w-full text-xs">
                         <ListItem className="hidden md:inline-block">
-                          <ListIcon as={BsClockHistory} color="black" fontSize={'md'} />
+                          <ListIcon
+                            as={BsClockHistory}
+                            color="black"
+                            fontSize={"md"}
+                          />
                           {data?.deliveryDays} Days delivery
                         </ListItem>
                         <ListItem className="hidden md:inline-block">
-                          <ListIcon as={GiCheckMark} color="black" fontSize={'md'} />
+                          <ListIcon
+                            as={GiCheckMark}
+                            color="black"
+                            fontSize={"md"}
+                          />
                           {data?.revisions} Revisions
                         </ListItem>
                         <ListItem className="flex items-center justify-evenly gap-3">
@@ -363,10 +376,10 @@ const ArticleDetails = ({ params }) => {
               </Box>
             </Box>
             {/* SideBar - Only visible on large displays */}
-            <Box className="hidden lg:block" maxW={["full", "28%"]} mt={10}>
+            <Box className="hidden lg:block" maxW={["full", "28%"]}>
               {/* Article Ordering */}
               {data?.pricingModel != "plans" ? (
-                <Flex className="justify-center flex-col">
+                <Flex className="justify-center flex-col p-5" bgColor={'#FFF'} boxShadow={'base'}>
                   {/* Header */}
                   <Text color="brand.primary">
                     <span className="text-lg mx-2 font-semibold">
@@ -515,9 +528,9 @@ const ArticleDetails = ({ params }) => {
                 </Box>
               </Flex>
               {/* Seller Contact Card */}
-              <SellerCard user={data?.seller} />
+              <SellerCard user={data?.seller} height={'unset'} />
               {/* Social Handles */}
-              <Box className="bg-white w-full mt-3 p-5">
+              <Box className="bg-white w-full mt-3 p-5" boxShadow={'base'}>
                 <Text className="text-center text-base mb-3">
                   Share on your Social Media
                 </Text>

@@ -19,7 +19,7 @@ import ContactSeller from "./ContactSeller";
 import useApiHandler from "@/hooks/useApiHandler";
 import useAuth from "@/hooks/useAuth";
 
-const SellerCard = ({ user }) => {
+const SellerCard = ({ user, showAvatar = true, height }) => {
   const [avatarUrl, setAvatarUrl] = useState("");
   const { getAvatar } = useAuth();
 
@@ -29,11 +29,11 @@ const SellerCard = ({ user }) => {
   }, [user]);
 
   return (
-    <Card>
+    <Card h={height ?? 'full'}>
       <CardHeader>
         <Link href={"/profile"}>
           <Stack my={4} direction={"row"} spacing={2} align={"center"}>
-            <Avatar size={"lg"} src={avatarUrl} />
+            {showAvatar ? <Avatar size={"lg"} src={avatarUrl} /> : null}
             <Stack direction={"column"} spacing={0} fontSize={"lg"}>
               <Text fontSize={"md"}>{user?.username}</Text>
               <Text fontSize={"md"}>{user?.displayName}</Text>
