@@ -179,6 +179,7 @@ export default function WithSubnavigation() {
                 variant={"link"}
                 _hover={"none"}
                 href={"/manage-gigs"}
+                color={'#111'}
               >
                 Gigs
               </Button>
@@ -191,6 +192,7 @@ export default function WithSubnavigation() {
                 variant={"link"}
                 _hover={"none"}
                 href={"/orders"}
+                color={'#111'}
               >
                 Orders
               </Button>
@@ -203,6 +205,7 @@ export default function WithSubnavigation() {
                 variant={"link"}
                 _hover={"none"}
                 href={"/inbox/me"}
+                color={'#111'}
               >
                 Chat
               </Button>
