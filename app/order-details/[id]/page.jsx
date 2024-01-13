@@ -48,7 +48,7 @@ import { useFormik } from "formik";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import { toast } from "react-toastify";
-import { BsSend, BsSendFill, BsTrash2Fill } from "react-icons/bs";
+import { BsSend, BsSendFill, BsTrash2Fill, BsXCircleFill } from "react-icons/bs";
 
 const page = ({ params }) => {
   const { id } = params;
@@ -147,12 +147,8 @@ const page = ({ params }) => {
   async function addNote() {
     try {
       await API.addNote({
-        data: {
-          note: note,
-          order: {
-            connect: [orderDetails?.id],
-          },
-        },
+        note: note,
+        order: orderDetails?.id,
       });
       await fetchOrderDetails();
     } catch (error) {
@@ -607,6 +603,7 @@ const page = ({ params }) => {
                 <VStack w={"full"} mb={4}>
                   {orderDetails?.notes?.map((data, key) => (
                     <Box
+                    w={'full'}
                       key={key}
                       p={3}
                       bgColor={"#FFF"}
@@ -623,8 +620,8 @@ const page = ({ params }) => {
                         </Text>
 
                         <IconButton
-                          icon={<BsTrash2Fill />}
-                          colorScheme="red"
+                          icon={<BsXCircleFill color="red" />}
+                          color={'red'}
                           size={"xs"}
                           rounded={"full"}
                           onClick={() => deleteNote(data?.id)}

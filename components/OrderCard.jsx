@@ -49,7 +49,7 @@ const OrderCard = ({ order }) => {
       <Flex className="items-center justify-evenly lg:w-3/6">
         {/* Buyer */}
         <Box className="items-center w-1/2 lg:px-2">
-          <Link href={"/profile"}>
+          <Link href={`/profile/${order?.buyer?.username}`}>
             <Stack my={4} direction={"row"} spacing={1} align={"center"}>
               <Avatar size={"sm"} src={order?.buyer?.avatar?.url} />
               <Text fontSize={"xs"}>{order?.buyer?.username}</Text>
