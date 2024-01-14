@@ -104,11 +104,7 @@ export default function GigCard({ gig }) {
                     color={"yellow.500"}
                   >
                     {gig?.seller?.currency?.symbol ?? "₹"}
-                    {gig?.pricingModel == "plans"
-                      ? gig?.startingPrice
-                      : gig?.pricingModel == "fixed"
-                      ? gig?.fixedPrice
-                      : gig?.hourlyPrice || "999"}
+                    {gig?.minPrice}
                   </Text>
                 </HStack>
               </Box>
@@ -176,12 +172,11 @@ export default function GigCard({ gig }) {
                 <Avatar size={"sm"} src={sellerAvatar} />
                 <Stack direction={"column"} spacing={0} fontSize={"sm"}>
                   <Text fontSize={"xs"}>
-                    {gig?.seller?.displayName ||
-                      gig?.seller?.username ||
-                      "Adarsh P."}
+                    {gig?.seller?.displayName ??
+                      gig?.seller?.username}
                   </Text>
                   <Text color={"gray.500"} fontSize={"xs"}>
-                    {gig?.seller?.username}
+                    {gig?.seller?.displayName ? gig?.seller?.username : null}
                   </Text>
                 </Stack>
               </Stack>

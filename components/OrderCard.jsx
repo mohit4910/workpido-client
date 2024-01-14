@@ -67,9 +67,11 @@ const OrderCard = ({ order }) => {
       </Flex>
       {/* Review - only visible on smaller displays */}
       <Flex className="lg:w-1/6 lg:border-none lg:items-center justify-center border border-gray-700 rounded-md w-3/4 text-center my-1 py-1 mx-auto">
-        <Link href="/order-details">
-          <Text className="font-medium">Read the Review</Text>
-        </Link>
+        {order?.status == "finished" || order?.status == "cancelled" ? (
+          <Link href="/order-details">
+            <Text className="font-medium">Read the Review</Text>
+          </Link>
+        ) : null}
       </Flex>
     </Flex>
   );
