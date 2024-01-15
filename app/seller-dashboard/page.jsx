@@ -103,7 +103,7 @@ const Page = () => {
                 </Heading>
               </Flex>
 
-              <Link href={"/orders"}>View all</Link>
+              <Link href={"/manage-gigs"}>View all</Link>
             </Flex>
             {/* 4 Step Process */}
             <Flex

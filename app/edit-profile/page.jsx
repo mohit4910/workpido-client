@@ -168,15 +168,16 @@ const EditProfile = () => {
                   <Button
                     onClick={() => push("/profile/me")}
                     fontSize={"sm"}
-                    fontWeight={"normal"}
+                    fontWeight={"medium"}
                   >
                     Back to Profile
                   </Button>
                   <Button
-                    colorScheme="yellow"
+                    colorScheme="green"
+                    bgColor={'brand.primary'}
                     onClick={Formik.handleSubmit}
                     fontSize={"sm"}
-                    fontWeight={"normal"}
+                    fontWeight={"medium"}
                   >
                     Save Details
                   </Button>
@@ -427,15 +428,16 @@ const EditProfile = () => {
                   <Button
                     onClick={() => push("/profile/me")}
                     fontSize={"sm"}
-                    fontWeight={"normal"}
+                    fontWeight={"medium"}
                   >
                     Back to Profile
                   </Button>
                   <Button
-                    colorScheme="yellow"
+                    colorScheme="green"
+                    bgColor={'brand.primary'}
                     onClick={Formik.handleSubmit}
                     fontSize={"sm"}
-                    fontWeight={"normal"}
+                    fontWeight={"medium"}
                   >
                     Save Details
                   </Button>

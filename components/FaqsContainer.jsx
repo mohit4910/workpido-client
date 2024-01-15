@@ -96,7 +96,12 @@ const FaqsContainer = ({ data, onUpdate }) => {
         />
       ))}
       <HStack py={4} justifyContent={"flex-end"}>
-        <Button colorScheme="whatsapp" size={"sm"} onClick={handleFaqAdd}>
+        <Button
+          colorScheme="whatsapp"
+          fontWeight={"medium"}
+          onClick={handleFaqAdd}
+          fontSize={'sm'}
+        >
           Add One Question
         </Button>
       </HStack>

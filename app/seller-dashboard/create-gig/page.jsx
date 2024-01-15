@@ -802,7 +802,8 @@ const CreateGig = () => {
               Reset
             </Button>
             <Button
-              colorScheme="yellow"
+              colorScheme="green"
+              bgColor={"brand.primary"}
               onClick={Formik.handleSubmit}
               isLoading={loading}
               fontSize={"sm"}

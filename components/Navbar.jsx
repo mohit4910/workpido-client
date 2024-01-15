@@ -75,7 +75,7 @@ export default function WithSubnavigation() {
       <Flex
         minH={"60px"}
         p={4}
-        px={[4, 16, '7%']}
+        px={[4, 16, "7%"]}
         borderBottom={"0.75px"}
         borderStyle={"solid"}
         borderColor={"#bdbdbd"}
@@ -119,7 +119,7 @@ export default function WithSubnavigation() {
             <Hide below="md">
               <InputGroup size={"sm"} ml={4}>
                 <Input
-                  w={'xs'}
+                  w={"xs"}
                   bgColor={"#FFF"}
                   color={"#000"}
                   placeholder="Search"
@@ -169,7 +169,7 @@ export default function WithSubnavigation() {
             justify={"flex-end"}
             direction={"row"}
             spacing={6}
-            color={'#000'}
+            color={"#000"}
           >
             <Hide below="md">
               <Button
@@ -179,7 +179,7 @@ export default function WithSubnavigation() {
                 variant={"link"}
                 _hover={"none"}
                 href={"/manage-gigs"}
-                color={'#111'}
+                color={"#111"}
               >
                 Gigs
               </Button>
@@ -192,7 +192,7 @@ export default function WithSubnavigation() {
                 variant={"link"}
                 _hover={"none"}
                 href={"/orders"}
-                color={'#111'}
+                color={"#111"}
               >
                 Orders
               </Button>
@@ -205,7 +205,7 @@ export default function WithSubnavigation() {
                 variant={"link"}
                 _hover={"none"}
                 href={"/inbox/me"}
-                color={'#111'}
+                color={"#111"}
               >
                 Chat
               </Button>
@@ -213,9 +213,7 @@ export default function WithSubnavigation() {
             <Hide below="md">
               <HStack display={["none", "flex"]}>
                 <MoneyRecive size="24" color="#F4CE14" />
-                <Text fontSize={"sm"}>
-                  $1200
-                </Text>
+                <Text fontSize={"sm"}>$1200</Text>
               </HStack>
             </Hide>
             {currentRole == "buyer" ? (
@@ -324,10 +322,13 @@ const DesktopNav = ({ categories }) => {
                 py={4}
                 rounded={"none"}
                 minW={"xs"}
-                w={"lg"}
+                w={navItem?.subCategories?.length > 5 ? "md" : "auto"}
               >
                 <Stack
-                  w={["full", "lg"]}
+                  w={[
+                    "full",
+                    navItem?.subCategories?.length > 5 ? "md" : "xs",
+                  ]}
                   gap={0}
                   direction={
                     navItem?.subCategories?.length > 5 ? "row" : "column"

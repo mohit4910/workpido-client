@@ -57,11 +57,11 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
     }
   }, [data, totalPlans]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (data != null) {
       setTableData(data);
     }
-  },[data])
+  }, [data]);
 
   function handleDataUpdate({
     propertyToUpdate,
@@ -71,7 +71,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
   }) {
     // Make a copy of the current tableData
     const updatedTableData = { ...tableData };
-    console.log("Property To Update ", propertyToUpdate)
+    console.log("Property To Update ", propertyToUpdate);
 
     if (propertyToUpdate !== "data") {
       // Ensure that the propertyToUpdate exists in the updatedTableData
@@ -172,13 +172,15 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
   return (
     <>
       <Box>
-        <TableContainer border={'1px'} borderColor={'#e2e2e2'} roundedTop={6}>
+        <TableContainer border={"1px"} borderColor={"#e2e2e2"} roundedTop={6}>
           <Table size={size || "md"}>
             <Thead bgColor={"#f6f6f6"}>
               <Tr>
-                <Th borderRight={'1px'} py={6} color={'#000'}>#</Th>
+                <Th borderRight={"1px"} py={6} color={"#000"}>
+                  #
+                </Th>
                 {tableData?.plans?.map((data, key) => (
-                  <Th borderRight={'1px'} key={key} py={6} color={'#000'}>
+                  <Th borderRight={"1px"} key={key} py={6} color={"#000"}>
                     <EditableData
                       isViewOnly={isViewOnly}
                       defaultValue={data}
@@ -198,7 +200,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
             <Tbody>
               {tableData?.attributes?.map((attribute, i) => (
                 <Tr key={i}>
-                  <Td borderRight={'1px'}>
+                  <Td borderRight={"1px"}>
                     <EditableData
                       isViewOnly={isViewOnly}
                       defaultValue={attribute}
@@ -213,7 +215,7 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
                   </Td>
 
                   {tableData?.data[attribute]?.map((data, key) => (
-                    <Td borderRight={'1px'} key={key}>
+                    <Td borderRight={"1px"} key={key}>
                       <EditableData
                         isViewOnly={isViewOnly}
                         defaultValue={data ?? ""}
@@ -236,8 +238,9 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
         {isViewOnly ? null : (
           <HStack justifyContent={"flex-end"} py={4}>
             <Button
-              size={"sm"}
               colorScheme="red"
+              fontWeight={"medium"}
+              fontSize={'sm'}
               onClick={() =>
                 handleRowDelete(
                   tableData?.attributes[tableData?.attributes?.length - 1]
@@ -247,9 +250,10 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
               Delete Last Row
             </Button>
             <Button
-              size={"sm"}
               colorScheme="whatsapp"
+              fontWeight={"medium"}
               onClick={() => handleRowAdd()}
+              fontSize={'sm'}
             >
               Add New Row
             </Button>

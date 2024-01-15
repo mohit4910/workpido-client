@@ -25,6 +25,8 @@ const page = ({ params }) => {
     text,
     sender = { name: user?.displayName || user?.username },
     timestamp = new Date(),
+    order,
+    type,
     read = true,
     files,
   }) => {
@@ -48,7 +50,7 @@ const page = ({ params }) => {
     }
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text, sender, timestamp, read, files },
+      { text, sender, timestamp, read, files, order, type },
     ]);
   };
 
@@ -82,7 +84,7 @@ const page = ({ params }) => {
 
     channel.bind("new-message", function (data) {
       // Handle the new message data and update the UI
-      const { content, sender, timestamp, files } = data;
+      const { content, sender, timestamp, files, type, order } = data;
       setMessages((prevMessages) => [
         ...prevMessages,
         {
@@ -91,6 +93,8 @@ const page = ({ params }) => {
             name: sender?.name,
             id: sender?.id,
           },
+          type: type,
+          order: order,
           timestamp: timestamp,
           read: true,
           files: files,

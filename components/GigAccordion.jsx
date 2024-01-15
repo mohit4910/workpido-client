@@ -30,7 +30,7 @@ const GigAccordion = ({ children, step, title }) => {
                   rounded={"full"}
                   display={"grid"}
                   placeContent={"center"}
-                  bgColor={isExpanded ? "yellow.500" : "facebook.100"}
+                  bgColor={isExpanded ? "brand.primary" : "facebook.100"}
                 >
                   <Text
                     fontSize={"lg"}

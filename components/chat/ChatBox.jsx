@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -37,18 +37,51 @@ import {
 } from "react-virtualized";
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
+import { toast } from "react-toastify";
+import { API } from "@/lib/api";
+import { useFormik } from "formik";
 
 export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
   const { user } = useAuth();
+  const [categories, setCategories] = useState([]);
   const [order, setOrder] = useState({
     status: false,
-    description: "",
-    price: "",
   });
+
+  useEffect(() => {
+    const res = JSON.parse(sessionStorage.getItem("categories"));
+    setCategories(JSON.parse(sessionStorage.getItem("categories")));
+  }, []);
 
   const cache = new CellMeasurerCache({
     fixedWidth: true,
     defaultHeight: 50,
+  });
+
+  async function sendOrder(data) {
+    try {
+      await API.sendOrder({ ...data });
+      setOrder({ status: false });
+    } catch (error) {
+      console.log(error);
+      toast.error("Error while sending your order");
+      setOrder({ status: false });
+    }
+  }
+
+  const Formik = useFormik({
+    initialValues: {
+      requirements: "",
+      deliveryDays: "",
+      amount: "",
+      title: "",
+      category: "",
+      subCategory: "",
+      buyer: receiver?.username,
+    },
+    onSubmit: async (values) => {
+      await sendOrder({ ...values });
+    },
   });
 
   const rowRenderer = ({ index, key, parent, style }) => (
@@ -68,8 +101,77 @@ export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
       >
         <Avatar size={"xs"} name={messages[index].sender?.name} />
         <Box w={"85%"}>
-          <Text fontWeight="semibold">{messages[index].sender?.name}</Text>
-          <Text>{messages[index].text}</Text>
+          <Text fontWeight="semibold">
+            {messages[index].sender?.name}{" "}
+            {messages[index].type == "order" ? "sent you an offer" : null}{" "}
+          </Text>
+          {messages[index].type == "order" ? (
+            <Box mt={4} w={"full"} border={"1px"} rounded={"4"}>
+              <Box w={"full"} p={3} roundedTop={4} bgColor={"facebook.50"}>
+                <Text fontSize={"md"} fontWeight={"semibold"}>
+                  {messages[index]?.order?.title}
+                </Text>
+              </Box>
+              <Box p={4}>
+                <Text fontSize={"sm"} mb={4}>
+                  {messages[index]?.order?.requirements}
+                </Text>
+                <Text fontSize={"sm"} mb={2}>
+                  <strong>Price</strong>: {messages[index]?.order?.amount}
+                </Text>
+                <Text fontSize={"sm"} mb={2}>
+                  <strong>Delivery Time</strong>:{" "}
+                  {messages[index]?.order?.deliveryDays} Days
+                </Text>
+              </Box>
+              <HStack p={3} w={"full"} justifyContent={"flex-end"}>
+                {messages[index]?.order?.isAccepted ? (
+                  <Button
+                    size={"sm"}
+                    colorScheme="whatsapp"
+                    variant={"outline"}
+                    fontWeight={"medium"}
+                    fontSize={"xs"}
+                  >
+                    Accepted
+                  </Button>
+                ) : messages[index]?.order?.isRejected ? (
+                  <Button
+                    size={"sm"}
+                    colorScheme="red"
+                    variant={"outline"}
+                    fontWeight={"medium"}
+                    fontSize={"xs"}
+                  >
+                    Rejected
+                  </Button>
+                ) : (
+                  <HStack gap={4} justifyContent={"flex-end"}>
+                    <Button
+                      size={"sm"}
+                      colorScheme="red"
+                      variant={"solid"}
+                      fontWeight={"medium"}
+                      fontSize={"xs"}
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      size={"sm"}
+                      colorScheme="whatsapp"
+                      variant={"solid"}
+                      fontWeight={"medium"}
+                      fontSize={"xs"}
+                    >
+                      Accept
+                    </Button>
+                  </HStack>
+                )}
+              </HStack>
+            </Box>
+          ) : (
+            <Text>{messages[index].text}</Text>
+          )}
           {messages[index]?.files?.length ? (
             <Box
               marginTop={4}
@@ -99,12 +201,10 @@ export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
           ) : null}
         </Box>
         <Text fontSize={"xs"} color={"#a2a2a2"}>
-          {`${new Date(
-            messages[index]?.timestamp ?? messages[index]?.createdAt
-          ).getDate()} ${monthNames[
-            new Date(
-              messages[index]?.timestamp ?? messages[index]?.createdAt
-            ).getMonth() - 1
+          {`${new Date(messages[index]?.timestamp).getDate()} ${monthNames[
+            new Date(messages[index]?.timestamp).getMonth() - 1 == -1
+              ? 0
+              : new Date(messages[index]?.timestamp).getMonth() - 1
           ].slice(0, 3)}`}
         </Text>
       </HStack>
@@ -155,7 +255,12 @@ export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
         <InputBox addMessage={addMessage} receiver={receiver?.username} />
       </Box>
 
-      <Modal size={["full", "3xl"]} isOpen={order?.status} isCentered>
+      <Modal
+        size={["full", "3xl"]}
+        isOpen={order?.status}
+        onClose={() => setOrder({ ...order, status: false })}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontWeight={"medium"}>Send Custom Order</ModalHeader>
@@ -170,12 +275,21 @@ export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
               2. Describe your related experience, including 1-3 similar
               projects you've worked on.
             </Text>
+            <Box mt={4}>
+              <FormLabel fontSize={"sm"}>Title</FormLabel>
+              <Input
+                fontSize={"sm"}
+                placeholder="Give your offer a title"
+                name="title"
+                value={Formik.values.title}
+                onChange={Formik.handleChange}
+              />
+            </Box>
             <Textarea
               mt={4}
-              value={order?.description}
-              onChange={(e) =>
-                setOrder({ ...order, description: e.target.value })
-              }
+              name="requirements"
+              value={Formik.values.requirements}
+              onChange={Formik.handleChange}
               w={"full"}
               h={48}
               resize={"none"}
@@ -193,26 +307,68 @@ export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
               <Select
                 placeholder="Select category"
                 maxW={["full", "xs"]}
-              ></Select>
+                name="category"
+                value={Formik.values.category}
+                onChange={Formik.handleChange}
+              >
+                {categories?.map((data, key) => (
+                  <option value={data?.id} key={key}>
+                    {data?.title}
+                  </option>
+                ))}
+              </Select>
               <Select
                 placeholder="Select subcategory"
                 maxW={["full", "xs"]}
-              ></Select>
+                name="subCategory"
+                value={Formik.values.subCategory}
+                onChange={Formik.handleChange}
+              >
+                {categories
+                  ?.find((data) => data?.id == Formik.values.category)
+                  ?.subCategories?.map((data, key) => (
+                    <option value={data?.id} key={key}>
+                      {data?.title}
+                    </option>
+                  ))}
+              </Select>
             </Stack>
-            <Box mt={6} mb={3}>
-              <FormLabel fontWeight={"medium"}>Price</FormLabel>
-              <InputGroup maxW={["full", "xs"]}>
-                <InputLeftElement children={user?.currency?.label ?? "₹"} />
-                <Input placeholder="10-1000" min={10} />
-              </InputGroup>
-            </Box>
-            <Box mt={6} mb={3}>
-              <FormLabel fontWeight={"medium"}>Delivery</FormLabel>
-              <InputGroup maxW={["full", "xs"]}>
-                <Input />
-                <InputRightElement children={"Days"} paddingRight={6} />
-              </InputGroup>
-            </Box>
+            <Stack
+              direction={["column", "row"]}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              mt={8}
+              mb={3}
+            >
+              <Box w={["full", "xs"]}>
+                <FormLabel fontSize={"sm"} fontWeight={"medium"}>
+                  Price
+                </FormLabel>
+                <InputGroup maxW={["full", "xs"]}>
+                  <InputLeftElement children={user?.currency?.label ?? "₹"} />
+                  <Input
+                    placeholder="10-1000"
+                    min={10}
+                    name="amount"
+                    value={Formik.values.amount}
+                    onChange={Formik.handleChange}
+                  />
+                </InputGroup>
+              </Box>
+              <Box w={["full", "xs"]}>
+                <FormLabel fontSize={"sm"} fontWeight={"medium"}>
+                  Delivery
+                </FormLabel>
+                <InputGroup maxW={["full", "xs"]}>
+                  <Input
+                    name="deliveryDays"
+                    value={Formik.values.deliveryDays}
+                    onChange={Formik.handleChange}
+                  />
+                  <InputRightElement children={"Days"} paddingRight={6} />
+                </InputGroup>
+              </Box>
+            </Stack>
           </ModalBody>
           <ModalFooter>
             <HStack>
@@ -222,7 +378,11 @@ export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
               >
                 Cancel
               </Button>
-              <Button colorScheme="green" bgColor={"brand.primary"}>
+              <Button
+                colorScheme="green"
+                bgColor={"brand.primary"}
+                onClick={Formik.handleSubmit}
+              >
                 Send
               </Button>
             </HStack>
