@@ -71,7 +71,7 @@ const useApiHandler = () => {
         const file = files[i];
         form.append("files", file);
       }
-      form.append("path", `/user_${user?.id}/${path}`);
+      // form.append("path", `/user_${user?.id}/${path}`);
       form.append("field", field);
       form.append("refId", entryId);
       form.append("ref", modelName);

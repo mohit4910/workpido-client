@@ -15,24 +15,77 @@ import {
   Textarea,
   Select as ChakraSelect,
   Container,
+  Icon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import Link from "next/link";
+import { BsPaypal } from "react-icons/bs";
+import useApiHandler from "@/hooks/useApiHandler";
 
 const EditProfile = () => {
   const { avatarUrl, me, user } = useAuth();
+  const { uploadAndAttachMedia } = useApiHandler();
   const { push } = useRouter();
 
   const [currencies, setCurrencies] = useState([]);
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [avatar, setAvatar] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
+  const avatarInputRef = useRef(null);
+
+  const handleClick = () => {
+    avatarInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      // Read the selected file as a data URL
+      setAvatar(selectedFile);
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        // Set the data URL as the image preview
+        setAvatarPreview(reader.result);
+      };
+
+      reader.readAsDataURL(selectedFile);
+    }
+  };
 
   useEffect(() => {
     me();
   }, []);
+
+  useEffect(() => {
+    if (user?.id) {
+      Formik.setFieldValue("username", user?.username);
+      Formik.setFieldValue("phone", user?.phone);
+      Formik.setFieldValue("email", user?.email);
+      Formik.setFieldValue("displayName", user?.displayName);
+      Formik.setFieldValue("profession", user?.profession);
+      Formik.setFieldValue("acceptingOrders", user?.acceptingOrders);
+      Formik.setFieldValue("country", user?.country);
+      Formik.setFieldValue("bio", user?.bio);
+      Formik.setFieldValue("defaultDashboard", user?.defaultDashboard);
+      Formik.setFieldValue("skills", user?.skills);
+      Formik.setFieldValue("currency", user?.currency);
+      Formik.setFieldValue("paypalEmail", user?.paypalEmail);
+    }
+  }, [user?.id]);
 
   useEffect(() => {
     (async () => {
@@ -57,16 +110,54 @@ const EditProfile = () => {
       country: user?.country,
       bio: user?.bio || "",
       defaultDashboard: user?.defaultDashboard || "seller",
-      acceptingOrders: user?.acceptingOrders || true,
       skills: user?.skills || "",
       currency: user?.currency || "",
+      paypalEmail: user?.paypalEmail,
+      currentPassword: "",
+      password: "",
+      passwordConfirmation: "",
     },
     onSubmit: async (values) => {
       try {
-        await API.updateMe({ ...values, country: values?.country?.value });
+        if (
+          values?.password &&
+          values?.password != values?.passwordConfirmation
+        ) {
+          toast.info("Passwords don't match");
+          return;
+        }
+
+        if (
+          values?.password &&
+          values?.passwordConfirmation &&
+          values?.password == values?.passwordConfirmation &&
+          !values?.currentPassword
+        ) {
+          setChangePasswordModal(true);
+          return;
+        }
+
+        if (!values?.password && !values?.passwordConfirmation) {
+          delete values["password"];
+          delete values["currentPassword"];
+          delete values["passwordConfirmation"];
+        }
+
+        if (avatar) {
+          await uploadAndAttachMedia({
+            entryId: user?.id,
+            field: "avatar",
+            files: [avatar],
+            modelName: "plugin::users-permissions.user",
+          });
+        }
+
+        await API.updateMe({
+          ...values,
+          country: values?.country?.value,
+        });
         toast.success("Profile update successfully!");
         // me();
-        push("/profile/me");
       } catch (error) {
         console.log(error);
         toast.error("Couldn't update profile");
@@ -74,20 +165,25 @@ const EditProfile = () => {
     },
   });
 
-  useEffect(() => {
-    if (user?.id) {
-      Formik.setFieldValue("displayName", user?.displayName);
-      Formik.setFieldValue("profession", user?.profession);
-      Formik.setFieldValue("country", user?.country);
-      Formik.setFieldValue("bio", user?.bio);
-      Formik.setFieldValue("defaultDashboard", user?.defaultDashboard);
-      Formik.setFieldValue("skills", user?.skills);
-      Formik.setFieldValue("currency", user?.currency?.id);
+  async function removeAvatar() {
+    try {
+      await API.deleteAvatar();
+    } catch (error) {
+      toast.error("Error removing your avatar");
+      console.log(error)
     }
-  }, [user]);
+  }
 
   return (
     <>
+      <input
+        type="file"
+        ref={avatarInputRef}
+        onChange={handleFileChange}
+        accept="image/"
+        style={{ display: "none" }}
+      />
+
       <Container
         maxW={["full", "3xl", "5xl", "7xl"]}
         my={[4, 8, 12]}
@@ -152,14 +248,21 @@ const EditProfile = () => {
                 <HStack gap={6}>
                   <FormControl pb={8} w={["full"]}>
                     <FormLabel fontSize={"sm"}>New Password</FormLabel>
-                    <Input name="newPassword" placeholder="New Password" />
+                    <Input
+                      placeholder="New Password"
+                      name="password"
+                      value={Formik.values.password}
+                      onChange={Formik.handleChange}
+                    />
                   </FormControl>
                   <FormControl pb={8} w={["full"]}>
                     <FormLabel fontSize={"sm"}>Confirm Password</FormLabel>
                     <Input
-                      name="confirmPassword"
-                      placeholder="Confirm Password"
                       type="password"
+                      placeholder="Confirm Password"
+                      name="passwordConfirmation"
+                      value={Formik.values.passwordConfirmation}
+                      onChange={Formik.handleChange}
                     />
                   </FormControl>
                 </HStack>
@@ -174,7 +277,7 @@ const EditProfile = () => {
                   </Button>
                   <Button
                     colorScheme="green"
-                    bgColor={'brand.primary'}
+                    bgColor={"brand.primary"}
                     onClick={Formik.handleSubmit}
                     fontSize={"sm"}
                     fontWeight={"medium"}
@@ -188,7 +291,7 @@ const EditProfile = () => {
               <Box p={4} bgColor={"#FFF"} rounded={4} boxShadow={"base"}>
                 <Box w={"full"}>
                   <FormControl w={["full", "sm"]}>
-                    <FormLabel>Display Name</FormLabel>
+                    <FormLabel fontSize={"sm"}>Display Name</FormLabel>
                     <Input
                       name="displayName"
                       value={Formik.values.displayName}
@@ -199,7 +302,7 @@ const EditProfile = () => {
                   <br />
                   <Box w={["full", "xs"]}>
                     <Image
-                      src={avatarUrl}
+                      src={avatarPreview ?? avatarUrl}
                       width={48}
                       height={48}
                       objectFit={"contain"}
@@ -209,6 +312,7 @@ const EditProfile = () => {
                         variant={"ghost"}
                         size={"sm"}
                         colorScheme="twitter"
+                        onClick={handleClick}
                       >
                         Change
                       </Button>
@@ -219,7 +323,7 @@ const EditProfile = () => {
                   </Box>
                   <br />
                   <FormControl w={["full", "full"]}>
-                    <FormLabel>About Yourself</FormLabel>
+                    <FormLabel fontSize={"sm"}>About Yourself</FormLabel>
                     <Textarea
                       placeholder="Tell us something about yourself..."
                       h={"48"}
@@ -240,7 +344,7 @@ const EditProfile = () => {
                   alignItems={"flex-start"}
                 >
                   <FormControl w={["full"]}>
-                    <FormLabel>What do you do?</FormLabel>
+                    <FormLabel fontSize={"sm"}>What do you do?</FormLabel>
                     <Input
                       name="profession"
                       value={Formik.values.profession}
@@ -258,7 +362,7 @@ const EditProfile = () => {
                   alignItems={"flex-start"}
                 >
                   <FormControl w={["full", "sm"]}>
-                    <FormLabel>Country</FormLabel>
+                    <FormLabel fontSize={"sm"}>Country</FormLabel>
                     <Select
                       name="country"
                       value={COUNTRIES.find(
@@ -272,7 +376,7 @@ const EditProfile = () => {
                     />
                   </FormControl>
                   <FormControl w={["full", "sm"]}>
-                    <FormLabel>Currency</FormLabel>
+                    <FormLabel fontSize={"sm"}>Currency</FormLabel>
                     <ChakraSelect
                       name="currency"
                       value={Formik.values.currency}
@@ -298,7 +402,7 @@ const EditProfile = () => {
                   alignItems={"flex-start"}
                 >
                   <FormControl w={["full", "sm"]}>
-                    <FormLabel>Default Dashboard</FormLabel>
+                    <FormLabel fontSize={"sm"}>Default Dashboard</FormLabel>
                     <HStack
                       rounded={4}
                       overflow={"hidden"}
@@ -356,7 +460,9 @@ const EditProfile = () => {
                   </FormControl>
 
                   <FormControl w={["full", "sm"]}>
-                    <FormLabel>Are you accepting orders?</FormLabel>
+                    <FormLabel fontSize={"sm"}>
+                      Are you accepting orders?
+                    </FormLabel>
                     <HStack
                       rounded={4}
                       overflow={"hidden"}
@@ -413,7 +519,7 @@ const EditProfile = () => {
                 <br />
                 <br />
                 <FormControl w={["full"]}>
-                  <FormLabel>Skills</FormLabel>
+                  <FormLabel fontSize={"sm"}>Skills</FormLabel>
                   <Input
                     name="skills"
                     value={Formik.values.skills}
@@ -421,7 +527,6 @@ const EditProfile = () => {
                     placeholder="write each skill separated by a comma like - Graphic Designing, Web Development, Canva, SEO Analysis"
                   />
                 </FormControl>
-
                 <br />
                 <br />
                 <HStack w={"full"} justifyContent={"flex-end"}>
@@ -434,7 +539,7 @@ const EditProfile = () => {
                   </Button>
                   <Button
                     colorScheme="green"
-                    bgColor={'brand.primary'}
+                    bgColor={"brand.primary"}
                     onClick={Formik.handleSubmit}
                     fontSize={"sm"}
                     fontWeight={"medium"}
@@ -445,11 +550,97 @@ const EditProfile = () => {
               </Box>
             </TabPanel>
             <TabPanel>
-              <p>Withdrawal</p>
+              <Box p={4} bgColor={"#FFF"} rounded={4} boxShadow={"base"}>
+                <FormControl>
+                  <FormLabel fontSize={"sm"} fontWeight={"medium"}>
+                    Paypal Email
+                  </FormLabel>
+                  <HStack
+                    justifyContent={"flex-start"}
+                    w={"full"}
+                    py={4}
+                    gap={4}
+                  >
+                    <Icon as={BsPaypal} fontSize={"2xl"} />
+                    <Input
+                      placeholder="Paypal registered email"
+                      type="email"
+                      name="paypalEmail"
+                      value={Formik.values.paypalEmail}
+                      onChange={Formik.handleChange}
+                    />
+                  </HStack>
+                </FormControl>
+                <br />
+                <HStack w={"full"} justifyContent={"flex-end"}>
+                  <Button
+                    onClick={() => push("/profile/me")}
+                    fontSize={"sm"}
+                    fontWeight={"medium"}
+                  >
+                    Back to Profile
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    bgColor={"brand.primary"}
+                    onClick={Formik.handleSubmit}
+                    fontSize={"sm"}
+                    fontWeight={"medium"}
+                  >
+                    Save Details
+                  </Button>
+                </HStack>
+              </Box>
             </TabPanel>
           </TabPanels>
         </Tabs>
       </Container>
+
+      <Modal
+        isCentered
+        isOpen={changePasswordModal}
+        onClose={() => setChangePasswordModal(false)}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader fontWeight={"medium"}>Change Password</ModalHeader>
+          <ModalBody>
+            <Text fontSize={"sm"}>
+              You are trying to change your password. For security reasons,
+              please enter your current password to proceed
+            </Text>
+            <br />
+            <Input
+              w={"full"}
+              placeholder="Your current password"
+              type="password"
+              name="currentPassword"
+              value={Formik.values.currentPassword}
+              onChange={Formik.handleChange}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <HStack w={"full"} justifyContent={"flex-end"}>
+              <Button
+                onClick={() => setChangePasswordModal(false)}
+                fontSize={"sm"}
+                fontWeight={"medium"}
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="green"
+                bgColor={"brand.primary"}
+                onClick={Formik.handleSubmit}
+                fontSize={"sm"}
+                fontWeight={"medium"}
+              >
+                Confirm
+              </Button>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
