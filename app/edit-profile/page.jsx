@@ -36,7 +36,7 @@ import useApiHandler from "@/hooks/useApiHandler";
 const EditProfile = () => {
   const { avatarUrl, me, user } = useAuth();
   const { uploadAndAttachMedia } = useApiHandler();
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
 
   const [currencies, setCurrencies] = useState([]);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
@@ -168,9 +168,10 @@ const EditProfile = () => {
   async function removeAvatar() {
     try {
       await API.deleteAvatar();
+      refresh();
     } catch (error) {
       toast.error("Error removing your avatar");
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -316,7 +317,12 @@ const EditProfile = () => {
                       >
                         Change
                       </Button>
-                      <Button variant={"ghost"} size={"sm"} colorScheme="red">
+                      <Button
+                        variant={"ghost"}
+                        size={"sm"}
+                        colorScheme="red"
+                        onClick={() => removeAvatar()}
+                      >
                         Remove
                       </Button>
                     </HStack>
