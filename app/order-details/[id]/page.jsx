@@ -1,5 +1,4 @@
 "use client";
-
 import Message from "@/components/Message";
 import useApiHandler from "@/hooks/useApiHandler";
 import { API } from "@/lib/api";
@@ -35,6 +34,8 @@ import {
   Input,
   VStack,
   IconButton,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -48,31 +49,44 @@ import { useFormik } from "formik";
 import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import { toast } from "react-toastify";
-import { BsSend, BsSendFill, BsTrash2Fill, BsXCircleFill } from "react-icons/bs";
+import {
+  BsSend,
+  BsSendFill,
+  BsTrash2Fill,
+  BsXCircleFill,
+} from "react-icons/bs";
+import useAuth from "@/hooks/useAuth";
+import { GoPaperclip } from "react-icons/go";
+import FileDropzone from "@/components/FileDropzone";
 
 const page = ({ params }) => {
   const { id } = params;
   const { replace, refresh } = useRouter();
   const { getMediaUrl, uploadAndAttachMedia } = useApiHandler();
+  const { user } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [sellerAvatar, setSellerAvatar] = useState("");
   const [buyerAvatar, setBuyerAvatar] = useState("");
+  const [authUser, setAuthUser] = useState(null);
+
   const [orderUpdates, setOrderUpdates] = useState([]);
   const [msg, setMsg] = useState("");
   const [bannerUrl, setBannerUrl] = useState();
   const [files, setFiles] = useState([]);
   const [orderDetails, setOrderDetails] = useState(null);
   const [cancelOrderModal, setCancelOrderModal] = useState(false);
+  const [filesModal, setFilesModal] = useState(false);
+  const [attachments, setAttachments] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [reason, setReason] = useState("");
   const [note, setNote] = useState("");
 
   const steps = [
-    { title: "Order created" },
-    { title: "Order requirements submitted" },
-    { title: "Submitted for approval" },
-    { title: "Order accepted" },
-    { title: "Order completed" },
+    { title: "Order created", label: "pending requirements" },
+    { title: "Submitted for approval", label: "requirements submitted" },
+    { title: "Order accepted", label: "ongoing" },
+    { title: "Order completed", label: "finished" },
   ];
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -84,6 +98,10 @@ const page = ({ params }) => {
   useEffect(() => {
     fetchOrderDetails();
   }, []);
+
+  useEffect(() => {
+    setAuthUser(user);
+  }, [user?.id]);
 
   useEffect(() => {
     if (orderDetails?.id) {
@@ -110,7 +128,11 @@ const page = ({ params }) => {
         setFiles(attachments);
       }
 
-      setActiveStep(orderDetails == "requirements submitted" ? 2 : 1);
+      setActiveStep(
+        steps.indexOf(
+          steps?.find((item) => item?.label == orderDetails?.status)
+        ) + 1
+      );
       fetchOrderUpdates(orderDetails?.id);
     }
   }, [orderDetails]);
@@ -174,9 +196,24 @@ const page = ({ params }) => {
         },
       });
       setCancelOrderModal(false);
+      toast.success("Order status updated!");
       await fetchOrderDetails();
     } catch (error) {
-      toast.error("Error cancelling notes");
+      toast.error("Error cancelling order");
+    }
+  }
+
+  async function completeOrder() {
+    try {
+      await API.updateOrder(orderDetails?.id, {
+        data: {
+          status: "finished",
+        },
+      });
+      toast.success("Order status updated!");
+      await fetchOrderDetails();
+    } catch (error) {
+      toast.error("Error updating order");
     }
   }
 
@@ -205,14 +242,25 @@ const page = ({ params }) => {
 
   async function postOrderUpdate() {
     try {
-      await API.postOrderUpdate({
+      setLoading(true);
+      const data = await API.postOrderUpdate({
         message: msg,
         orderId: orderDetails?.id,
       });
       setMsg("");
+      setLoading(false);
+      if (attachments?.length) {
+        await uploadAndAttachMedia({
+          entryId: data?.id,
+          field: "attachments",
+          files: attachments,
+          modelName: "api::order-update.order-update",
+        });
+      }
       await fetchOrderUpdates();
       toast.success("Update posted successfully!");
     } catch (error) {
+      setLoading(false);
       toast.error("Error while posting update");
     }
   }
@@ -253,7 +301,7 @@ const page = ({ params }) => {
               <Flex className="items-center justify-between">
                 <Text className="w-1/2">Service</Text>
                 <Text>Delivery</Text>
-                <Text isNumeric>Price</Text>
+                <Text>Price</Text>
               </Flex>
               <Accordion
                 allowToggle
@@ -278,6 +326,11 @@ const page = ({ params }) => {
                     <Text>{orderDetails?.amount}</Text>
                   </Flex>
                   <AccordionPanel pb={4}>
+                    {orderDetails?.gig?.overview ? (
+                      <Text className="mb-6">
+                        {orderDetails?.gig?.overview}
+                      </Text>
+                    ) : null}
                     <Text className="block font-medium text-lg my-3">
                       Seller Requirements
                     </Text>
@@ -311,10 +364,24 @@ const page = ({ params }) => {
               >
                 Submit Requirements
               </Button>
-            ) : null}
+            ) : (
+              <Button
+                p={"2.5"}
+                w={"48"}
+                fontSize={"sm"}
+                bgColor={"orange.400"}
+                colorScheme="'orange"
+                color={"#FFF"}
+                fontWeight={"medium"}
+                onClick={onOpen}
+              >
+                View Requirements
+              </Button>
+            )}
 
-            {orderDetails?.status == "completed" ||
-            orderDetails?.status == "cancelled" ? null : (
+            {orderDetails?.status == "cancelled" ||
+            orderDetails?.status == "finished" ? null : orderDetails?.buyer
+                ?.id == authUser?.id ? (
               <Button
                 p={"2.5"}
                 w={"48"}
@@ -326,6 +393,18 @@ const page = ({ params }) => {
                 color={"#FFF"}
               >
                 Cancel Order
+              </Button>
+            ) : (
+              <Button
+                p={"2.5"}
+                w={"48"}
+                fontSize={"sm"}
+                colorScheme="whatsapp"
+                fontWeight={"medium"}
+                color={"#FFF"}
+                onClick={completeOrder}
+              >
+                Mark Finished
               </Button>
             )}
           </HStack>
@@ -345,23 +424,32 @@ const page = ({ params }) => {
                     : sellerAvatar
                 }
                 msg={data?.message}
+                files={data?.attachments}
               />
             ))}
             <br />
-            {orderDetails?.status == "cancelled" ? null : (
+            {orderDetails?.status == "cancelled" ||
+            orderDetails?.status == "finished" ? null : (
               <HStack gap={4}>
-                <Input
-                  w={"full"}
-                  placeholder="Type your message here..."
-                  value={msg}
-                  onChange={(e) => setMsg(e.target.value)}
-                />
+                <InputGroup>
+                  <InputLeftElement
+                    children={<GoPaperclip />}
+                    onClick={() => setFilesModal(true)}
+                  />
+                  <Input
+                    w={"full"}
+                    placeholder="Type your message here..."
+                    value={msg}
+                    onChange={(e) => setMsg(e.target.value)}
+                  />
+                </InputGroup>
                 <Button
                   bgColor="brand.primary"
                   colorScheme="orange"
                   fontSize={"sm"}
                   rightIcon={<BsSendFill />}
                   onClick={postOrderUpdate}
+                  isLoading={loading}
                 >
                   Send
                 </Button>
@@ -407,7 +495,7 @@ const page = ({ params }) => {
                     <Text fontSize={"sm"}>{orderDetails?.buyer?.username}</Text>
                   </Link>
                   <Text fontSize={"xs"} className="text-neutral-500 text-right">
-                    Offline 3d ago
+                    {orderDetails?.buyer?.online ? "Online" : "Offline"}
                   </Text>
                 </Stack>
               </Stack>
@@ -478,7 +566,9 @@ const page = ({ params }) => {
               </Stepper>
             )}
           </Flex>
+
           {/* Three Drop-downs */}
+
           {/* Files */}
           <Accordion
             allowToggle
@@ -521,6 +611,7 @@ const page = ({ params }) => {
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
+
           {/* FAQs */}
           <Accordion
             allowToggle
@@ -575,6 +666,7 @@ const page = ({ params }) => {
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
+
           {/* Notes */}
           <Accordion
             allowToggle
@@ -603,7 +695,7 @@ const page = ({ params }) => {
                 <VStack w={"full"} mb={4}>
                   {orderDetails?.notes?.map((data, key) => (
                     <Box
-                    w={'full'}
+                      w={"full"}
                       key={key}
                       p={3}
                       bgColor={"#FFF"}
@@ -621,7 +713,7 @@ const page = ({ params }) => {
 
                         <IconButton
                           icon={<BsXCircleFill color="red" />}
-                          color={'red'}
+                          color={"red"}
                           size={"xs"}
                           rounded={"full"}
                           onClick={() => deleteNote(data?.id)}
@@ -679,6 +771,32 @@ const page = ({ params }) => {
         <HStack py={4} justifyContent={"flex-end"}>
           <Button colorScheme="orange" onClick={Formik.handleSubmit}>
             Submit
+          </Button>
+        </HStack>
+      </AppModal>
+
+      <AppModal
+        isOpen={filesModal}
+        setIsOpen={() => setFilesModal(false)}
+        title={"Send Attachments"}
+        size={"xl"}
+      >
+        <FileDropzone onUpload={(files) => setAttachments(files)} />
+        <br />
+        <HStack w={"full"}>
+          <Input
+            placeholder="Type your message here..."
+            value={msg}
+            onChange={(e) => setMsg(e.target.value)}
+          />
+          <Button
+            bgColor={"brand.primary"}
+            colorScheme="whatsapp"
+            rightIcon={<BsSendFill />}
+            onClick={postOrderUpdate}
+            isLoading={loading}
+          >
+            Send
           </Button>
         </HStack>
       </AppModal>

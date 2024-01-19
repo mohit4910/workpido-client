@@ -1,8 +1,9 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { API_BASE_URL, STORAGE_PROVIDER } from "@/lib/constants";
+import { Flex, HStack, Image, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import React, { useContext, useEffect, useRef } from "react";
 
-const Message = ({ msg, avatar, username }) => {
-
+const Message = ({ msg, avatar, username, files }) => {
   return (
     <Flex className="gap-4 items-start hover:bg-gray-200 py-2">
       <Flex className="items-center flex-col">
@@ -18,7 +19,30 @@ const Message = ({ msg, avatar, username }) => {
         </Text>
 
         <Text className=" max-w-fit px-2">{msg}</Text>
-        {/* {message.img && <Image src={message.img} alt="" className="w-2/5" />} */}
+        {files ? (
+          <HStack mt={3} gap={4}>
+            {files?.map((file, key) => (
+              <Link
+                href={
+                  STORAGE_PROVIDER == "local"
+                    ? API_BASE_URL?.replace("/api", "") + file?.url
+                    : file?.url
+                }
+                target="_blank"
+              >
+                <Image
+                  boxSize={12}
+                  objectFit={"contain"}
+                  src={
+                    STORAGE_PROVIDER == "local"
+                      ? API_BASE_URL?.replace("/api", "") + file?.url
+                      : file?.url
+                  }
+                />
+              </Link>
+            ))}
+          </HStack>
+        ) : null}
       </Flex>
     </Flex>
   );
