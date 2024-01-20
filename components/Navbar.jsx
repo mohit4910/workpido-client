@@ -294,7 +294,10 @@ const DesktopNav = ({ categories }) => {
                 as="a"
                 py={2}
                 pt={3}
-                href={navItem?.frontendLink ?? navItem?.title?.toLowerCase()?.replace(/ /g, "-")}
+                href={
+                  navItem?.frontendLink ??
+                  navItem?.title?.toLowerCase()?.replace(/ /g, "-")
+                }
                 fontSize={"sm"}
                 fontWeight={400}
                 // borderRight={`${categories?.length - 1 !== i && "1px"}`}
@@ -348,12 +351,7 @@ const DesktopNav = ({ categories }) => {
                       }
                       key={key}
                       hasBorder={key % 2 === 0}
-                      href={
-                        child?.frontendLink ??
-                        `/gigs/${child?.title
-                          ?.toLowerCase()
-                          ?.replace(/ /g, "-")}`
-                      }
+                      href={child?.frontendLink}
                       {...child}
                     />
                   ))}
@@ -371,7 +369,7 @@ const DesktopSubNav = ({ title, frontendLink, inheritedWidth, hasBorder }) => {
   return (
     <Box
       as="a"
-      href={frontendLink}
+      href={frontendLink ?? `/gigs/${title?.toLowerCase()?.replace(/ /g, "-")}`}
       role={"group"}
       display={"block"}
       px={6}
@@ -415,7 +413,9 @@ const MobileNavItem = ({ title, subCategories, frontendLink }) => {
       <Box
         py={2}
         as="a"
-        href={frontendLink ?? navItem?.title?.toLowerCase()?.replace(/ /g, "-")}
+        href={
+          frontendLink ?? `/gigs/${title?.toLowerCase()?.replace(/ /g, "-")}`
+        }
         justifyContent="space-between"
         alignItems="center"
         _hover={{
@@ -450,7 +450,7 @@ const MobileNavItem = ({ title, subCategories, frontendLink }) => {
         >
           {subCategories?.length
             ? subCategories.map((child, key) => (
-                <Box as="a" key={key} py={2} href={child.frontendLink ?? "#"}>
+                <Box as="a" key={key} py={2} href={child.frontendLink ?? `/gigs/${child?.title?.toLowerCase()?.replace(/ /g, "-")}`}>
                   {child.title}
                 </Box>
               ))
