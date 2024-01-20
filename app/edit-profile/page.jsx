@@ -82,7 +82,7 @@ const EditProfile = () => {
       Formik.setFieldValue("bio", user?.bio);
       Formik.setFieldValue("defaultDashboard", user?.defaultDashboard);
       Formik.setFieldValue("skills", user?.skills);
-      Formik.setFieldValue("currency", user?.currency);
+      Formik.setFieldValue("currency", user?.currency?.id);
       Formik.setFieldValue("paypalEmail", user?.paypalEmail);
     }
   }, [user?.id]);
@@ -101,18 +101,18 @@ const EditProfile = () => {
 
   const Formik = useFormik({
     initialValues: {
-      username: user?.username,
-      phone: user?.phone,
-      email: user?.email,
-      displayName: user?.displayName,
-      profession: user?.profession,
-      acceptingOrders: user?.acceptingOrders,
-      country: user?.country,
-      bio: user?.bio || "",
-      defaultDashboard: user?.defaultDashboard || "seller",
-      skills: user?.skills || "",
-      currency: user?.currency || "",
-      paypalEmail: user?.paypalEmail,
+      username: "",
+      phone: "",
+      email: "",
+      displayName: "",
+      profession: "",
+      acceptingOrders: true,
+      country: "",
+      bio: "",
+      defaultDashboard: "seller",
+      skills: "",
+      currency: "",
+      paypalEmail: "",
       currentPassword: "",
       password: "",
       passwordConfirmation: "",
@@ -143,19 +143,30 @@ const EditProfile = () => {
           delete values["passwordConfirmation"];
         }
 
+        for (let i = 0; i < Object.keys(values).length; i++) {
+          const key = Object.keys(values)[i];
+          if (!values[key]) {
+            delete values[key];
+          }
+        }
+
+        console.log({ ...values });
+
+        const res = await API.updateMe({
+          ...values,
+        });
+        console.log(res);
+
         if (avatar) {
           await uploadAndAttachMedia({
             entryId: user?.id,
             field: "avatar",
             files: [avatar],
             modelName: "plugin::users-permissions.user",
+            path: "",
           });
         }
 
-        await API.updateMe({
-          ...values,
-          country: values?.country?.value,
-        });
         toast.success("Profile update successfully!");
         // me();
       } catch (error) {
@@ -263,6 +274,7 @@ const EditProfile = () => {
                     placeholder="Your Email"
                     type="email"
                     name="email"
+                    isDisabled
                     value={Formik.values.email}
                     onChange={Formik.handleChange}
                   />

@@ -45,118 +45,7 @@ const page = ({ params }) => {
   const { me, user, getAvatar, avatarUrl } = useAuth();
   const [userData, setUserData] = useState(null);
 
-  const gigs = [
-    {
-      id: 18,
-      title: "Haribol!! Haribol!!",
-      revisions: "8",
-      deliveryDays: 7,
-      startingPrice: 0,
-      fixedPrice: 599,
-      hourlyPrice: 0,
-      pricingModel: "fixed",
-      seller: {
-        id: 12,
-        displayName: "Sangam Kumar",
-        username: "sangam4742",
-        createdAt: "2023-10-20T15:19:16.584Z",
-        country: "India",
-        avatar: null,
-        currency: {
-          id: 1,
-          name: "Indian National Rupee",
-          symbol: "₹",
-          isoCode: "INR",
-        },
-      },
-      category: {
-        id: 1,
-        title: "web development",
-      },
-      banners: [
-        {
-          id: 9,
-          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
-        },
-        {
-          id: 10,
-          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
-        },
-      ],
-    },
-    {
-      id: 29,
-      title: "Test Gig",
-      revisions: "3",
-      deliveryDays: 7,
-      startingPrice: 0,
-      fixedPrice: 599,
-      hourlyPrice: 0,
-      pricingModel: "fixed",
-      seller: {
-        id: 13,
-        displayName: "Rishi Kumar",
-        username: "rkumar",
-        createdAt: "2023-10-21T20:21:38.303Z",
-        country: "India",
-        avatar: null,
-        currency: {
-          id: 1,
-          name: "Indian National Rupee",
-          symbol: "₹",
-          isoCode: "INR",
-        },
-      },
-      category: {
-        id: 1,
-        title: "web development",
-      },
-      banners: [
-        {
-          id: 32,
-          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "I'll do good work. Hare Krishna!",
-      revisions: "3",
-      deliveryDays: 7,
-      startingPrice: null,
-      fixedPrice: null,
-      hourlyPrice: 5,
-      pricingModel: "hourly",
-      seller: {
-        id: 12,
-        displayName: "Sangam Kumar",
-        username: "sangam4742",
-        createdAt: "2023-10-20T15:19:16.584Z",
-        country: "India",
-        avatar: null,
-        currency: {
-          id: 1,
-          name: "Indian National Rupee",
-          symbol: "₹",
-          isoCode: "INR",
-        },
-      },
-      category: {
-        id: 1,
-        title: "web development",
-      },
-      banners: [
-        {
-          id: 2,
-          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
-        },
-        {
-          id: 1,
-          url: "https://wallpapers.com/images/featured/hd-a5u9zq0a0ymy2dug.jpg",
-        },
-      ],
-    },
-  ];
+  const [gigs, setGigs] = useState([]);
 
   useEffect(() => {
     me();
@@ -174,6 +63,12 @@ const page = ({ params }) => {
     getAvatar(userData?.avatar?.url);
   }, [userData]);
 
+  useEffect(() => {
+    if (userData?.id) {
+      fetchSellerGigs();
+    }
+  }, [userData?.id]);
+
   const fetchUserInfo = async () => {
     API.getUserInfo({ username: username })
       .then((res) => {
@@ -185,6 +80,19 @@ const page = ({ params }) => {
         push("/not-found");
       });
   };
+
+  async function fetchSellerGigs() {
+    try {
+      const res = await API.sellerGigs({
+        sellerId: userData?.id,
+        limit: 8,
+      });
+      setGigs(res);
+    } catch (error) {
+      console.log("Error while fetching seller Gigs");
+      console.log(error);
+    }
+  }
 
   if (!userData?.id) {
     return (
@@ -320,8 +228,9 @@ const page = ({ params }) => {
             />
           </Box>
         </Flex>
+
         {/* Portfolio */}
-        <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
+        {/* <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
           <Text className="font-semibold text-lg lg:text-2xl  my-3">Portfolio</Text>
           <Stack spacing={8}>
             <Flex
@@ -334,24 +243,28 @@ const page = ({ params }) => {
               ))}
             </Flex>
           </Stack>
-        </Flex>
+        </Flex> */}
+
         {/* Other Works of the Seller */}
-        <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
-          <Text className="font-semibold text-lg lg:text-2xl my-3">
-            This User's Work
-          </Text>
-          <Stack spacing={8}>
-            <Flex
-              justify={"flex-start"}
-              gap={6}
-              className="overflow-x-scroll p-3"
-            >
-              {gigs.map((gig, key) => (
-                <GigCard gig={gig} key={key} />
-              ))}
-            </Flex>
-          </Stack>
-        </Flex>
+        {gigs?.length ? (
+          <Flex className="flex-col object-contain w-screen md:w-11/12 mx-auto p-4 my-4 bg-[#f6f6f6]">
+            <Text className="font-semibold text-lg lg:text-2xl my-3">
+              This User's Work
+            </Text>
+            <Stack spacing={8}>
+              <Flex
+                justify={"flex-start"}
+                gap={6}
+                className="overflow-x-scroll p-3"
+              >
+                {gigs.map((gig, key) => (
+                  <GigCard gig={gig} key={key} />
+                ))}
+              </Flex>
+            </Stack>
+          </Flex>
+        ) : null}
+
         {/* Reviews */}
         <Box className="mx-1 md:mx-5 my-3 w-full p-2 md:p-5">
           <Text className="font-medium text-lg lg:text-2xl my-3">
@@ -369,8 +282,9 @@ const page = ({ params }) => {
             />
           </Box>
         </Box>
-        {/* contact Section */}
 
+        
+        {/* contact Section */}
         {username == "me" || username == user?.username ? null : (
           <Flex
             flexDirection="column"

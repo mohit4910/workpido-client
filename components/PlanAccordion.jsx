@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const PlanAccordion = ({ data, onClick }) => {
+const PlanAccordion = ({ data, onClick, isDisabled }) => {
   return (
     <>
       <Accordion
@@ -46,6 +46,7 @@ const PlanAccordion = ({ data, onClick }) => {
                   w={"full"}
                   bgColor={"brand.primary"}
                   colorScheme="green"
+                  isDisabled={isDisabled}
                   onClick={() =>
                     onClick({
                       name: plan,

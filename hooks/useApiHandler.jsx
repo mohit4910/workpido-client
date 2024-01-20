@@ -81,7 +81,7 @@ const useApiHandler = () => {
           Authorization: "Bearer " + Cookies.get("token"),
         },
       });
-      console.log(res.data);
+      
       return {
         message: `${field} Files uploaded successfully!`,
         data: res.data,
