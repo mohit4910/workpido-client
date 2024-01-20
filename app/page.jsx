@@ -8,6 +8,7 @@ import {
   Button,
   Container,
   Flex,
+  HStack,
   Heading,
   Image,
   Input,
@@ -15,6 +16,7 @@ import {
   ListItem,
   Text,
   Tooltip,
+  VStack,
 } from "@chakra-ui/react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -124,20 +126,31 @@ export default function Home() {
       {/* Banner */}
       <Box
         w={"full"}
-        className="relative max-h-[720px]"
+        className="relative"
         bgImage="url(https://images.pexels.com/photos/251603/pexels-photo-251603.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)"
-        h={{ base: "40vh", md: "85vh" }}
+        py={[8, 12]}
         bgSize={"cover"}
         display={"flex"}
       >
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>
-          <Flex w={"full"} justify="center" h={"full"}>
+          <Flex
+            direction={["column", "row"]}
+            w={"full"}
+            alignItems={"center"}
+            justifyContent="center"
+            h={"full"}
+          >
             <Flex
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
             >
-              <Text className="mx-auto mb-3 text-xl font-medium md:text-4xl md:mb-4 md:mx-0">
+              <Text
+                mx={["0", "auto"]}
+                mb={[3, 4]}
+                fontSize={["2xl", "4xl"]}
+                fontWeight={["medium"]}
+              >
                 Buy affordable freelance services on the go
               </Text>
               <Flex className="flex-col items-center justify-center w-full gap-2 mx-auto md:mb-4 md:justify-start md:mx-0 md:gap-0 md:flex-row">
@@ -196,6 +209,7 @@ export default function Home() {
                 </List>
               </Flex>
             </Flex>
+
             {/* Freelancers */}
             <Flex
               justifyContent={["center", "flex-end"]}
@@ -275,84 +289,91 @@ export default function Home() {
                 </Swiper>
               </Flex>
             </Flex>
-            {/* Top Brands */}
-            <Flex
-              background={"rgba(255, 255, 255)"}
-              position={"absolute"}
-              bottom={"0px"}
-              left={"0px"}
-              className="items-center hidden w-full p-5 mb-0 shadow-md md:flex justify-evenly"
-            >
-              <Tooltip
-                hasArrow
-                label="Top Companies uses Workpido to get work done"
-                bg="white"
-                color="black"
-              >
-                <Image
-                  src="https://cdn.kwork.com/images/index/partners/en/ikea.svg?ver=3"
-                  alt=""
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label="Top Companies uses Workpido to get work done"
-                bg="white"
-                color="black"
-              >
-                <Image
-                  src="https://cdn.kwork.com/images/index/partners/en/apple.svg?ver=3"
-                  alt=""
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label="Top Companies uses Workpido to get work done"
-                bg="white"
-                color="black"
-              >
-                <Image
-                  src="https://cdn.kwork.com/images/index/partners/en/danone.svg?ver=3"
-                  alt=""
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label="Top Companies uses Workpido to get work done"
-                bg="white"
-                color="black"
-              >
-                <Image
-                  src="https://cdn.kwork.com/images/index/partners/en/leroy-merlin.svg?ver=3"
-                  alt=""
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label="Top Companies uses Workpido to get work done"
-                bg="white"
-                color="black"
-              >
-                <Image
-                  src="https://cdn.kwork.com/images/index/partners/en/bp.svg?ver=3"
-                  alt=""
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label="Top Companies uses Workpido to get work done"
-                bg="white"
-                color="black"
-              >
-                <Image
-                  src="https://cdn.kwork.com/images/index/partners/en/philips.svg?ver=3"
-                  alt=""
-                />
-              </Tooltip>
-            </Flex>
           </Flex>
         </Container>
       </Box>
+
+      {/* Top Brands */}
+      <Flex
+        background={"rgba(255, 255, 255)"}
+        className="items-center hidden w-full p-5 mb-0 shadow-md md:flex justify-evenly"
+      >
+        <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+          <HStack
+            w={"full"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Tooltip
+              hasArrow
+              label="Top Companies uses Workpido to get work done"
+              bg="white"
+              color="black"
+            >
+              <Image
+                src="https://cdn.kwork.com/images/index/partners/en/ikea.svg?ver=3"
+                alt=""
+              />
+            </Tooltip>
+            <Tooltip
+              hasArrow
+              label="Top Companies uses Workpido to get work done"
+              bg="white"
+              color="black"
+            >
+              <Image
+                src="https://cdn.kwork.com/images/index/partners/en/apple.svg?ver=3"
+                alt=""
+              />
+            </Tooltip>
+            <Tooltip
+              hasArrow
+              label="Top Companies uses Workpido to get work done"
+              bg="white"
+              color="black"
+            >
+              <Image
+                src="https://cdn.kwork.com/images/index/partners/en/danone.svg?ver=3"
+                alt=""
+              />
+            </Tooltip>
+            <Tooltip
+              hasArrow
+              label="Top Companies uses Workpido to get work done"
+              bg="white"
+              color="black"
+            >
+              <Image
+                src="https://cdn.kwork.com/images/index/partners/en/leroy-merlin.svg?ver=3"
+                alt=""
+              />
+            </Tooltip>
+            <Tooltip
+              hasArrow
+              label="Top Companies uses Workpido to get work done"
+              bg="white"
+              color="black"
+            >
+              <Image
+                src="https://cdn.kwork.com/images/index/partners/en/bp.svg?ver=3"
+                alt=""
+              />
+            </Tooltip>
+            <Tooltip
+              hasArrow
+              label="Top Companies uses Workpido to get work done"
+              bg="white"
+              color="black"
+            >
+              <Image
+                src="https://cdn.kwork.com/images/index/partners/en/philips.svg?ver=3"
+                alt=""
+              />
+            </Tooltip>
+          </HStack>
+        </Container>
+      </Flex>
+
       {/* Main Content */}
       <Flex flexDirection={"column"} alignItems={"center"} w={"full"}>
         <Box p={[4, 8]}>
@@ -362,7 +383,7 @@ export default function Home() {
               w={["full"]}
               textAlign={"left"}
               fontWeight={"medium"}
-              my={12}
+              my={[8, 12]}
             >
               {"Explore Kwork's Evergrowing Catalog"}
             </Text>
@@ -371,6 +392,7 @@ export default function Home() {
             <Features />
           </Container>
         </Box>
+
         {/* Getting Started Section */}
         <Flex
           flexDirection="column"
@@ -383,25 +405,28 @@ export default function Home() {
           bgPosition={"center"}
           bgAttachment={"fixed"}
         >
-          <Heading className="mt-3 text-xl font-bold text-center md:text-2xl md:mt-5">
-            Start saving with freelance services today
-          </Heading>
-          <Text className="font-medium">
-            Speed, quality, and affordability: you can have it all!
-          </Text>
-          <Button
-            className="w-2/3 px-2 py-6 my-5 text-base rounded md:w-1/3"
-            as={"a"}
-            display={"inline-flex"}
-            color={"white"}
-            bg={"brand.primary"}
-            href={"#"}
-            _hover={{
-              bg: "green.300",
-            }}
-          >
-            Sign up for Free
-          </Button>
+          <VStack maxW={["full", "3xl", "5xl", "7xl"]}>
+            <Heading className="mt-3 text-xl font-bold text-center md:text-2xl md:mt-5">
+              Start saving with freelance services today
+            </Heading>
+            <Text className="font-medium" textAlign={"center"}>
+              Speed, quality, and affordability: you can have it all!
+            </Text>
+            <Button
+              className="px-2 py-6 my-5 text-base rounded"
+              as={"a"}
+              display={"inline-flex"}
+              color={"white"}
+              bg={"brand.primary"}
+              href={"#"}
+              _hover={{
+                bg: "green.300",
+              }}
+              w={["full"]}
+            >
+              Sign up for Free
+            </Button>
+          </VStack>
         </Flex>
         <AboutUs />
       </Flex>
