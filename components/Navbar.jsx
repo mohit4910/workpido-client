@@ -78,7 +78,7 @@ export default function WithSubnavigation() {
         px={[4, 16, "7%"]}
         borderBottom={"0.75px"}
         borderStyle={"solid"}
-        borderColor={"#bdbdbd"}
+        borderColor={"#E2E2E2"}
       >
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>
           <HStack w={"full"} justifyContent={"space-between"}>
@@ -296,7 +296,7 @@ const DesktopNav = ({ categories }) => {
                 pt={3}
                 href={
                   navItem?.frontendLink ??
-                  navItem?.title?.toLowerCase()?.replace(/ /g, "-")
+                  `/gigs/${navItem?.title?.toLowerCase()?.replace(/ /g, "-")}`
                 }
                 fontSize={"sm"}
                 fontWeight={400}
