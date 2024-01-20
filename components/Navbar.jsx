@@ -294,7 +294,7 @@ const DesktopNav = ({ categories }) => {
                 as="a"
                 py={2}
                 pt={3}
-                href={navItem?.frontendLink ?? "#"}
+                href={navItem?.frontendLink ?? navItem?.title?.toLowerCase()?.replace(/ /g, "-")}
                 fontSize={"sm"}
                 fontWeight={400}
                 // borderRight={`${categories?.length - 1 !== i && "1px"}`}
@@ -415,7 +415,7 @@ const MobileNavItem = ({ title, subCategories, frontendLink }) => {
       <Box
         py={2}
         as="a"
-        href={frontendLink ?? "#"}
+        href={frontendLink ?? navItem?.title?.toLowerCase()?.replace(/ /g, "-")}
         justifyContent="space-between"
         alignItems="center"
         _hover={{
