@@ -63,6 +63,9 @@ const ArticleDetails = ({ params }) => {
   const [sellerAvatar, setSellerAvatar] = useState("");
   const [bannerImageUrls, setBannerImageUrls] = useState([]);
 
+  const [sellerGigs, setSellerGigs] = useState([]);
+  const [categoryGigs, setCategoryGigs] = useState([]);
+
   useEffect(() => {
     const banners = data?.banners || [{ url: "" }];
     let mediaUrls = [];
@@ -78,6 +81,20 @@ const ArticleDetails = ({ params }) => {
   }, []);
 
   useEffect(() => {
+    if (!data?.id) return;
+    if (data?.id) {
+      fetchCategoryGigs();
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (!data?.id) return;
+    if (data?.id) {
+      fetchSellerGigs();
+    }
+  }, [data]);
+
+  useEffect(() => {
     if (data?.seller?.id) {
       const avatarUrl = getAvatar(data?.seller?.avatar?.url);
       setSellerAvatar(avatarUrl);
@@ -91,6 +108,32 @@ const ArticleDetails = ({ params }) => {
     } catch (error) {
       console.log("Error while fetching gigs: ", error);
       push("/not-found");
+    }
+  }
+
+  async function fetchSellerGigs() {
+    try {
+      const res = await API.sellerGigs({
+        sellerId: data?.seller?.id,
+        limit: 8,
+      });
+      setSellerGigs(res);
+    } catch (error) {
+      console.log("Error while fetching seller Gigs");
+      console.log(error);
+    }
+  }
+
+  async function fetchCategoryGigs() {
+    try {
+      const res = await API.getGigs(
+        data?.category?.title,
+        `exception=${data?.id}`
+      );
+      setCategoryGigs(res);
+    } catch (error) {
+      console.log("Error while fetching other Gigs");
+      console.log(error);
     }
   }
 
@@ -141,7 +184,8 @@ const ArticleDetails = ({ params }) => {
             {/* Main Content */}
             <Box
               className="mx-auto"
-              maxW={["full", "60%"]}
+              maxW={["full", "3xl"]}
+              flex={["unset", "4"]}
               bgColor={"#FFF"}
               boxShadow={"base"}
             >
@@ -231,7 +275,11 @@ const ArticleDetails = ({ params }) => {
 
                 {/* Article Ordering */}
                 {data?.pricingModel != "plans" ? (
-                  <Flex className="justify-center flex-col p-5" bgColor={'#FFF'} boxShadow={'base'}>
+                  <Flex
+                    className="justify-center flex-col p-5"
+                    bgColor={"#FFF"}
+                    boxShadow={"base"}
+                  >
                     {/* Details */}
                     <Flex className="items-center justify-evenly">
                       <List className="flex items-center justify-end md:pr-5 md:justify-evenly w-full text-xs">
@@ -293,7 +341,7 @@ const ArticleDetails = ({ params }) => {
                     </Flex>
                   </Flex>
                 ) : (
-                  <Box py={8}>
+                  <Box py={8} px={5}>
                     <Heading size="md">
                       Select a plan to proceed with your order.
                     </Heading>
@@ -376,10 +424,14 @@ const ArticleDetails = ({ params }) => {
               </Box>
             </Box>
             {/* SideBar - Only visible on large displays */}
-            <Box className="hidden lg:block" maxW={["full", "28%"]}>
+            <Box className="hidden lg:block" maxW={["full", "xs"]} flex={1}>
               {/* Article Ordering */}
               {data?.pricingModel != "plans" ? (
-                <Flex className="justify-center flex-col p-5" bgColor={'#FFF'} boxShadow={'base'}>
+                <Flex
+                  className="justify-center flex-col p-5"
+                  bgColor={"#FFF"}
+                  boxShadow={"base"}
+                >
                   {/* Header */}
                   <Text color="brand.primary">
                     <span className="text-lg mx-2 font-semibold">
@@ -528,9 +580,9 @@ const ArticleDetails = ({ params }) => {
                 </Box>
               </Flex>
               {/* Seller Contact Card */}
-              <SellerCard user={data?.seller} height={'unset'} />
+              <SellerCard user={data?.seller} height={"unset"} />
               {/* Social Handles */}
-              <Box className="bg-white w-full mt-3 p-5" boxShadow={'base'}>
+              <Box className="bg-white w-full mt-3 p-5" boxShadow={"base"}>
                 <Text className="text-center text-base mb-3">
                   Share on your Social Media
                 </Text>
@@ -556,57 +608,46 @@ const ArticleDetails = ({ params }) => {
         </Container>
 
         {/* Other Works of the Seller */}
-        <Flex className="flex-col object-contain w-screen md:w-10/12 mx-auto p-4 my-4">
-          <Text fontSize={26} fontWeight={600}>
-            Other Works from the Seller
-          </Text>
-          <Stack spacing={8}>
-            <Flex
-              justify={"flex-start"}
-              gap={10}
-              className="hide-scrollbar overflow-x-scroll p-3"
-            >
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-            </Flex>
-          </Stack>
-        </Flex>
+        {sellerGigs?.length ? (
+          <Flex className="flex-col object-contain w-screen md:w-10/12 mx-auto p-4 my-4">
+            <Text fontSize={26} fontWeight={600}>
+              Other Works from the Seller
+            </Text>
+            <Stack spacing={8}>
+              <Flex
+                justify={"flex-start"}
+                gap={10}
+                className="hide-scrollbar overflow-x-scroll p-3"
+              >
+                {sellerGigs?.map((gig, key) => (
+                  <GigCard gig={gig} key={key} />
+                ))}
+              </Flex>
+            </Stack>
+          </Flex>
+        ) : null}
+
         {/* Similar Works */}
-        <Flex className="flex-col object-contain w-screen md:w-10/12 mx-auto p-4 my-4">
-          <Text fontSize={26} fontWeight={600}>
-            Similar Works
-          </Text>
-          <Stack spacing={8}>
-            <Flex
-              justify={"flex-start"}
-              gap={10}
-              className="hide-scrollbar overflow-x-scroll p-3"
-            >
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-              <GigCard />
-            </Flex>
-          </Stack>
-        </Flex>
+
+        {categoryGigs?.length ? (
+          <Flex className="flex-col object-contain w-screen md:w-10/12 mx-auto p-4 my-4">
+            <Text fontSize={26} fontWeight={600}>
+              Similar Works
+            </Text>
+            <Stack spacing={8}>
+              <Flex
+                justify={"flex-start"}
+                gap={10}
+                className="hide-scrollbar overflow-x-scroll p-3"
+              >
+                {categoryGigs?.map((gig, key) => (
+                  <GigCard gig={gig} key={key} />
+                ))}
+              </Flex>
+            </Stack>
+          </Flex>
+        ) : null}
+
         {/* Social Handles */}
         <Box className="bg-white lg:hidden mx-auto w-screen md:w-10/12 p-5">
           <Heading className="text-center mb-5">

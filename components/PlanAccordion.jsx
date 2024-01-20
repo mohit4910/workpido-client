@@ -14,14 +14,20 @@ import React from "react";
 const PlanAccordion = ({ data, onClick }) => {
   return (
     <>
-      <Accordion allowToggle allowMultiple gap={8}>
+      <Accordion
+        allowToggle
+        allowMultiple
+        gap={8}
+        bgColor={"#FFF"}
+        boxShadow={"base"}
+      >
         {data?.plans?.map((plan, i) => (
           <AccordionItem key={i}>
             <AccordionButton>
               <Box as="span" flex="1" textAlign="left">
                 <Text
-                  fontSize={"lg"}
-                  fontWeight={"semibold"}
+                  fontSize={"md"}
+                  fontWeight={"medium"}
                   color={"brand.primary"}
                 >
                   {plan}
@@ -43,7 +49,9 @@ const PlanAccordion = ({ data, onClick }) => {
                   onClick={() =>
                     onClick({
                       name: plan,
-                      amount: data?.data?.hasOwnProperty("Price") ? data?.data["Price"][i] : data?.data["Pricing"][i],
+                      amount: data?.data?.hasOwnProperty("Price")
+                        ? data?.data["Price"][i]
+                        : data?.data["Pricing"][i],
                     })
                   }
                 >

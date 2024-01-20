@@ -196,9 +196,30 @@ const EditProfile = () => {
 
         <Tabs colorScheme="yellow" maxW={["full", "2xl"]}>
           <TabList>
-            <Tab>General</Tab>
-            <Tab>Profile</Tab>
-            <Tab>Withdrawal Methods</Tab>
+            <Tab
+              _selected={{
+                color: "brand.primary",
+                borderBottomColor: "brand.primary",
+              }}
+            >
+              General
+            </Tab>
+            <Tab
+              _selected={{
+                color: "brand.primary",
+                borderBottomColor: "brand.primary",
+              }}
+            >
+              Profile
+            </Tab>
+            <Tab
+              _selected={{
+                color: "brand.primary",
+                borderBottomColor: "brand.primary",
+              }}
+            >
+              Withdrawal Methods
+            </Tab>
           </TabList>
 
           <TabPanels>

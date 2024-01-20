@@ -348,7 +348,12 @@ const DesktopNav = ({ categories }) => {
                       }
                       key={key}
                       hasBorder={key % 2 === 0}
-                      href={child?.frontendLink ?? "#"}
+                      href={
+                        child?.frontendLink ??
+                        `/gigs/${child?.title
+                          ?.toLowerCase()
+                          ?.replace(/ /g, "-")}`
+                      }
                       {...child}
                     />
                   ))}
