@@ -34,17 +34,31 @@ import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import AppModal from "@/components/AppModal";
 import { BsCircleFill } from "react-icons/bs";
+import { API } from "@/lib/api";
 
 const Page = () => {
   const { push } = useRouter();
   const { isLoggedIn, user } = useAuth();
   const [modalId, setModalId] = useState(null);
 
+  const [overview, setOverview] = useState(null);
+
   useEffect(() => {
     if (!Cookies.get("token")) {
       push("/");
+    } else {
+      fetchOverview();
     }
   }, []);
+
+  async function fetchOverview() {
+    try {
+      const res = await API.overview();
+      setOverview(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   if (!isLoggedIn) {
     return <Loading />;
@@ -99,7 +113,7 @@ const Page = () => {
                     My Orders
                   </Heading>
                   <Heading className="text-xl font-normal text-neutral-500">
-                    - Total 2 ($200)
+                    - Total {overview?.orders}
                   </Heading>
                 </Flex>
                 <Link href={"/orders"}>View all</Link>
@@ -115,7 +129,7 @@ const Page = () => {
                     My Workpidos
                   </Heading>
                   <Heading className="text-xl font-normal text-neutral-500">
-                    - Active 20{" "}
+                    - Active {overview?.gigs}
                   </Heading>
                 </Flex>
 
