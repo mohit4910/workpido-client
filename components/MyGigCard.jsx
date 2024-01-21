@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { HiPencil } from "react-icons/hi";
-import { IoMdCart, IoMdEye } from "react-icons/io";
+import { IoMdCart, IoMdEye, IoMdWarning } from "react-icons/io";
 import {
   MdContentCopy,
   MdDelete,
@@ -43,6 +43,7 @@ const MyGigCard = ({
   price,
   isActive,
   onUpdate,
+  adminRemarks,
 }) => {
   const { getMediaUrl } = useApiHandler();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -93,7 +94,7 @@ const MyGigCard = ({
               alignItems={"center"}
               justifyContent={"space-between"}
             >
-              <Text>{title}</Text>
+              <Text w={"full"}>{title}</Text>
               <HStack
                 w={["full", "auto"]}
                 justifyContent={["space-between", "flex-end"]}
@@ -164,7 +165,11 @@ const MyGigCard = ({
                 <Text fontSize={"xs"} color={"gray.500"}>
                   Starting from
                 </Text>
-                <Text fontSize={"xs"} fontWeight={"semibold"}>
+                <Text
+                  fontSize={"lg"}
+                  fontWeight={"semibold"}
+                  color={"brand.primary"}
+                >
                   {currency}
                   {price}
                 </Text>
@@ -172,6 +177,16 @@ const MyGigCard = ({
             </Stack>
           </Box>
         </Stack>
+        {adminRemarks ? (
+          <Box p={4} borderTop={"0.5px solid"} borderTopColor={"#EDEDED"}>
+            <HStack alignItems={["flex-start", "center"]}>
+              <Icon as={IoMdWarning} color={"yellow.500"} fontSize={"20px"} />
+              <Text fontSize={"xs"} color={"gray.800"}>
+                {adminRemarks}
+              </Text>
+            </HStack>
+          </Box>
+        ) : null}
       </Box>
 
       <Modal isOpen={isOpen} onClose={onClose}>

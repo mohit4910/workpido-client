@@ -163,6 +163,10 @@ const page = () => {
                   key={key}
                   fontWeight={"medium"}
                   fontSize={["sm", "md"]}
+                  _selected={{
+                    color: "brand.primary",
+                    borderBottomColor: "brand.primary",
+                  }}
                 >
                   {status?.name}
                 </Tab>
@@ -184,6 +188,12 @@ const page = () => {
                       orders={gig?.orders || "0"}
                       earnings={gig?.earnings || "0"}
                       isActive={gig?.isActive}
+                      adminRemarks={
+                        gig?.status == "processing" ||
+                        gig?.status == "processing"
+                          ? gig?.adminRemarks
+                          : null
+                      }
                       onUpdate={() => fetchData()}
                     />
                   ))}
