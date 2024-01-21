@@ -30,12 +30,13 @@ const SigninModal = () => {
         toast.success("Signin successful");
 
         Cookies.set("token", response.jwt);
-        if (response?.user?.isProfileComplete) {
-          window.location.replace("/seller-dashboard");
-        }
-        if (!response?.user?.isProfileComplete){
-          window.location.replace("/edit-profile");
-        }
+        // if (response?.user?.isProfileComplete) {
+        //   window.location.replace("/seller-dashboard");
+        // }
+        // if (!response?.user?.isProfileComplete){
+        //   window.location.replace("/edit-profile");
+        // }
+        window.location.replace("/seller-dashboard");
         setIsOpen(false);
       })
       .catch((error) => {
