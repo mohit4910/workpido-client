@@ -81,6 +81,8 @@ const page = ({ params }) => {
   const [loading, setLoading] = useState(false);
   const [reason, setReason] = useState("");
   const [note, setNote] = useState("");
+  const [review, setReview] = useState(null);
+  const [showReviewInput, setShowReviewInput] = useState(false);
 
   const steps = [
     { title: "Order created", label: "pending requirements" },
@@ -134,8 +136,24 @@ const page = ({ params }) => {
         ) + 1
       );
       fetchOrderUpdates(orderDetails?.id);
+      fetchOrderReview();
     }
-  }, [orderDetails]);
+  }, [orderDetails?.id]);
+
+  useEffect(() => {
+    if (orderDetails?.status == "finished") {
+      if (
+        user?.id == orderDetails?.gig?.seller?.id &&
+        review?.review &&
+        !review?.reviewResponse
+      ) {
+        setShowReviewInput(true);
+      }
+      if (user?.id == orderDetails?.buyer?.id && !review?.review) {
+        setShowReviewInput(true);
+      }
+    }
+  }, [review?.id, orderDetails?.id, user?.id]);
 
   const Formik = useFormik({
     initialValues: {
@@ -262,6 +280,30 @@ const page = ({ params }) => {
     } catch (error) {
       setLoading(false);
       toast.error("Error while posting update");
+    }
+  }
+
+  async function fetchOrderReview() {
+    try {
+      const res = await API.getOrderReview(orderDetails?.id);
+      if (res.length) {
+        setReview(res[0]);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error while fetching reviews");
+    }
+  }
+
+  async function sendOrderReview() {
+    try {
+      await API.postReview({ msg: msg, orderId: orderDetails?.id });
+      fetchOrderReview();
+      fetchOrderUpdates();
+      toast.success("Review posted successfully!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error while posting reviews");
     }
   }
 
@@ -418,6 +460,7 @@ const page = ({ params }) => {
               <Message
                 key={key}
                 username={data?.sender?.username}
+                updateType={data?.updateType}
                 avatar={
                   data?.sender?.id == orderDetails?.buyer?.id
                     ? buyerAvatar
@@ -428,6 +471,7 @@ const page = ({ params }) => {
               />
             ))}
             <br />
+
             {orderDetails?.status == "cancelled" ||
             orderDetails?.status == "finished" ? null : (
               <HStack gap={4}>
@@ -455,6 +499,31 @@ const page = ({ params }) => {
                 </Button>
               </HStack>
             )}
+
+            {showReviewInput ? (
+              <HStack gap={4}>
+                <Input
+                  w={"full"}
+                  placeholder={
+                    review?.review
+                      ? "Type your response here"
+                      : "Type your review here..."
+                  }
+                  value={msg}
+                  onChange={(e) => setMsg(e.target.value)}
+                />
+                <Button
+                  bgColor="brand.primary"
+                  colorScheme="orange"
+                  fontSize={"sm"}
+                  rightIcon={<BsSendFill />}
+                  onClick={sendOrderReview}
+                  isLoading={loading}
+                >
+                  Send
+                </Button>
+              </HStack>
+            ) : null}
           </Flex>
         </Flex>
         {/* SideBar - Comes Down on smaller displays */}

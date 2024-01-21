@@ -423,6 +423,7 @@ const ArticleDetails = ({ params }) => {
                 </Tabs>
               </Box>
             </Box>
+            
             {/* SideBar - Only visible on large displays */}
             <Box className="hidden lg:block" maxW={["full", "xs"]} flex={1}>
               {/* Article Ordering */}
