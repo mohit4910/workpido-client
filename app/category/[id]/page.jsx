@@ -120,7 +120,9 @@ const page = ({ params }) => {
                         src={
                           API_BASE_URL?.replace("/api", "") + data?.cover?.url
                         }
-                        link={data?.frontendLink}
+                        link={`/gigs/${data?.title
+                          ?.toLowerCase()
+                          ?.replace(/ /g, "-")}`}
                         width={["100%", "xs"]}
                       />
                     ))}
@@ -142,7 +144,9 @@ const page = ({ params }) => {
                         src={
                           API_BASE_URL?.replace("/api", "") + data?.cover?.url
                         }
-                        link={data?.frontendLink}
+                        link={`/gigs/${data?.title
+                          ?.toLowerCase()
+                          ?.replace(/ /g, "-")}`}
                         width={["40vw", "64"]}
                         height={["36", "44"]}
                       />
