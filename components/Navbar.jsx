@@ -296,7 +296,7 @@ const DesktopNav = ({ categories }) => {
                 pt={3}
                 href={
                   navItem?.frontendLink ??
-                  `/gigs/${navItem?.title?.toLowerCase()?.replace(/ /g, "-")}`
+                  `/category/${navItem?.id}`
                 }
                 fontSize={"sm"}
                 fontWeight={400}
@@ -405,17 +405,13 @@ const MobileNav = ({ categories }) => {
   );
 };
 
-const MobileNavItem = ({ title, subCategories, frontendLink }) => {
+const MobileNavItem = ({ id, title, subCategories, frontendLink }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
     <Stack spacing={4} onClick={subCategories && onToggle}>
       <Box
         py={2}
-        as="a"
-        href={
-          frontendLink ?? `/gigs/${title?.toLowerCase()?.replace(/ /g, "-")}`
-        }
         justifyContent="space-between"
         alignItems="center"
         _hover={{
@@ -425,6 +421,10 @@ const MobileNavItem = ({ title, subCategories, frontendLink }) => {
         <Text
           fontWeight={600}
           color={useColorModeValue("gray.600", "gray.200")}
+          as="a"
+          href={
+            frontendLink ?? `/category/${id}`
+          }
         >
           {title}
         </Text>
