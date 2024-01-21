@@ -80,7 +80,7 @@ const page = ({ params }) => {
 
   return (
     <>
-      <Box px={[4, 8, 16]} py={4} bgColor={"#FFF"}>
+      <Box px={[4, 8, 16]} bgColor={"#FFF"}>
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>
           <Stack direction={["column", "row"]} gap={4}>
             <Hide below="md">
