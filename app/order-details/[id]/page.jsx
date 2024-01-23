@@ -58,6 +58,7 @@ import {
 import useAuth from "@/hooks/useAuth";
 import { GoPaperclip } from "react-icons/go";
 import FileDropzone from "@/components/FileDropzone";
+import { API_BASE_URL, STORAGE_PROVIDER } from "@/lib/constants";
 
 const page = ({ params }) => {
   const { id } = params;
@@ -83,6 +84,7 @@ const page = ({ params }) => {
   const [note, setNote] = useState("");
   const [review, setReview] = useState(null);
   const [showReviewInput, setShowReviewInput] = useState(false);
+  const [showRequirements, setShowRequirements] = useState(false);
 
   const steps = [
     { title: "Order created", label: "pending requirements" },
@@ -415,7 +417,7 @@ const page = ({ params }) => {
                 colorScheme="'orange"
                 color={"#FFF"}
                 fontWeight={"medium"}
-                onClick={onOpen}
+                onClick={() => setShowRequirements(true)}
               >
                 View Requirements
               </Button>
@@ -844,6 +846,51 @@ const page = ({ params }) => {
         </HStack>
       </AppModal>
 
+      {/* View requirements modal */}
+      <AppModal
+        title={"Seller's Requirements"}
+        isOpen={showRequirements}
+        setIsOpen={(data) => setShowRequirements(false)}
+        size={"xl"}
+      >
+        <Box>
+          <Text fontWeight={"medium"}>
+            The seller has submitted these details.
+          </Text>
+          <br />
+          {parse(orderDetails?.requirements ?? "<p></p>")}
+        </Box>
+        {orderDetails?.attachments ? (
+          <Text mt={4} mb={2}>
+            Attachments:
+          </Text>
+        ) : null}
+        <Stack
+          direction={["column"]}
+          alignItems={"center"}
+          justifyContent={"flex-start"}
+          gap={4}
+          flexWrap={"wrap"}
+        >
+          {orderDetails?.attachments?.map((item, key) => (
+            <Link
+              href={
+                STORAGE_PROVIDER == "local"
+                  ? API_BASE_URL.replace("/api", "/upload") + `/${item?.url}`
+                  : item?.url
+              }
+              target="_blank"
+              key={key}
+            >
+              <Text fontSize={"sm"} color={"twitter.500"} fontWeight={"medium"}>
+                {item?.name}
+              </Text>
+            </Link>
+          ))}
+        </Stack>
+      </AppModal>
+
+      {/* Attachments */}
       <AppModal
         isOpen={filesModal}
         setIsOpen={() => setFilesModal(false)}
