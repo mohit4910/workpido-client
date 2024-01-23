@@ -24,17 +24,21 @@ const features = Array.apply(null, Array(8)).map(function (x, i) {
 
 export default function AboutUs() {
   return (
-    <Box p={4} mt={12}>
-      <Stack spacing={2} maxW={"3xl"} textAlign={"center"}>
-        <Heading fontSize={"3xl"} textAlign={("center", "left")}>
-          Workpido Professional Services
-        </Heading>
-        <Text color={"gray.600"} fontSize={"md"} textAlign={("center", "left")}>
-          Getting things done has never been easier.
-        </Text>
-      </Stack>
+    <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+      <Box p={4} mt={12}>
+        <Stack spacing={2} maxW={"3xl"} textAlign={"center"}>
+          <Heading fontSize={"3xl"} textAlign={("center", "left")}>
+            Workpido Professional Services
+          </Heading>
+          <Text
+            color={"gray.600"}
+            fontSize={"md"}
+            textAlign={("center", "left")}
+          >
+            Getting things done has never been easier.
+          </Text>
+        </Stack>
 
-      <Container maxW={"6xl"} mt={10}>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
           <HStack align={"top"}>
             <VStack align={"start"}>
@@ -69,7 +73,7 @@ Why wait? Get things done today!`}</Text>
             </VStack>
           </HStack>
         </SimpleGrid>
-      </Container>
-    </Box>
+      </Box>
+    </Container>
   );
 }

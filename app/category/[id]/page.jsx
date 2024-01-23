@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 
-const ZoomImage = ({ src, alt, link, width, height }) => {
+const ZoomImage = ({ src, alt, link, width, height, fontSize }) => {
   const [zoomed, setZoomed] = useState(false);
 
   return (
@@ -58,7 +58,7 @@ const ZoomImage = ({ src, alt, link, width, height }) => {
         onMouseEnter={() => setZoomed(true)}
         onMouseLeave={() => setZoomed(false)}
       >
-        <Text fontSize={"lg"} color={"#FFF"}>
+        <Text fontSize={fontSize ?? "lg"} color={"#FFF"}>
           {alt}
         </Text>
       </Box>
@@ -73,8 +73,6 @@ const page = ({ params }) => {
   useEffect(() => {
     const categories = JSON.parse(sessionStorage.getItem("categories"));
     const category = categories?.find((item) => item?.id == id);
-    console.log(categories?.find((item) => item?.id == id));
-    console.log(id);
     setData(category);
   }, []);
 
@@ -104,6 +102,9 @@ const page = ({ params }) => {
               </Box>
             </Hide>
             <Box flexGrow={1}>
+              <Text fontWeight={'medium'} fontSize={['xl', '3xl']}>{data?.title}</Text>
+              <Text>{data?.title}</Text>
+              <br />
               <Stack
                 py={2}
                 direction={["column", "row"]}
@@ -137,7 +138,7 @@ const page = ({ params }) => {
               >
                 {data &&
                   data?.subCategories
-                    ?.slice(4, data?.subCategories?.length)
+                    ?.slice(3, data?.subCategories?.length)
                     ?.map((data, key) => (
                       <ZoomImage
                         alt={data?.title}
@@ -147,8 +148,9 @@ const page = ({ params }) => {
                         link={`/gigs/${data?.title
                           ?.toLowerCase()
                           ?.replace(/ /g, "-")}`}
-                        width={["40vw", "64"]}
-                        height={["36", "44"]}
+                        width={["40vw", "23.75%"]}
+                        height={["36", "36"]}
+                        fontSize={'sm'}
                       />
                     ))}
               </Stack>

@@ -301,6 +301,7 @@ const Filters = ({ category, inSearch }) => {
           color={"twitter.500"}
           fontSize={"sm"}
           onClick={() => setUrlFilters({})}
+          cursor={'pointer'}
         >
           Remove Filters
         </Text>

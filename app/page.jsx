@@ -40,6 +40,7 @@ import ZoomableImage from "@/components/ZoomableImage";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { API_BASE_URL } from "@/lib/constants";
+import { toast } from "react-toastify";
 
 const ZoomImage = ({ src, alt, link }) => {
   const [zoomed, setZoomed] = useState(false);
@@ -95,8 +96,23 @@ const Catalog = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    setCategories(JSON.parse(sessionStorage.getItem("categories")));
+    const data = JSON.parse(sessionStorage.getItem("categories"));
+    if (!data) {
+      fetchCategories();
+    } else {
+      setCategories(data);
+    }
   }, []);
+
+  async function fetchCategories() {
+    try {
+      const res = await API.getAllCategories();
+      setCategories(res);
+      sessionStorage.setItem("categories", JSON.stringify(res));
+    } catch (error) {
+      toast.warn("Couldn't fetch categories");
+    }
+  }
 
   return (
     <>
@@ -394,40 +410,42 @@ export default function Home() {
         </Box>
 
         {/* Getting Started Section */}
-        <Flex
-          flexDirection="column"
-          align="center"
-          justify="center"
-          className="w-full gap-1 px-3 py-10 mt-3 bg-white md:gap-2"
-          bgImage="url(https://images.pexels.com/photos/5474294/pexels-photo-5474294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
-          bgSize={"cover"}
-          bgRepeat={"no-repeat"}
-          bgPosition={"center"}
-          bgAttachment={"fixed"}
-        >
-          <VStack maxW={["full", "3xl", "5xl", "7xl"]}>
-            <Heading className="mt-3 text-xl font-bold text-center md:text-2xl md:mt-5">
-              Start saving with freelance services today
-            </Heading>
-            <Text className="font-medium" textAlign={"center"}>
-              Speed, quality, and affordability: you can have it all!
-            </Text>
-            <Button
-              className="px-2 py-6 my-5 text-base rounded"
-              as={"a"}
-              display={"inline-flex"}
-              color={"white"}
-              bg={"brand.primary"}
-              href={"#"}
-              _hover={{
-                bg: "green.300",
-              }}
-              w={["full"]}
-            >
-              Sign up for Free
-            </Button>
-          </VStack>
-        </Flex>
+        <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+          <Flex
+            flexDirection="column"
+            align="center"
+            justify="center"
+            className="w-full gap-1 px-3 py-10 mt-3 bg-white md:gap-2"
+            bgImage="url(https://images.pexels.com/photos/5474294/pexels-photo-5474294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
+            bgSize={"cover"}
+            bgRepeat={"no-repeat"}
+            bgPosition={"center"}
+            bgAttachment={"fixed"}
+          >
+            <VStack maxW={["full", "3xl", "5xl", "7xl"]}>
+              <Heading className="mt-3 text-xl font-bold text-center md:text-2xl md:mt-5">
+                Start saving with freelance services today
+              </Heading>
+              <Text className="font-medium" textAlign={"center"}>
+                Speed, quality, and affordability: you can have it all!
+              </Text>
+              <Button
+                className="px-2 py-6 my-5 text-base rounded"
+                as={"a"}
+                display={"inline-flex"}
+                color={"white"}
+                bg={"brand.primary"}
+                href={"#"}
+                _hover={{
+                  bg: "green.300",
+                }}
+                w={["full"]}
+              >
+                Sign up for Free
+              </Button>
+            </VStack>
+          </Flex>
+        </Container>
         <AboutUs />
       </Flex>
     </main>

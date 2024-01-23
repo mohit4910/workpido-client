@@ -32,7 +32,6 @@ import Loading from "../loading";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
-import AppModal from "@/components/AppModal";
 import { BsCircleFill } from "react-icons/bs";
 import { API } from "@/lib/api";
 
@@ -47,13 +46,15 @@ const Page = () => {
     if (!Cookies.get("token")) {
       push("/");
     } else {
-      fetchOverview();
+      if(user?.id){
+        fetchOverview();
+      }
     }
-  }, []);
+  }, [user?.id]);
 
   async function fetchOverview() {
     try {
-      const res = await API.overview();
+      const res = await API.overview(user?.id);
       setOverview(res);
     } catch (error) {
       console.log(error);

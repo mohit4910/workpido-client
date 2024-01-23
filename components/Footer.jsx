@@ -4,6 +4,9 @@ import {
   Box,
   Container,
   Flex,
+  HStack,
+  Image,
+  Link,
   SimpleGrid,
   Stack,
   Tag,
@@ -44,92 +47,79 @@ export default function Footer() {
   return (
     <Box bg={"white"} color={"black"} marginTop={10}>
       <Container as={Stack} maxW={["full", "3xl", "5xl", "7xl"]} py={10}>
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
+        <Stack
+          direction={["column", "row"]}
+          w={"full"}
+          justifyContent={"space-between"}
+          spacing={8}
+        >
           <Stack align={"flex-start"}>
-            <ListHeader>Product</ListHeader>
-            <Box as="a" href={"#"}>
-              Overview
-            </Box>
-            <Stack direction={"row"} align={"center"} spacing={2}>
-              <Box as="a" href={"#"}>
-                Features
-              </Box>
-              <Tag
-                size={"sm"}
-                bg={useColorModeValue("green.300", "green.800")}
-                ml={2}
-                color={"white"}
-              >
-                New
-              </Tag>
-            </Stack>
-            <Box as="a" href={"/how-to-earn"}>
-              Tutorials
-            </Box>
-            <Box as="a" href={"/for-freelancers"}>
-              For Freelancers
-            </Box>
-            <Box as="a" href={"#"}>
-              Releases
-            </Box>
+            <Link href={"/"}>
+              <HStack>
+                <Image
+                  fontFamily={"heading"}
+                  color={useColorModeValue("gray.800", "white")}
+                  src={"/logo.png"}
+                  w={40}
+                  alt={"workpido"}
+                />
+              </HStack>
+            </Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Company</ListHeader>
-            <Box as="a" href={"#"}>
-              About Us
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              About Workpido
             </Box>
-            <Box as="a" href={"#"}>
+            <Box as="a" fontSize={'sm'} href={"#"}>
               Press
             </Box>
-            <Box as="a" href={"#"}>
-              Careers
-            </Box>
-            <Box as="a" href={"#"}>
-              Contact Us
-            </Box>
-            <Box as="a" href={"#"}>
-              Partners
-            </Box>
-          </Stack>
-          <Stack align={"flex-start"}>
-            <ListHeader>Legal</ListHeader>
-            <Box as="a" href={"#"}>
-              Cookies Policy
-            </Box>
-            <Box as="a" href={"/privacy"}>
-              Privacy Policy
-            </Box>
-            <Box as="a" href={"/terms-of-service"}>
-              Terms of Service
-            </Box>
-            <Box as="a" href={"/prohibited-services"}>
-              Prohibited Services
-            </Box>
-            <Box as="a" href={"/buyer-protection"}>
+            <Box as="a" fontSize={'sm'} href={"#"}>
               Buyer Protection Program
             </Box>
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              Terms of Service
+            </Box>
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              Privacy Policy
+            </Box>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Follow Us</ListHeader>
-            <Box as="a" href={"#"}>
-              Facebook
+            <ListHeader>Resources</ListHeader>
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              For Freelancers
             </Box>
-            <Box as="a" href={"#"}>
-              Twitter
+            <Box as="a" fontSize={'sm'} href={"/privacy"}>
+              How to Earn on Workpido
             </Box>
-            <Box as="a" href={"#"}>
-              Dribbble
+            <Box as="a" fontSize={'sm'} href={"/terms-of-service"}>
+              Affiliate Program
             </Box>
-            <Box as="a" href={"#"}>
-              Instagram
+            <Box as="a" fontSize={'sm'} href={"/prohibited-services"}>
+              Workpido Reviews
             </Box>
-            <Box as="a" href={"#"}>
-              LinkedIn
+            <Box as="a" fontSize={'sm'} href={"/buyer-protection"}>
+              Workpido Mobile App
             </Box>
           </Stack>
-        </SimpleGrid>
+          <Stack align={"flex-start"}>
+            <ListHeader>Help Center</ListHeader>
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              Prohibited Services
+            </Box>
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              Approval Process
+            </Box>
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              FAQs
+            </Box>
+            <Box as="a" fontSize={'sm'} href={"#"}>
+              Contact Support
+            </Box>
+          </Stack>
+        </Stack>
       </Container>
-      <Box py={10}>
+      <Box py={4} pt={0} borderTop={'0.5px solid'} borderTopColor={'#EDEDED'}>
         {/* <Flex
           align={"center"}
           _before={{

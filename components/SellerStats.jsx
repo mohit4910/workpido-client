@@ -77,6 +77,7 @@ const SellerStats = ({ seller }) => {
           <Progress
             value={100}
             colorScheme={"yellow"}
+            bgColor={'brand.primary'}
             width={"120px"}
             className="h-2 rounded-full"
           />
@@ -89,6 +90,7 @@ const SellerStats = ({ seller }) => {
           <Progress
             value={100}
             colorScheme={"yellow"}
+            bgColor={'brand.primary'}
             width={"120px"}
             className="h-2 rounded-full"
           />
@@ -101,6 +103,7 @@ const SellerStats = ({ seller }) => {
           <Progress
             value={100}
             colorScheme={"yellow"}
+            bgColor={'brand.primary'}
             width={"120px"}
             className="h-2 rounded-full"
           />
@@ -113,6 +116,7 @@ const SellerStats = ({ seller }) => {
           <Progress
             value={100}
             colorScheme={"yellow"}
+            bgColor={'brand.primary'}
             width={"120px"}
             className="h-2 rounded-full"
           />

@@ -1,14 +1,9 @@
 "use client";
 import React from "react";
 import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
   Avatar,
   Text,
   HStack,
@@ -21,10 +16,10 @@ import Link from "next/link";
 const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
   return (
     <>
-      <Menu>
-        <MenuButton>
-          <HStack px={4}>
-            <Link href={"/dashboard/seller-dashboard"}>
+      <Popover trigger="hover">
+        <PopoverTrigger>
+          <HStack px={4} cursor={"pointer"}>
+            <Link href={"/seller-dashboard"}>
               <Avatar
                 name={user?.username}
                 src={user?.avatar?.url}
@@ -33,9 +28,9 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
             </Link>
             <ArrowDown2 size="28" color="#111" />
           </HStack>
-        </MenuButton>
-        <MenuList color={"#000"} fontSize={"sm"} zIndex={99999} pb={0}>
-          <Box px={4}>
+        </PopoverTrigger>
+        <PopoverContent maxW={'64'} color={"#000"} fontSize={"sm"} zIndex={99999} pb={0}>
+          <Box p={4} pb={2}>
             <Text fontWeight={"semibold"} color={"#000"} fontSize={"16px"}>
               {user?.username}
             </Text>
@@ -66,25 +61,38 @@ const NavAvatar = ({ user, currentRole, onLogout, onChangeRole }) => {
               Seller
             </Button>
           </HStack>
-          <MenuDivider />
+          <hr />
           <Link href={"/profile/me"}>
-            <MenuItem py={1}>
+            <Box w={"full"} _hover={{ bgColor: "twitter.50" }} py={2} px={4}>
               <Text>Profile</Text>
-            </MenuItem>
+            </Box>
           </Link>
           <Link href="/edit-profile">
-            <MenuItem py={1}>Settings</MenuItem>
+            <Box w={"full"} _hover={{ bgColor: "twitter.50" }} py={2} px={4}>
+              Settings
+            </Box>
           </Link>
           <Link href={"/balance"}>
-            <MenuItem py={1}>Cashflow</MenuItem>
+            <Box w={"full"} _hover={{ bgColor: "twitter.50" }} py={2} px={4}>
+              Cashflow
+            </Box>
           </Link>
-          <MenuItem py={1}>Help</MenuItem>
+          <Box w={"full"} _hover={{ bgColor: "twitter.50" }} py={2} px={4}>
+            Help
+          </Box>
           <hr />
-          <MenuItem py={1} onClick={() => onLogout()}>
+          <Box
+            w={"full"}
+            cursor={"pointer"}
+            _hover={{ bgColor: "twitter.50" }}
+            py={2}
+            px={4}
+            onClick={() => onLogout()}
+          >
             Signout
-          </MenuItem>
-        </MenuList>
-      </Menu>
+          </Box>
+        </PopoverContent>
+      </Popover>
     </>
   );
 };

@@ -18,15 +18,30 @@ import { BsGearFill, BsStarFill } from "react-icons/bs";
 import ContactSeller from "./ContactSeller";
 import useApiHandler from "@/hooks/useApiHandler";
 import useAuth from "@/hooks/useAuth";
+import { API } from "@/lib/api";
 
 const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
-  const [avatarUrl, setAvatarUrl] = useState("");
   const { getAvatar } = useAuth();
+
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [overview, setOverview] = useState(null);
 
   useEffect(() => {
     const url = getAvatar(user?.seller?.avatar?.url);
     setAvatarUrl(url);
+    if (user?.id) {
+      fetchOverview();
+    }
   }, [user]);
+
+  async function fetchOverview() {
+    try {
+      const res = await API.overview(user?.id);
+      setOverview(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Card h={height ?? "full"}>
@@ -43,7 +58,7 @@ const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
         <Box className="pr-6 pl-1">
           {showSettings ? (
             <Button
-              className="mx-2 w-full px-4 py-8 text-base flex flex-col"
+              className="mx-2 w-full px-4 py-8 text-base flex flex-row"
               as={"a"}
               color={"white"}
               bg={"brand.primary"}
@@ -78,7 +93,7 @@ const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
               Completed Orders
             </Heading>
             <Text pt="2" fontSize="sm">
-              6
+              {overview?.finishedOrders}
             </Text>
           </Box>
           <Box>
@@ -94,7 +109,7 @@ const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
               Order in progress
             </Heading>
             <Text pt="2" fontSize="sm">
-              0
+              {overview?.activeOrders}
             </Text>
           </Box>
           <Box>

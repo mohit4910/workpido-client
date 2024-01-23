@@ -8,13 +8,22 @@ import {
   Container,
   Flex,
   Grid,
+  HStack,
   SimpleGrid,
   Stack,
   Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import GigFilters from "@/components/GigFilters";
 import { useRouter, useSearchParams } from "next/navigation";
+import { IoGridSharp } from "react-icons/io5";
+import { FaList } from "react-icons/fa";
+import { BsChevronDown } from "react-icons/bs";
 
 const Gigs = ({ params }) => {
   const { slug } = params;
@@ -22,7 +31,11 @@ const Gigs = ({ params }) => {
   const filters = queryParams.entries();
 
   const [gigs, setGigs] = useState([]);
+  const [layout, setLayout] = useState("grid");
+  const [sort, setSort] = useState("latest");
+
   const [services, setServices] = useState([]);
+  const [category, setCategory] = useState({ title: "", id: "" });
 
   const readData = async (query) => {
     try {
@@ -45,6 +58,29 @@ const Gigs = ({ params }) => {
     }
   };
 
+  const findCategory = (data, target) => {
+    for (const category of data) {
+      if (category.title === target) {
+        return { title: category.title, id: category.id };
+      }
+
+      if (category.subCategories) {
+        for (const subCategory of category.subCategories) {
+          if (subCategory.title === target) {
+            return { title: category.title, id: category.id };
+          }
+
+          const result = findCategory(subCategory.subCategories, target);
+          if (result) {
+            return result;
+          }
+        }
+      }
+    }
+
+    return null;
+  };
+
   useEffect(() => {
     let existingFilters = {};
     for (const [key, value] of filters) {
@@ -56,12 +92,31 @@ const Gigs = ({ params }) => {
 
   useEffect(() => {
     getServices();
+    const categories = JSON.parse(sessionStorage.getItem("categories"));
+    const res = findCategory(categories, slug?.replace(/-/g, " "));
+    setCategory(res);
   }, []);
 
   return (
     <>
       <Container maxW={["full", "3xl", "5xl", "7xl"]}>
         <Box p={["4, 8, 16"]} my={8}>
+          <HStack mb={2}>
+            <Text
+              fontSize={"sm"}
+              color={"gray.600"}
+              as={"a"}
+              href={`/category/${category?.id}`}
+            >
+              {category?.title}
+            </Text>
+            <Text fontSize={"sm"} color={"gray.600"}>
+              {">"}
+            </Text>
+            <Text fontSize={"sm"} color={"gray.600"}>
+              {slug?.replace(/-/g, " ")}
+            </Text>
+          </HStack>
           <Text
             fontSize={["2xl", 26]}
             fontWeight={600}
@@ -72,9 +127,11 @@ const Gigs = ({ params }) => {
           <Flex
             w={"full"}
             mt={3}
+            mb={6}
             gap={4}
             direction={"row"}
             overflowX={"scroll"}
+            className="hide-scrollbar"
           >
             {services?.map((item, key) => (
               <Button
@@ -92,7 +149,67 @@ const Gigs = ({ params }) => {
               </Button>
             ))}
           </Flex>
-
+          <br />
+          <HStack w={"full"} justifyContent={"space-between"}>
+            <Text fontSize={"sm"} color={"gray.600"}>
+              {gigs?.length} {gigs?.length == 1 ? "service" : "services"}{" "}
+              available
+            </Text>
+            <HStack gap={4}>
+              <HStack gap={2}>
+                <IconButton
+                  icon={<IoGridSharp fontSize={"12px"} />}
+                  rounded={0}
+                  p={0}
+                  size={"xs"}
+                  variant={"ghost"}
+                  onClick={() => setLayout("grid")}
+                  color={layout == "grid" ? "twitter.500" : "black"}
+                />
+                <IconButton
+                  icon={<FaList fontSize={"12px"} />}
+                  rounded={0}
+                  p={0}
+                  size={"xs"}
+                  variant={"ghost"}
+                  onClick={() => setLayout("stack")}
+                  color={layout == "stack" ? "twitter.500" : "black"}
+                />
+              </HStack>
+              <HStack gap={0}>
+                <Text
+                  fontSize={"xs"}
+                  fontWeight={"semibold"}
+                  color={"gray.800"}
+                >
+                  Sort by
+                </Text>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    variant={"ghost"}
+                    size={"xs"}
+                    fontSize={"xs"}
+                    color={"twitter.500"}
+                    rightIcon={<BsChevronDown />}
+                  >
+                    {sort}
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem
+                      fontSize={"xs"}
+                      onClick={() => setSort("recommended")}
+                    >
+                      recommended
+                    </MenuItem>
+                    <MenuItem fontSize={"xs"} onClick={() => setSort("latest gigs")}>
+                      latest gigs
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </HStack>
+            </HStack>
+          </HStack>
           <Stack
             w={"full"}
             spacing={8}
@@ -102,9 +219,17 @@ const Gigs = ({ params }) => {
             <Box w={["full", "xs"]} pt={6}>
               <GigFilters category={slug} />
             </Box>
-            <Flex w={"full"} justify={"flex-start"} gap={8} flexWrap={"wrap"}>
+            <Flex
+              w={"full"}
+              justify={"flex-start"}
+              gap={8}
+              flexWrap={"wrap"}
+              pt={layout == "stack" ? 6 : 0}
+            >
               {gigs?.length ? (
-                gigs?.map((gig, key) => <GigCard key={key} gig={gig} />)
+                gigs?.map((gig, key) => (
+                  <GigCard key={key} gig={gig} layout={layout} />
+                ))
               ) : (
                 <Box
                   mt={6}

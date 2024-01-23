@@ -255,7 +255,7 @@ export default function WithSubnavigation() {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
-        <Container maxW={["full", "87%"]}>
+        <Container maxW={["full", "3xl", "5xl", "7xl"]}>
           <DesktopNav categories={categories} />
         </Container>
       </Flex>
@@ -272,6 +272,7 @@ const DesktopNav = ({ categories }) => {
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
+
     <Flex
       direction={"row"}
       justify={"space-between"}

@@ -35,7 +35,7 @@ const page = () => {
 
   const tabs = [
     { name: "All", value: "all" },
-    { name: "Ongoing", value: "ongoing" },
+    { name: "Active", value: "ongoing" },
     { name: "Completed", value: "finished" },
     { name: "Cancelled", value: "cancelled" },
   ];

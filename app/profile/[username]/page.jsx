@@ -222,6 +222,7 @@ const page = ({ params }) => {
           <Box className="w-full md:w-[40%]  mx-auto my-10">
             {/* Seller Contact Card */}
             <SellerCard
+              user={userData}
               showAvatar={false}
               className="bg-transparent"
               showSettings={username == "me" || username == user?.username}
@@ -283,7 +284,6 @@ const page = ({ params }) => {
           </Box>
         </Box>
 
-        
         {/* contact Section */}
         {username == "me" || username == user?.username ? null : (
           <Flex
