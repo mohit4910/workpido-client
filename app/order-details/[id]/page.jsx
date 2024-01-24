@@ -59,6 +59,7 @@ import useAuth from "@/hooks/useAuth";
 import { GoPaperclip } from "react-icons/go";
 import FileDropzone from "@/components/FileDropzone";
 import { API_BASE_URL, STORAGE_PROVIDER } from "@/lib/constants";
+import ReviewModal from "@/components/ReviewModal";
 
 const page = ({ params }) => {
   const { id } = params;
@@ -84,6 +85,7 @@ const page = ({ params }) => {
   const [note, setNote] = useState("");
   const [review, setReview] = useState(null);
   const [showReviewInput, setShowReviewInput] = useState(false);
+  const [reviewModal, setReviewModal] = useState(false);
   const [showRequirements, setShowRequirements] = useState(false);
 
   const steps = [
@@ -151,9 +153,7 @@ const page = ({ params }) => {
       ) {
         setShowReviewInput(true);
       }
-      if (user?.id == orderDetails?.buyer?.id && !review?.review) {
-        setShowReviewInput(true);
-      }
+      setShowReviewInput(!review?.reviewedByMe);
     }
   }, [review?.id, orderDetails?.id, user?.id]);
 
@@ -503,26 +503,22 @@ const page = ({ params }) => {
             )}
 
             {showReviewInput ? (
-              <HStack gap={4}>
-                <Input
-                  w={"full"}
-                  placeholder={
-                    review?.review
-                      ? "Type your response here"
-                      : "Type your review here..."
-                  }
-                  value={msg}
-                  onChange={(e) => setMsg(e.target.value)}
-                />
+              <HStack
+                w={"full"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
                 <Button
-                  bgColor="brand.primary"
-                  colorScheme="orange"
+                  p={"2.5"}
+                  w={"48"}
                   fontSize={"sm"}
-                  rightIcon={<BsSendFill />}
-                  onClick={sendOrderReview}
-                  isLoading={loading}
+                  colorScheme="whatsapp"
+                  bgColor={"brand.primary"}
+                  fontWeight={"medium"}
+                  color={"#FFF"}
+                  onClick={() => setReviewModal(true)}
                 >
-                  Send
+                  Submit Review
                 </Button>
               </HStack>
             ) : null}
@@ -669,7 +665,11 @@ const page = ({ params }) => {
                   {files?.map((file, key) => (
                     <ListItem
                       as={"a"}
-                      href={file}
+                      href={
+                        STORAGE_PROVIDER == "local"
+                          ? API_BASE_URL?.replace("/api", "") + file
+                          : file
+                      }
                       target="_blank"
                       key={key}
                       className="my-3 flex"
@@ -942,6 +942,20 @@ const page = ({ params }) => {
           </Button>
         </HStack>
       </AppModal>
+
+      <ReviewModal
+        isOpen={reviewModal}
+        onClose={() => {
+          setReviewModal(false);
+          fetchOrderReview();
+        }}
+        orderId={orderDetails?.id}
+        title={
+          orderDetails?.buyer?.id == user?.id
+            ? "Please review this seller"
+            : "Please review this buyer"
+        }
+      />
     </main>
   );
 };
