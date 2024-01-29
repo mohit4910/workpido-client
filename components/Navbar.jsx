@@ -267,7 +267,7 @@ export default function WithSubnavigation() {
 }
 
 const DesktopNav = ({ categories }) => {
-  const linkColor = useColorModeValue("gray.600", "gray.200");
+  const linkColor = useColorModeValue("gray.800", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
@@ -299,7 +299,7 @@ const DesktopNav = ({ categories }) => {
                   navItem?.frontendLink ??
                   `/category/${navItem?.id}`
                 }
-                fontSize={"sm"}
+                fontSize={"xs"}
                 fontWeight={400}
                 // borderRight={`${categories?.length - 1 !== i && "1px"}`}
                 // borderColor={"gray.300"}

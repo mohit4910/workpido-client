@@ -19,11 +19,12 @@ import {
   InputGroup,
   InputRightAddon,
   InputLeftAddon,
+  Container,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import SunEditor from "suneditor-react";
+import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import FileDropzone from "@/components/FileDropzone";
 import useAuth from "@/hooks/useAuth";
@@ -261,15 +262,19 @@ const CreateGig = () => {
 
   return (
     <>
-      <Box p={[4, 8, 12]} bg={"#f6f6f6"}>
-        <Text fontWeight={"medium"} fontSize={["3xl", "2xl"]}>
+      <Box p={[4, 8, 16]} bg={"#f6f6f6"}>
+        <Text
+          fontWeight={"medium"}
+          fontSize={["3xl", "2xl"]}
+          pl={[4, 8, 16, 24]}
+        >
           Create New Gig
         </Text>
         <br />
         <br />
 
         <Box pos={"relative"}>
-          <Accordion allowMultiple>
+          <Accordion allowMultiple pl={[4, 8, 16, 24]}>
             {/* Title & Category */}
             <GigAccordion step={1} title={"Title & Category"}>
               <Box pos={"relative"} overflowY={"visible"}>
@@ -501,6 +506,9 @@ const CreateGig = () => {
                           Formik.setFieldValue("description", value)
                         }
                         height="520px"
+                        setOptions={{
+                          buttonList: [["bold", "italic", "list"]],
+                        }}
                       />
                     </Box>
                   }
@@ -527,6 +535,7 @@ const CreateGig = () => {
                     onUpload={(files) =>
                       Formik.setFieldValue("attachments", files)
                     }
+                    accept={"*"}
                   />
                 </Box>
               </Box>
@@ -656,32 +665,6 @@ const CreateGig = () => {
                         </HStack>
                       </HStack>
                     </FormControl>
-                    <FormControl py={4}>
-                      <HStack>
-                        <FormLabel flex={1}>Starting Price</FormLabel>
-                        <Box flex={5}>
-                          <InputGroup w={"xs"}>
-                            <InputLeftAddon children={user?.currency?.symbol} />
-                            <Input
-                              type="number"
-                              name="minPrice"
-                              onChange={Formik.handleChange}
-                              placeholder="Starting price"
-                            />
-                          </InputGroup>
-                          {!user?.currency?.isoCode ? (
-                            <Text
-                              color={"red"}
-                              py={2}
-                              fontSize={"xs"}
-                              fontWeight={"semibold"}
-                            >
-                              Please add your currency in profile
-                            </Text>
-                          ) : null}
-                        </Box>
-                      </HStack>
-                    </FormControl>
                   </>
                 ) : null}
 
@@ -770,6 +753,9 @@ const CreateGig = () => {
                         Formik.setFieldValue("requirements", value)
                       }
                       height="520px"
+                      setOptions={{
+                        buttonList: [["bold", "italic", "list"]],
+                      }}
                     />
                   </Box>
                 }
@@ -792,7 +778,13 @@ const CreateGig = () => {
               />
             </GigAccordion>
           </Accordion>
-          <HStack w={["full", "3xl", "4xl"]} justifyContent={"flex-end"} mt={8}>
+
+          <HStack
+            w={["full", "3xl", "4xl"]}
+            justifyContent={"flex-end"}
+            mt={8}
+            ml={[0, 0, 0, 24]}
+          >
             <Button
               onClick={Formik.handleReset}
               isLoading={loading}

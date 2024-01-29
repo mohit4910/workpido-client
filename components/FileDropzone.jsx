@@ -1,11 +1,19 @@
 "use client";
 import { useDropzone } from "react-dropzone";
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Icon, Text, VStack, HStack, Image, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Icon,
+  Text,
+  VStack,
+  HStack,
+  Image,
+  Input,
+} from "@chakra-ui/react";
 import { AddCircle } from "iconsax-react";
 import { BsXCircleFill } from "react-icons/bs";
 
-const FileDropzone = ({onUpload}) => {
+const FileDropzone = ({ onUpload, accept }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [files, setFiles] = useState([]);
 
@@ -39,9 +47,9 @@ const FileDropzone = ({onUpload}) => {
     multiple: true,
   });
 
-  useEffect(()=>{
-    onUpload(files)
-  },[files])
+  useEffect(() => {
+    onUpload(files);
+  }, [files]);
 
   return (
     <>
@@ -56,7 +64,11 @@ const FileDropzone = ({onUpload}) => {
         cursor={"pointer"}
         justifyContent={"center"}
       >
-        <Input visibility={"hidden"} {...getInputProps()} />
+        <Input
+          visibility={"hidden"}
+          {...getInputProps()}
+          accept={accept ?? "image/*"}
+        />
         {isDragActive ? (
           <Text>Drop Your Files Here...</Text>
         ) : (
