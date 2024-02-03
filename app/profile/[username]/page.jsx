@@ -107,21 +107,42 @@ const page = ({ params }) => {
       className="relative mx-auto overflow-x-hidden min-h-screen"
       style={{ backgroundColor: "#f6f6f6" }}
     >
-      <Container maxW={["full", "7xl"]}>
+      <Image
+        pos={"absolute"}
+        w={"full"}
+        h={"56"}
+        objectFit={"cover"}
+        src="https://t3.ftcdn.net/jpg/02/68/48/86/360_F_268488616_wcoB2JnGbOD2u3bpn2GPmu0KJQ4Ah66T.jpg"
+        zIndex={0}
+      />
+      <Container maxW={["full", "7xl"]} pos={"relative"} mt={48} zIndex={9}>
         {/* Seller Details */}
-        <Flex className="w-full flex-col md:flex-row justify-center">
+        <Flex className="w-full flex-col md:flex-row">
           {/* Main Content */}
           <Flex
             p={6}
-            rounded={4}
+            roundedLeft={4}
             boxShadow={"base"}
-            className=" mx-auto md:my-10 flex-col md:flex-row"
+            className=" mx-auto flex-col md:flex-row"
             bgColor={"#fff"}
             w={"full"}
+            flex={6}
           >
             {/* User Card */}
-            <Flex className="flex-col items-center md:items-start md:w-1/3 w-full gap-2">
-              <ZoomableImage src={avatarUrl} />
+            <Flex
+              className="flex-col items-center md:items-start md:w-1/3 w-full gap-2"
+              transform={"auto"}
+              translateY={[0, "-64px"]}
+            >
+              <Box
+                rounded={2}
+                border={"0.5px solid"}
+                p={2}
+                borderColor={"#999"}
+                bgColor={"#FFF"}
+              >
+                <ZoomableImage src={avatarUrl} size={"200px"} />
+              </Box>
               <Box className="my-3 text-center md:text-left">
                 <Text
                   className="md:block font-medium text-2xl my-2"
@@ -140,15 +161,15 @@ const page = ({ params }) => {
                   {userData?.profession}
                 </Text>
               </Box>
-              <Flex className="items-center gap-3">
+              <Flex w={'full'} className="items-center gap-3">
                 <BsFillTelephoneFill color="gray" />
                 <Text>Phone Verified</Text>
               </Flex>
-              <Flex className="items-center gap-3">
+              <Flex w={'full'} className="items-center gap-3">
                 <ImLocation color="gray" />
                 <Text>{userData?.country || "India"}</Text>
               </Flex>
-              <Flex className="items-center gap-3">
+              {/* <Flex w={'full'} className="items-center gap-3">
                 <PiClockCountdownBold color="gray" />
                 <Text>
                   Joined{" "}
@@ -157,12 +178,12 @@ const page = ({ params }) => {
                     year: "numeric",
                   })}
                 </Text>
-              </Flex>
-              <Flex className="items-center gap-3">
+              </Flex> */}
+              <Flex w={'full'} className="items-center gap-3">
                 <RiRadioButtonLine color="green" />
                 <Text>Online</Text>
               </Flex>
-              <Flex className="items-center gap-3 hover:cursor-pointer">
+              <Flex w={'full'} className="items-center gap-3 hover:cursor-pointer">
                 <ImEyeBlocked color="red" />
                 <Text>Block this Seller</Text>
               </Flex>
@@ -170,9 +191,9 @@ const page = ({ params }) => {
 
             {/* User Details */}
             <Box className="bg-white md:w-2/3 w-full flex-2">
-              <Box className="p-5 overflow-hidden">
+              <Box className="overflow-hidden">
                 {/*Seller Full Name */}
-                <Heading className="hidden md:block font-medium text-emerald-600 text-4xl text-center md:text-left my-3">
+                <Heading className="hidden md:block font-medium text-emerald-600 text-4xl text-center md:text-left mb-3">
                   {userData?.displayName}
                 </Heading>
                 {/*Seller Profession */}
@@ -183,7 +204,7 @@ const page = ({ params }) => {
                   {userData?.profession}
                 </Text>
                 {/* About the Seller */}
-                <Text className="my-3">{userData?.bio}</Text>
+                <Text className="my-3" pt={[8, 0]}>{userData?.bio}</Text>
                 <Box mt={8}>
                   <Text className="md:block font-medium text-lg my-3">
                     Skills
@@ -192,9 +213,14 @@ const page = ({ params }) => {
                   <Flex className="gap-2 flex-wrap">
                     {userData?.skills ? (
                       userData?.skills?.split(",")?.map((skill, key) => (
-                        <span className="p-1 px-3 m-1 border rounded" key={key}>
+                        <Text
+                          className="p-1 px-3 m-1 border"
+                          fontSize={"sm"}
+                          borderRadius={"28px"}
+                          key={key}
+                        >
                           {skill?.trim()}
-                        </span>
+                        </Text>
                       ))
                     ) : (
                       <Text>
@@ -219,12 +245,15 @@ const page = ({ params }) => {
           </Flex>
           {/* SideBar - Only visible on large displays */}
 
-          <Box className="w-full md:w-[40%]  mx-auto my-10">
+          <Box className="w-full md:w-[40%] mx-auto" h={"full"} flex={2}>
             {/* Seller Contact Card */}
             <SellerCard
+              roundedLeft={0}
               user={userData}
               showAvatar={false}
               className="bg-transparent"
+              bgColor={"#f6f6f6"}
+              height={"full"}
               showSettings={username == "me" || username == user?.username}
             />
           </Box>

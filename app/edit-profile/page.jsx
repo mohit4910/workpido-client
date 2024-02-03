@@ -197,7 +197,7 @@ const EditProfile = () => {
       />
 
       <Container
-        maxW={["full", "3xl", "5xl", "7xl"]}
+        maxW={["full", "3xl", "5xl"]}
         my={[4, 8, 12]}
         minH={"90vh"}
       >

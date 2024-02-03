@@ -365,63 +365,6 @@ const ArticleDetails = ({ params }) => {
                   </Link>
                 </Text>
               </Box>
-              {/* Reviews */}
-              <Box p={4}>
-                <Text fontSize={"lg"}>Reviews</Text>
-
-                <Tabs mt={4}>
-                  <TabList>
-                    <Tab
-                      _selected={{
-                        color: "brand.primary",
-                        borderBottomColor: "brand.primary",
-                      }}
-                    >
-                      Positive
-                    </Tab>
-                    <Tab
-                      _selected={{
-                        color: "brand.primary",
-                        borderBottomColor: "brand.primary",
-                      }}
-                    >
-                      Negative
-                    </Tab>
-                  </TabList>
-                  <TabPanels>
-                    <TabPanel p={0} my={4}>
-                      <Review
-                        username={"adarshprakash"}
-                        content={
-                          "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur, modi."
-                        }
-                      />
-                      <Review
-                        username={"ashishp"}
-                        content={
-                          "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur, modi."
-                        }
-                      />
-                    </TabPanel>
-                    <TabPanel p={0} my={4}>
-                      <Review
-                        username={"adarshprakash"}
-                        content={
-                          "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur, modi."
-                        }
-                        intent={"negative"}
-                      />
-                      <Review
-                        username={"ashishp"}
-                        content={
-                          "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur, modi."
-                        }
-                        intent={"negative"}
-                      />
-                    </TabPanel>
-                  </TabPanels>
-                </Tabs>
-              </Box>
             </Box>
             {/* SideBar - Only visible on large displays */}
             <Box className="hidden lg:block" maxW={["full", "xs"]} flex={1}>

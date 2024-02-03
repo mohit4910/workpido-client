@@ -20,7 +20,14 @@ import useApiHandler from "@/hooks/useApiHandler";
 import useAuth from "@/hooks/useAuth";
 import { API } from "@/lib/api";
 
-const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
+const SellerCard = ({
+  user,
+  showAvatar = true,
+  height,
+  showSettings,
+  bgColor,
+  roundedLeft,
+}) => {
   const { getAvatar } = useAuth();
 
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -44,9 +51,13 @@ const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
   }
 
   return (
-    <Card h={height ?? "full"}>
+    <Card
+      h={height ?? "full"}
+      bgColor={bgColor ?? "#FFF"}
+      roundedLeft={roundedLeft ?? "auto"}
+    >
       <CardHeader>
-        <Link href={"/profile"}>
+        {/* <Link href={"/profile"}>
           <Stack my={4} direction={"row"} spacing={2} align={"center"}>
             {showAvatar ? <Avatar size={"lg"} src={avatarUrl} /> : null}
             <Stack direction={"column"} spacing={0} fontSize={"lg"}>
@@ -54,7 +65,7 @@ const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
               <Text fontSize={"md"}>{user?.displayName}</Text>
             </Stack>
           </Stack>
-        </Link>
+        </Link> */}
         <Box className="pr-6 pl-1">
           {showSettings ? (
             <Button
@@ -117,7 +128,11 @@ const SellerCard = ({ user, showAvatar = true, height, showSettings }) => {
               India
             </Heading>
             <Text pt="2" fontSize="sm">
-              Joined September 2023
+              Joined{" "}
+              {new Date(user?.createdAt)?.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
             </Text>
           </Box>
         </Stack>

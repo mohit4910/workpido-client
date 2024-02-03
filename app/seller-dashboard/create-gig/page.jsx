@@ -20,6 +20,7 @@ import {
   InputRightAddon,
   InputLeftAddon,
   Container,
+  Switch,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
@@ -42,6 +43,8 @@ const CreateGig = () => {
   const { uploadAndAttachMedia } = useApiHandler();
   const { push } = useRouter();
 
+  const [activeStep, setActiveStep] = useState(1);
+  const [activeAccordions, setActiveAccordions] = useState([]);
   const [data, setData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -147,6 +150,7 @@ const CreateGig = () => {
       }
     },
   });
+
   async function uploadAllMedia(entryId) {
     const recentGigId = Cookies.get("recentGigId") || entryId;
 
@@ -236,8 +240,12 @@ const CreateGig = () => {
   }, [Formik.values.services]);
 
   useEffect(() => {
-    if (Formik.values.totalPlans > 3) Formik.setFieldValue("totalPlans", 3);
-  }, [Formik.values.totalPlans]);
+    let arr = [];
+    for (let i = 0; i < activeStep; i++) {
+      arr.push(i);
+    }
+    setActiveAccordions(arr);
+  }, [activeStep]);
 
   useEffect(() => {
     if (!Formik.values.pricingModel) {
@@ -260,6 +268,37 @@ const CreateGig = () => {
     Formik.setFieldValue("attributes", data);
   }
 
+  function handlePartialUpdate(nextStep) {
+    if (nextStep == 2) {
+      if (
+        !Formik.values.title ||
+        !Formik.values.overview ||
+        !Formik.values.category ||
+        !Formik.values.subCategory
+      ) {
+        toast.warn("All fields are required");
+        return;
+      }
+    }
+    if (nextStep == 3) {
+      if (!Formik.values.banners) {
+        toast.warn("You must upload atleast 1 bannner");
+        return;
+      }
+      if (
+        !Formik.values.description ||
+        Formik.values.description.length < 100
+      ) {
+        toast.warn("Description must be more than 100 characters in length");
+        return;
+      }
+    }
+
+    if (activeStep < nextStep) {
+      setActiveStep(nextStep);
+    }
+  }
+
   return (
     <>
       <Box p={[4, 8, 16]} bg={"#f6f6f6"}>
@@ -274,11 +313,16 @@ const CreateGig = () => {
         <br />
 
         <Box pos={"relative"}>
-          <Accordion allowMultiple pl={[4, 8, 16, 24]}>
+          <Accordion
+            allowMultiple
+            allowToggle
+            pl={[4, 8, 16, 24]}
+            index={activeAccordions}
+          >
             {/* Title & Category */}
             <GigAccordion step={1} title={"Title & Category"}>
               <Box pos={"relative"} overflowY={"visible"}>
-                <FormControl py={4}>
+                <FormControl py={4} px={6}>
                   <CreateGigPopup
                     trigger={
                       <HStack alignItems={"flex-start"}>
@@ -317,7 +361,7 @@ const CreateGig = () => {
                     }
                   />
                 </FormControl>
-                <FormControl py={4}>
+                <FormControl py={4} px={6}>
                   <CreateGigPopup
                     // arrowColor={"#FFF"}
                     trigger={
@@ -350,7 +394,7 @@ const CreateGig = () => {
                     }
                   />
                 </FormControl>
-                <HStack alignItems={"flex-start"} py={4}>
+                <HStack alignItems={"flex-start"} py={4} px={6}>
                   <FormLabel flex={1}>Category</FormLabel>
                   <CreateGigPopup
                     arrowColor={"#FFF"}
@@ -407,11 +451,7 @@ const CreateGig = () => {
                 </HStack>
 
                 {services?.length ? (
-                  <FormControl
-                    w={["full", "3xl", "4xl"]}
-                    p={4}
-                    bgColor={"#FFF"}
-                  >
+                  <FormControl w={["full"]} p={6} bgColor={"#FFF"}>
                     <HStack>
                       <FormLabel flex={1}>Services</FormLabel>
                       <Box flex={5}>
@@ -442,11 +482,7 @@ const CreateGig = () => {
                 ) : null}
 
                 {attributes?.length ? (
-                  <FormControl
-                    w={["full", "3xl", "4xl"]}
-                    p={4}
-                    bgColor={"#FFF"}
-                  >
+                  <FormControl w={["full"]} p={6} bgColor={"#FFF"}>
                     <HStack>
                       <FormLabel flex={1}>Attributes</FormLabel>
                       <Box flex={5}>
@@ -482,13 +518,37 @@ const CreateGig = () => {
                     </HStack>
                   </FormControl>
                 ) : null}
+
+                {activeAccordions?.includes(1) ? null : (
+                  <HStack
+                    justifyContent={"flex-end"}
+                    mt={8}
+                    py={8}
+                    px={6}
+                    bgColor={"#f6f6f6"}
+                  >
+                    <Button
+                      colorScheme="green"
+                      bgColor={"brand.primary"}
+                      onClick={() => handlePartialUpdate(2)}
+                      isLoading={loading}
+                      fontSize={"sm"}
+                    >
+                      Next
+                    </Button>
+                  </HStack>
+                )}
               </Box>
             </GigAccordion>
 
             {/* Description & Files */}
-            <GigAccordion step={2} title={"Description & Files"}>
+            <GigAccordion
+              step={2}
+              title={"Description & Files"}
+              isDisabled={activeStep <= 1}
+            >
               <Box>
-                <Box py={4}>
+                <Box py={4} px={6}>
                   <Text fontWeight={"semibold"}>Upload Banner Images</Text>
                   <FileDropzone
                     onUpload={(files) => Formik.setFieldValue("banners", files)}
@@ -497,7 +557,7 @@ const CreateGig = () => {
 
                 <CreateGigPopup
                   trigger={
-                    <Box py={4}>
+                    <Box py={4} px={6}>
                       <Text fontWeight={"medium"} pb={4}>
                         Description
                       </Text>
@@ -527,7 +587,7 @@ const CreateGig = () => {
                   }
                 />
 
-                <Box py={4}>
+                <Box py={4} px={6}>
                   <Text fontWeight={"semibold"}>
                     Upload Other Attachments (optional)
                   </Text>
@@ -538,20 +598,44 @@ const CreateGig = () => {
                     accept={"*"}
                   />
                 </Box>
+
+                {activeAccordions?.includes(2) ? null : (
+                  <HStack
+                    justifyContent={"flex-end"}
+                    mt={8}
+                    py={8}
+                    px={6}
+                    bgColor={"#f6f6f6"}
+                  >
+                    <Button
+                      colorScheme="green"
+                      bgColor={"brand.primary"}
+                      onClick={() => handlePartialUpdate(3)}
+                      isLoading={loading}
+                      fontSize={"sm"}
+                    >
+                      Next
+                    </Button>
+                  </HStack>
+                )}
               </Box>
             </GigAccordion>
 
             {/* Pricing */}
-            <GigAccordion step={3} title={"Pricing"}>
+            <GigAccordion
+              step={3}
+              title={"Pricing"}
+              isDisabled={activeStep <= 2}
+            >
               <Box>
-                <FormControl py={4}>
+                <FormControl py={4} px={6}>
                   <CreateGigPopup
                     trigger={
-                      <HStack>
-                        <FormLabel flex={1}>Pricing Model</FormLabel>
-                        <HStack flex={5} gap={8}>
+                      <HStack w={"full"} justifyContent={"space-between"}>
+                        <HStack gap={8} justifyContent={"flex-start"}>
+                          <FormLabel w={"max"}>Pricing Model</FormLabel>
                           <Select
-                            maxW={"xs"}
+                            w={"xs"}
                             name="pricingModel"
                             onChange={Formik.handleChange}
                             placeholder="Please Select"
@@ -561,6 +645,20 @@ const CreateGig = () => {
                             <option value="plans">Plan Based</option>
                           </Select>
                         </HStack>
+                        {Formik.values.pricingModel == "plans" ? (
+                          <HStack w={"full"} justifyContent={"flex-end"}>
+                            <Text fontWeight={"semibold"}>1 Plan</Text>
+                            <Switch
+                              onChange={(e) =>
+                                Formik.setFieldValue(
+                                  "totalPlans",
+                                  e.target.checked ? 3 : 1
+                                )
+                              }
+                            />
+                            <Text fontWeight={"semibold"}>3 Plans</Text>
+                          </HStack>
+                        ) : null}
                       </HStack>
                     }
                     body={
@@ -586,7 +684,7 @@ const CreateGig = () => {
                 </FormControl>
 
                 {Formik.values.pricingModel == "fixed" ? (
-                  <FormControl py={4}>
+                  <FormControl py={4} px={6}>
                     <HStack>
                       <FormLabel flex={1}>Fixed Price</FormLabel>
                       <HStack flex={5}>
@@ -612,64 +710,10 @@ const CreateGig = () => {
                       </Text>
                     ) : null}
                   </FormControl>
-                ) : Formik.values.pricingModel == "hourly" ? (
-                  <FormControl py={4}>
-                    <HStack>
-                      <FormLabel flex={1}>Hourly Price</FormLabel>
-                      <HStack flex={5}>
-                        <InputGroup w={"xs"}>
-                          <InputLeftAddon children={user?.currency?.symbol} />
-                          <Input
-                            type="number"
-                            name="hourlyPrice"
-                            onChange={Formik.handleChange}
-                            placeholder="Price per hour"
-                          />
-                          <InputRightAddon children={"per hr."} />
-                        </InputGroup>
-                      </HStack>
-                    </HStack>
-                    {!user?.currency?.isoCode ? (
-                      <Text
-                        color={"red"}
-                        py={2}
-                        fontSize={"xs"}
-                        fontWeight={"semibold"}
-                      >
-                        Please add your currency in profile
-                      </Text>
-                    ) : null}
-                  </FormControl>
-                ) : Formik.values.pricingModel == "plans" ? (
-                  <>
-                    <FormControl py={4}>
-                      <HStack>
-                        <FormLabel flex={1}>Total Plans</FormLabel>
-                        <HStack flex={5}>
-                          <Input
-                            name="totalPlans"
-                            id="totalPlans"
-                            type="number"
-                            onChange={Formik.handleChange}
-                            value={Formik.values.totalPlans}
-                            w={"xs"}
-                            max={3}
-                            min={1}
-                            onBlur={async () => {
-                              if (Formik.values.totalPlans < 1)
-                                await Formik.setFieldValue("totalPlans", 1);
-                              if (Formik.values.totalPlans > 3)
-                                await Formik.setFieldValue("totalPlans", 3);
-                            }}
-                          />
-                        </HStack>
-                      </HStack>
-                    </FormControl>
-                  </>
                 ) : null}
 
                 {Formik.values.pricingModel == "plans" ? null : (
-                  <FormControl py={4}>
+                  <FormControl py={4} px={6}>
                     <HStack>
                       <FormLabel flex={1}>Revisions</FormLabel>
                       <HStack flex={5}>
@@ -688,7 +732,7 @@ const CreateGig = () => {
                   <FormControl py={4}>
                     <CreateGigPopup
                       trigger={
-                        <HStack>
+                        <HStack px={6}>
                           <FormLabel flex={1}>Delivery Days</FormLabel>
                           <HStack flex={5}>
                             <InputGroup w={"xs"}>
@@ -716,7 +760,7 @@ const CreateGig = () => {
                 )}
 
                 {Formik.values.pricingModel == "plans" ? (
-                  <Box py={4}>
+                  <Box py={4} px={6}>
                     <PricingTable
                       totalPlans={Formik.values.totalPlans}
                       data={Formik.values.pricingTable}
@@ -727,24 +771,72 @@ const CreateGig = () => {
                     />
                   </Box>
                 ) : null}
+
+                {activeAccordions?.includes(3) ? null : (
+                  <HStack
+                    justifyContent={"flex-end"}
+                    mt={8}
+                    py={8}
+                    px={6}
+                    bgColor={"#f6f6f6"}
+                  >
+                    <Button
+                      colorScheme="green"
+                      bgColor={"brand.primary"}
+                      onClick={() => handlePartialUpdate(4)}
+                      isLoading={loading}
+                      fontSize={"sm"}
+                    >
+                      Next
+                    </Button>
+                  </HStack>
+                )}
               </Box>
             </GigAccordion>
 
             {/* FAQs */}
-            <GigAccordion step={4} title={"Frequently Asked Questions (FAQs)"}>
-              <Box py={4}>
+            <GigAccordion
+              step={4}
+              title={"Frequently Asked Questions (FAQs)"}
+              isDisabled={activeStep <= 3}
+            >
+              <Box py={4} px={6}>
                 <FaqsContainer
                   data={Formik.values.faqs}
                   onUpdate={(data) => Formik.setFieldValue("faqs", data)}
                 />
               </Box>
+
+              {activeAccordions?.includes(4) ? null : (
+                <HStack
+                  justifyContent={"flex-end"}
+                  mt={8}
+                  py={8}
+                  px={6}
+                  bgColor={"#f6f6f6"}
+                >
+                  <Button
+                    colorScheme="green"
+                    bgColor={"brand.primary"}
+                    onClick={() => handlePartialUpdate(5)}
+                    isLoading={loading}
+                    fontSize={"sm"}
+                  >
+                    Next
+                  </Button>
+                </HStack>
+              )}
             </GigAccordion>
 
             {/* Client Requirements */}
-            <GigAccordion step={4} title={"Requirements from Client"}>
+            <GigAccordion
+              step={5}
+              title={"Requirements from Client"}
+              isDisabled={activeStep <= 4}
+            >
               <CreateGigPopup
                 trigger={
-                  <Box py={4}>
+                  <Box py={4} px={6}>
                     <Text fontSize={"md"} fontWeight={"medium"} pb={4}>
                       What details do you need from your client?
                     </Text>
@@ -776,33 +868,26 @@ const CreateGig = () => {
                   </>
                 }
               />
+              <HStack
+                justifyContent={"flex-end"}
+                my={8}
+                px={6}
+                py={8}
+                bgColor={"#F6F6F6"}
+              >
+                <Button
+                  colorScheme="green"
+                  bgColor={"brand.primary"}
+                  onClick={Formik.handleSubmit}
+                  isLoading={loading}
+                  fontSize={"sm"}
+                  isDisabled={activeStep <= 3}
+                >
+                  Submit
+                </Button>
+              </HStack>
             </GigAccordion>
           </Accordion>
-
-          <HStack
-            w={["full", "3xl", "4xl"]}
-            justifyContent={"flex-end"}
-            mt={8}
-            ml={[0, 0, 0, 24]}
-          >
-            <Button
-              onClick={Formik.handleReset}
-              isLoading={loading}
-              bgColor={"#FFF"}
-              fontSize={"sm"}
-            >
-              Reset
-            </Button>
-            <Button
-              colorScheme="green"
-              bgColor={"brand.primary"}
-              onClick={Formik.handleSubmit}
-              isLoading={loading}
-              fontSize={"sm"}
-            >
-              Submit
-            </Button>
-          </HStack>
         </Box>
       </Box>
     </>

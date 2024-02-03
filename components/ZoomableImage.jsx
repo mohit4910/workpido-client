@@ -3,17 +3,7 @@
 import { Box, Image } from "@chakra-ui/react";
 import React, { useState } from "react";
 
-const ZoomableImage = ({ src, alt, caption }) => {
-  const [isZoomed, setIsZoomed] = useState(false);
-
-  const handleZoom = () => {
-    setIsZoomed(true);
-  };
-
-  const handleUnzoom = () => {
-    setIsZoomed(false);
-  };
-
+const ZoomableImage = ({ src, alt, caption, size }) => {
   return (
     <Box
       display="flex"
@@ -24,18 +14,23 @@ const ZoomableImage = ({ src, alt, caption }) => {
       transition="0.3s ease-in-out"
       _hover={{ shadow: "xl", brightness: "0.2" }}
     >
-      <Box textDecoration="none" _hover={{ textDecoration: "none" }}>
+      <Box
+        textDecoration="none"
+        _hover={{ textDecoration: "none" }}
+      >
         <Image
           src={src}
           alt={alt}
-          width="280px"
-          height="280px"
+          width={size ?? "280px"}
+          height={size ?? "280px"}
           objectFit="cover"
-          transform="scale(1.0)"
           transition="0.3s ease-in-out"
           _hover={{
             transform: "scale(1.05)",
           }}
+          rounded={2}
+          border={"0.5px solid"}
+          borderColor={"#999"}
         />
       </Box>
 

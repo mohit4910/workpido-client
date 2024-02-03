@@ -10,30 +10,36 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-const GigAccordion = ({ children, step, title }) => {
+const GigAccordion = ({ children, step, title, isDisabled }) => {
   return (
     <>
-      <AccordionItem border={"none"} my={4} py={2} overflowY={"visible"}>
+      <AccordionItem
+        border={"none"}
+        my={0}
+        py={0}
+        overflowY={"visible"}
+        isDisabled={isDisabled}
+      >
         {({ isExpanded }) => (
           <>
             <AccordionButton
-              borderBottom={isExpanded ? "1px" : "0"}
+              borderBottom={isExpanded ? "1px solid" : "0.5px solid"}
               py={4}
               w={["full", "3xl", "4xl"]}
-              rounded={"6"}
-              boxShadow={"base"}
+              rounded={0}
+              borderBottomColor={"gray.100"}
               bgColor={"#FFF"}
             >
               <HStack w={"full"} gap={8}>
                 <Box
-                  boxSize={"12"}
+                  boxSize={"10"}
                   rounded={"full"}
                   display={"grid"}
                   placeContent={"center"}
                   bgColor={isExpanded ? "brand.primary" : "facebook.100"}
                 >
                   <Text
-                    fontSize={"lg"}
+                    fontSize={"md"}
                     fontWeight={"semibold"}
                     color={isExpanded ? "#FFF" : "#333"}
                   >
@@ -47,7 +53,7 @@ const GigAccordion = ({ children, step, title }) => {
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel p={0} overflowY={"visible"}>
-              <Box w={["full", "3xl", "4xl"]} px={6} py={8} bgColor={"#FFF"}>
+              <Box w={["full", "3xl", "4xl"]} pt={8} bgColor={"#FFF"}>
                 {children}
               </Box>
             </AccordionPanel>

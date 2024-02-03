@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, Box, HStack, Text } from "@chakra-ui/react";
+import { Avatar, Box, HStack, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 import { BsEmojiFrownFill, BsEmojiSmileFill } from "react-icons/bs";
@@ -14,7 +14,7 @@ const Review = ({
   repliedByName,
   repliedByAvatar,
   gigTitle,
-  gigId
+  gigId,
 }) => {
   return (
     <>
@@ -28,36 +28,36 @@ const Review = ({
         borderBottom={"0.5px solid"}
         borderColor={"gray.300"}
       >
-        <HStack alignItems={"flex-start"} gap={6}>
+        <HStack alignItems={"flex-start"} gap={[3, 6]}>
           <Box>
-            <Avatar size={"md"} name={username} />
+            <Avatar size={["sm", "md"]} name={username} />
           </Box>
           <Box w={"full"}>
             <Text fontWeight={"medium"}>{username}</Text>
             <HStack py={2}>
               {intent == "negative" ? (
                 <BsEmojiFrownFill color="red" />
-              ) : (
+              ) : intent == "positive" ? (
                 <BsEmojiSmileFill color="#04b70a" />
-              )}
+              ) : null}
               <Text fontSize={"xs"} color={"gray.600"}>
                 7 months ago
               </Text>
             </HStack>
             <Text fontSize={"xs"}>{content}</Text>
             {replyContent ? (
-              <Box p={8} pb={0}>
-                <HStack alignItems={"flex-start"} gap={6}>
+              <Box p={[0, 8]} pb={0} pt={[6]}>
+                <HStack alignItems={"flex-start"} gap={[3, 6]} w={'full'}>
                   <Box>
-                    <Avatar size={"md"} name={"sangam4742"} />
+                    <Avatar size={["sm", "md"]} name={"sangam4742"} />
                   </Box>
                   <Box w={"full"}>
-                    <HStack>
-                      <Text fontWeight={"medium"}>sangam4742 - </Text>
-                      <Text fontSize={"xs"} color={"gray.600"} py={2}>
+                    <Stack direction={['column']} gap={2} mb={2}>
+                      <Text fontWeight={"medium"}>sangam4742</Text>
+                      <Text fontSize={"xs"} color={"gray.600"}>
                         7 months ago
                       </Text>
-                    </HStack>
+                    </Stack>
 
                     <Text fontSize={"xs"}>{replyContent}</Text>
                   </Box>
