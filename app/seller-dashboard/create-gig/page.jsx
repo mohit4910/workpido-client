@@ -794,45 +794,11 @@ const CreateGig = () => {
               </Box>
             </GigAccordion>
 
-            {/* FAQs */}
-            <GigAccordion
-              step={4}
-              title={"Frequently Asked Questions (FAQs)"}
-              isDisabled={activeStep <= 3}
-            >
-              <Box py={4} px={6}>
-                <FaqsContainer
-                  data={Formik.values.faqs}
-                  onUpdate={(data) => Formik.setFieldValue("faqs", data)}
-                />
-              </Box>
-
-              {activeAccordions?.includes(4) ? null : (
-                <HStack
-                  justifyContent={"flex-end"}
-                  mt={8}
-                  py={8}
-                  px={6}
-                  bgColor={"#f6f6f6"}
-                >
-                  <Button
-                    colorScheme="green"
-                    bgColor={"brand.primary"}
-                    onClick={() => handlePartialUpdate(5)}
-                    isLoading={loading}
-                    fontSize={"sm"}
-                  >
-                    Next
-                  </Button>
-                </HStack>
-              )}
-            </GigAccordion>
-
             {/* Client Requirements */}
             <GigAccordion
-              step={5}
+              step={4}
               title={"Requirements from Client"}
-              isDisabled={activeStep <= 4}
+              isDisabled={activeStep <= 3}
             >
               <CreateGigPopup
                 trigger={
@@ -886,6 +852,40 @@ const CreateGig = () => {
                   Submit
                 </Button>
               </HStack>
+            </GigAccordion>
+
+            {/* FAQs */}
+            <GigAccordion
+              step={5}
+              title={"Frequently Asked Questions (FAQs)"}
+              isDisabled={activeStep <= 4}
+            >
+              <Box py={4} px={6}>
+                <FaqsContainer
+                  data={Formik.values.faqs}
+                  onUpdate={(data) => Formik.setFieldValue("faqs", data)}
+                />
+              </Box>
+
+              {activeAccordions?.includes(4) ? null : (
+                <HStack
+                  justifyContent={"flex-end"}
+                  mt={8}
+                  py={8}
+                  px={6}
+                  bgColor={"#f6f6f6"}
+                >
+                  <Button
+                    colorScheme="green"
+                    bgColor={"brand.primary"}
+                    onClick={() => handlePartialUpdate(5)}
+                    isLoading={loading}
+                    fontSize={"sm"}
+                  >
+                    Next
+                  </Button>
+                </HStack>
+              )}
             </GigAccordion>
           </Accordion>
         </Box>

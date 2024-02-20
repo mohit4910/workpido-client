@@ -23,6 +23,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Progress,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -46,7 +47,7 @@ const Page = () => {
     if (!Cookies.get("token")) {
       push("/");
     } else {
-      if(user?.id){
+      if (user?.id) {
         fetchOverview();
       }
     }
@@ -77,18 +78,19 @@ const Page = () => {
             {/* SideBar - Comes Down on smaller displays */}
             <Flex
               flexDirection={"column"}
-              className="w-[96%] md:w-[30%] my-10 mx-3 md:mx-0 gap-6"
+              className="w-[96%] md:w-[27%] my-10 mx-3 md:mx-0 gap-6"
             >
               <Flex
-                className="flex-col p-3 bg-white"
+                className="flex-col p-4 bg-white"
                 rounded={4}
                 boxShadow={"base"}
               >
                 <SellerStats seller={user} />
               </Flex>
+
               {/* Inbox */}
               <Flex
-                className="bg-white flex-col px-3 py-10 relative h-[30rem]"
+                className="bg-white flex-col px-3 py-10 relative h-[33.25rem]"
                 rounded={4}
                 boxShadow={"base"}
               >
@@ -114,7 +116,7 @@ const Page = () => {
                     My Orders
                   </Heading>
                   <Heading className="text-xl font-normal text-neutral-500">
-                    - Total {overview?.orders}
+                    - Total {overview?.orders || "0"}
                   </Heading>
                 </Flex>
                 <Link href={"/orders"}>View all</Link>
@@ -130,7 +132,7 @@ const Page = () => {
                     My Workpidos
                   </Heading>
                   <Heading className="text-xl font-normal text-neutral-500">
-                    - Active {overview?.gigs}
+                    - Active {overview?.gigs || "0"}
                   </Heading>
                 </Flex>
 
@@ -189,6 +191,7 @@ const Page = () => {
                         borderRadius="sm"
                         overflow="hidden"
                         className="items-start m-1"
+                        gap={4}
                       >
                         <Image
                           src={
@@ -196,17 +199,43 @@ const Page = () => {
                           }
                           alt=""
                           objectFit="cover"
-                          className="w-24 h-24"
+                          w={16}
                         />
                         <Box className="w-full px-4 md:w-6/8">
                           <Text fontSize={"md"} className="font-medium">
                             Step 1: Create your kworks—the more, the better
                           </Text>
-                          <Link href={"/seller-dashboard/create-gig"}>
-                            <Text color={"facebook.600"} fontWeight={"medium"}>
-                              Create New Gig
-                            </Text>
-                          </Link>
+                          {overview?.gigs >= 1 ? (
+                            <HStack
+                              direction={"row"}
+                              spacing={2}
+                              align={"center"}
+                              mt={2}
+                            >
+                              <Progress
+                                value={(Number(overview?.gigs)/9) * 100}
+                                colorScheme={"yellow"}
+                                width={"120px"}
+                                className="h-2 rounded-full"
+                              />
+                              <Text
+                                as={"a"}
+                                color={"facebook.600"}
+                                href={"/seller-dashboard/create-gig"}
+                              >
+                                Active Gigs ({overview?.gigs}/9)
+                              </Text>
+                            </HStack>
+                          ) : (
+                            <Link href={"/seller-dashboard/create-gig"}>
+                              <Text
+                                color={"facebook.600"}
+                                fontWeight={"medium"}
+                              >
+                                Create New Gig
+                              </Text>
+                            </Link>
+                          )}
                         </Box>
                       </Flex>
                       {/* Button Container */}
@@ -248,6 +277,7 @@ const Page = () => {
                         borderRadius="sm"
                         overflow="hidden"
                         className="items-start m-1"
+                        gap={4}
                       >
                         <Image
                           src={
@@ -255,7 +285,7 @@ const Page = () => {
                           }
                           alt=""
                           objectFit="cover"
-                          className="w-24 h-24"
+                          w={16}
                         />
                         <Box className="w-full px-4 md:w-3/4">
                           <Text fontSize={"md"} className="font-medium">
@@ -303,6 +333,7 @@ const Page = () => {
                         borderRadius="sm"
                         overflow="hidden"
                         className="items-start justify-start m-1"
+                        gap={4}
                       >
                         <Image
                           src={
@@ -310,7 +341,7 @@ const Page = () => {
                           }
                           alt=""
                           objectFit="cover"
-                          className="w-24 h-24"
+                          w={16}
                         />
                         <Box className="w-full px-4 md:w-3/4">
                           <Text fontSize={"md"} className="font-medium">
@@ -357,12 +388,13 @@ const Page = () => {
                         borderRadius="sm"
                         overflow="hidden"
                         className="items-start m-1"
+                        gap={4}
                       >
                         <Image
                           src={"https://cdn.kwork.com/images/index/hat.svg"}
                           alt=""
                           objectFit="cover"
-                          className="w-24 h-24"
+                          w={16}
                         />
                         <Box className="w-full px-4 md:w-3/4">
                           <Text fontSize={"md"} className="font-medium">

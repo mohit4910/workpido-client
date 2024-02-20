@@ -59,6 +59,7 @@ const Gigs = ({ params }) => {
   };
 
   const findCategory = (data, target) => {
+    if(!data) return
     for (const category of data) {
       if (category.title === target) {
         return { title: category.title, id: category.id };
@@ -144,6 +145,7 @@ const Gigs = ({ params }) => {
                 py={1}
                 textTransform={"capitalize"}
                 size={["sm", "md"]}
+                onClick={() => readData(`service=${item?.id}`)}
               >
                 {item?.title}
               </Button>

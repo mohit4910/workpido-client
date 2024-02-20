@@ -23,14 +23,14 @@ const Chats = () => {
       {contacts?.map((user, key) => (
         <Flex
           key={key}
-          className="p-2 items-center cursor-pointer gap-3 hover:bg-gray-200"
+          className="p-2 items-center cursor-pointer gap-3 hover:bg-gray-200 mb-2"
           as={"a"}
           href={`/inbox/${user?.name}`}
         >
-          <Avatar src={user?.avatarUrl} name={user?.name} alt="" />
+          <Avatar size={'md'} src={user?.avatarUrl} name={user?.name} alt="" />
           <Box>
-            <Text className="font-semibold text-lg">{user?.name}</Text>
-            <Text className="text-gray-700 text-sm">{user?.recentMessage}</Text>
+            <Text className="font-medium text-md">{user?.name}</Text>
+            <Text className="text-gray-700 text-xs">{user?.recentMessage}</Text>
           </Box>
         </Flex>
       ))}

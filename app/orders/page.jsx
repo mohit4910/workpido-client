@@ -8,6 +8,8 @@ import {
   Flex,
   Heading,
   Hide,
+  Input,
+  Stack,
   Tab,
   TabList,
   TabPanel,
@@ -21,12 +23,15 @@ import { toast } from "react-toastify";
 
 const page = () => {
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [search, setSearch] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
 
   async function fetchOrders() {
     try {
       const res = await API.myOrders(selectedTab);
       setOrders(res);
+      setFilteredOrders(res);
     } catch (error) {
       toast.error("Err while fetching orders");
       console.log(error);
@@ -44,11 +49,37 @@ const page = () => {
     fetchOrders(selectedTab);
   }, [selectedTab]);
 
+  useEffect(() => {
+    if (!search) setFilteredOrders(orders);
+    else {
+      setFilteredOrders(
+        orders?.filter((order) =>
+          order?.gig?.title?.toLowerCase().includes(search) ||
+          order?.buyer?.username?.toLowerCase().includes(search) 
+        )
+      );
+    }
+  }, [search]);
+
   return (
     <>
       <Box px={[4, 8, 16]} py={8}>
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>
-          <Heading className="text-3xl font-medium">My Orders</Heading>
+          <Stack
+            direction={["column", "row"]}
+            gap={6}
+            justifyContent={"space-between"}
+          >
+            <Heading className="text-3xl font-medium">My Orders</Heading>
+            <Input
+              w={["full", "xs"]}
+              bgColor={"#FFF"}
+              rounded={"full"}
+              placeholder="Search Order"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Stack>
           <br />
 
           <Tabs
@@ -66,6 +97,7 @@ const page = () => {
                     color: "brand.primary",
                     borderBottomColor: "brand.primary",
                   }}
+                  fontWeight={'medium'}
                 >
                   {tab?.name}
                 </Tab>
@@ -112,7 +144,7 @@ const page = () => {
                       </Flex>
                     </Flex>
                   </Hide>
-                  {orders?.map((order, index) => (
+                  {filteredOrders?.map((order, index) => (
                     <OrderCard key={index} order={order} />
                   ))}
                 </TabPanel>

@@ -8,7 +8,7 @@ const OrderCard = ({ order }) => {
     <Flex
       w={"full"}
       className="mx-auto bg-white lg:rounded-none border rounded-lg flex-col lg:flex-row gap-2"
-      boxShadow={"base"}
+      border={'1px solid #DADADA'}
       px={3}
       py={[3, 0]}
     >

@@ -312,7 +312,7 @@ export default function Home() {
       {/* Top Brands */}
       <Flex
         background={"rgba(255, 255, 255)"}
-        className="items-center hidden w-full p-5 mb-0 shadow-md md:flex justify-evenly"
+        className="items-center hidden w-full p-5 py-3 mb-0 shadow-md md:flex justify-evenly"
       >
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>
           <HStack
