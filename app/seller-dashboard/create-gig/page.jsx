@@ -127,7 +127,7 @@ const CreateGig = () => {
         let data = {};
         Object.keys(values)?.forEach((property, key) => {
           if (property != "banners" && property != "attachments") {
-            if (property == "category" || property == "subCategory") {
+            if (property == "category" || property == "subCategory" || property == "services") {
               data[property] = { connect: [values[property]] };
             } else {
               data[property] = property.includes("Price")
