@@ -53,6 +53,7 @@ export default function WithSubnavigation() {
   const [loggedIn, setLoggedIn] = useState(null);
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
+  const [wallet, setWallet] = useState(0)
 
   useEffect(() => {
     (async () => {
@@ -62,6 +63,17 @@ export default function WithSubnavigation() {
         sessionStorage.setItem("categories", JSON.stringify(res));
       } catch (error) {
         toast.warn("Couldn't fetch categories");
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await API.wallet();
+        setWallet(res);
+      } catch (error) {
+        toast.warn("Couldn't fetch wallet balance");
       }
     })();
   }, []);
@@ -218,7 +230,7 @@ export default function WithSubnavigation() {
                 <Hide below="md">
                   <HStack display={["none", "flex"]}>
                     <MoneyRecive size="24" color="#F4CE14" />
-                    <Text fontSize={"sm"}>$1200</Text>
+                    <Text fontSize={"sm"}>${wallet}</Text>
                   </HStack>
                 </Hide>
                 {currentRole == "buyer" ? (
