@@ -68,6 +68,7 @@ export default function WithSubnavigation() {
   }, []);
 
   useEffect(() => {
+    if(!isLoggedIn) return
     (async () => {
       try {
         const res = await API.wallet();
