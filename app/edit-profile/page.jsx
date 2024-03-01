@@ -154,6 +154,7 @@ const EditProfile = () => {
 
         const res = await API.updateMe({
           ...values,
+          country: values?.country?.value
         });
         console.log(res);
 
