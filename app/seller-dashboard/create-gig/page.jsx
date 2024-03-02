@@ -132,7 +132,7 @@ const CreateGig = () => {
               property == "subCategory" ||
               property == "services"
             ) {
-              data[property] = { connect: [values[property]] };
+              data[property] = { connect: property == "services" ? values[property] : [values[property]] };
             } else {
               data[property] = property.includes("Price")
                 ? Number(values[property])

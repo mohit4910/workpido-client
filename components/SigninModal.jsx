@@ -36,7 +36,9 @@ const SigninModal = () => {
         // if (!response?.user?.isProfileComplete){
         //   window.location.replace("/edit-profile");
         // }
-        window.location.replace("/seller-dashboard");
+        setTimeout(() => {
+          window.location.replace("/seller-dashboard");
+        }, 500);
         setIsOpen(false);
       })
       .catch((error) => {
