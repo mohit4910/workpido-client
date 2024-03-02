@@ -127,7 +127,11 @@ const CreateGig = () => {
         let data = {};
         Object.keys(values)?.forEach((property, key) => {
           if (property != "banners" && property != "attachments") {
-            if (property == "category" || property == "subCategory" || property == "services") {
+            if (
+              property == "category" ||
+              property == "subCategory" ||
+              property == "services"
+            ) {
               data[property] = { connect: [values[property]] };
             } else {
               data[property] = property.includes("Price")
@@ -834,38 +838,6 @@ const CreateGig = () => {
                   </>
                 }
               />
-              <HStack
-                justifyContent={"flex-end"}
-                my={8}
-                px={6}
-                py={8}
-                bgColor={"#F6F6F6"}
-              >
-                <Button
-                  colorScheme="green"
-                  bgColor={"brand.primary"}
-                  onClick={Formik.handleSubmit}
-                  isLoading={loading}
-                  fontSize={"sm"}
-                  isDisabled={activeStep <= 3}
-                >
-                  Submit
-                </Button>
-              </HStack>
-            </GigAccordion>
-
-            {/* FAQs */}
-            <GigAccordion
-              step={5}
-              title={"Frequently Asked Questions (FAQs)"}
-              isDisabled={activeStep <= 4}
-            >
-              <Box py={4} px={6}>
-                <FaqsContainer
-                  data={Formik.values.faqs}
-                  onUpdate={(data) => Formik.setFieldValue("faqs", data)}
-                />
-              </Box>
 
               {activeAccordions?.includes(4) ? null : (
                 <HStack
@@ -886,6 +858,39 @@ const CreateGig = () => {
                   </Button>
                 </HStack>
               )}
+            </GigAccordion>
+
+            {/* FAQs */}
+            <GigAccordion
+              step={5}
+              title={"Frequently Asked Questions (FAQs)"}
+              isDisabled={activeStep <= 4}
+            >
+              <Box py={4} px={6}>
+                <FaqsContainer
+                  data={Formik.values.faqs}
+                  onUpdate={(data) => Formik.setFieldValue("faqs", data)}
+                />
+              </Box>
+
+              <HStack
+                justifyContent={"flex-end"}
+                my={8}
+                px={6}
+                py={8}
+                bgColor={"#F6F6F6"}
+              >
+                <Button
+                  colorScheme="green"
+                  bgColor={"brand.primary"}
+                  onClick={Formik.handleSubmit}
+                  isLoading={loading}
+                  fontSize={"sm"}
+                  isDisabled={activeStep <= 4}
+                >
+                  Submit
+                </Button>
+              </HStack>
             </GigAccordion>
           </Accordion>
         </Box>
