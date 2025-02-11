@@ -63,7 +63,7 @@ const page = () => {
             w={"full"}
             border={"0.5px solid"}
             borderColor={"gray.200"}
-            bgColor={"whiteAlpha.600"}
+            bgColor={"whiteAlpha.600"} 
             p={4}
           >
             <HStack w={"full"} justifyContent={"flex-start"} gap={4}>
