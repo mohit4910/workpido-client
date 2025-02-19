@@ -51,6 +51,7 @@ const SigninModal = () => {
         console.log("response");
       });
   };
+  console.log(intent, "intent");
 
   return (
     <>
@@ -130,7 +131,7 @@ const SigninModal = () => {
                       type="submit"
                       mt={4}
                       isLoading={isSubmitting}
-                      disabled={errors}
+                      disabled={Object.keys(errors).length > 0}
                     >
                       Login
                     </Button>

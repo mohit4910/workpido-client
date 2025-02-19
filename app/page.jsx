@@ -39,8 +39,9 @@ import SellerCard from "@/components/SellerCard";
 import ZoomableImage from "@/components/ZoomableImage";
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
-import { API_BASE_URL } from "@/lib/constants";
+import { API_BASE_URL, freeLancerDetails } from "@/lib/constants";
 import { toast } from "react-toastify";
+import FreelanceCard from "@/components/FreelanceCard";
 
 const ZoomImage = ({ src, alt, link }) => {
   const [zoomed, setZoomed] = useState(false);
@@ -107,9 +108,11 @@ const Catalog = () => {
   async function fetchCategories() {
     try {
       const res = await API.getAllCategories();
+      console.log(res);
       setCategories(res);
       sessionStorage.setItem("categories", JSON.stringify(res));
     } catch (error) {
+      console.log(error, "error");
       toast.warn("Couldn't fetch categories");
     }
   }
@@ -446,6 +449,28 @@ export default function Home() {
             </VStack>
           </Flex>
         </Container>
+        <Container maxW={["full", "3xl", "5xl", "7xl"]}>
+          <Flex
+            flexDirection={"row"}
+            alignItems={"center"}
+            w={"full"}
+            justifyContent={"space-between"}
+            gap={"30px"}
+            className="mt-12"
+          >
+            {freeLancerDetails.map((item) => (
+              <FreelanceCard
+                name={item.name}
+                image={item.image}
+                rating={item.rating}
+                desc={item.desc}
+                button_text={item.button_text}
+                experties={item.experties}
+              />
+            ))}
+          </Flex>
+        </Container>
+
         <AboutUs />
       </Flex>
     </main>
