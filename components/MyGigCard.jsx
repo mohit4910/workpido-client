@@ -19,6 +19,7 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { HiPencil } from "react-icons/hi";
 import { IoMdCart, IoMdEye, IoMdWarning } from "react-icons/io";
@@ -70,7 +71,7 @@ const MyGigCard = ({
   }, [banner]);
 
   return (
-    <>
+    <Link href={`/gig-detail/${id}`}>
       <Box w={["full"]} bgColor={"#FFF"} rounded={4} boxShadow={"base"} my={4}>
         <Stack p={[4]} direction={["column", "row"]} gap={4}>
           <Image
@@ -214,7 +215,7 @@ const MyGigCard = ({
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </Link>
   );
 };
 
