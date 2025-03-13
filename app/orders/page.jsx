@@ -22,12 +22,15 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const page = () => {
+const page = ({ params }) => {
+  const { type } = params;
+  console.log(type, "fkalskfdjalsjd");
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
   const currentRole = Cookies.get("currentRole");
+  const [filterByCatogeries, setFilterByCatogeries] = useState([]);
 
   async function fetchOrders() {
     try {
@@ -48,6 +51,8 @@ const page = () => {
     }
   }
 
+  const data = orders.filter((item) => item.order_type === "buyer");
+
   const tabs = [
     { name: "All", value: "all" },
     { name: "Active", value: "ongoing" },
@@ -63,9 +68,10 @@ const page = () => {
     if (!search) setFilteredOrders(orders);
     else {
       setFilteredOrders(
-        orders?.filter((order) =>
-          order?.gig?.title?.toLowerCase().includes(search) ||
-          order?.buyer?.username?.toLowerCase().includes(search) 
+        orders?.filter(
+          (order) =>
+            order?.gig?.title?.toLowerCase().includes(search) ||
+            order?.buyer?.username?.toLowerCase().includes(search)
         )
       );
     }
@@ -107,7 +113,7 @@ const page = () => {
                     color: "brand.primary",
                     borderBottomColor: "brand.primary",
                   }}
-                  fontWeight={'medium'}
+                  fontWeight={"medium"}
                 >
                   {tab?.name}
                 </Tab>
@@ -154,7 +160,7 @@ const page = () => {
                       </Flex>
                     </Flex>
                   </Hide>
-                  {filteredOrders?.map((order, index) => (
+                  {data?.map((order, index) => (
                     <OrderCard key={index} order={order} />
                   ))}
                 </TabPanel>
