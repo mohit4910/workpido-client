@@ -309,6 +309,8 @@ const page = ({ params }) => {
     }
   }
 
+  
+
   return (
     <main className="relative min-h-screen">
       <Flex className="w-[98%] md:w-[95%] md:container lg:w-10/12 flex-col md:flex-row items-center md:items-start mx-auto">

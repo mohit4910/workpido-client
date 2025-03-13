@@ -139,6 +139,24 @@ const Catalog = () => {
 
 export default function Home() {
   const [search, setSearch] = useState("");
+  const [freelancers, setFreelancers] = useState([]);
+
+  console.log(freelancers, "feee ");
+
+  async function fetchUsers() {
+    try {
+      const res = await API.getUsers();
+      console.log(res);
+      setFreelancers(res);
+      // sessionStorage.setItem("categories", JSON.stringify(res));
+    } catch (error) {
+      console.log(error, "error");
+      // toast.warn("Couldn't fetch categories");
+    }
+  }
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   return (
     <main className="flex flex-col items-center justify-between min-h-screen mb-10">
@@ -450,17 +468,11 @@ export default function Home() {
           </Flex>
         </Container>
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>
-          <Flex
-            flexDirection={"row"}
-            alignItems={"center"}
-            w={"full"}
-            justifyContent={"space-between"}
-            gap={"30px"}
-            className="mt-12"
-          >
-            {freeLancerDetails.map((item) => (
+          <div className="mt-12 grid grid-cols-3 gap-3">
+            {freelancers.map((item) => (
               <FreelanceCard
-                name={item.name}
+                id={item.id}
+                name={item.username}
                 image={item.image}
                 rating={item.rating}
                 desc={item.desc}
@@ -468,7 +480,7 @@ export default function Home() {
                 experties={item.experties}
               />
             ))}
-          </Flex>
+          </div>
         </Container>
 
         <AboutUs />

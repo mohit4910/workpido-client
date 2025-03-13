@@ -25,9 +25,11 @@ export const InputBox = ({ addMessage, receiver }) => {
   const { user } = useAuth();
   const [input, setInput] = useState("");
   const [files, setFiles] = useState(null);
+  const [typing, setTyping] = useState(false);
 
   const handleSubmit = () => {
     if (input.trim() !== "") {
+      console.log(input, "here is the input i am here to display the message");
       addMessage({ text: input, files: files });
       setInput("");
       onClose();
@@ -36,11 +38,26 @@ export const InputBox = ({ addMessage, receiver }) => {
 
   useEffect(() => {
     if (input) {
-      isTyping(true);
+      setTyping(true);
+
+      // Set a delay before marking typing as false
+      const timeout = setTimeout(() => {
+        setTyping(false);
+      }, 2000); // Adjust delay as needed (2s here)
+
+      return () => clearTimeout(timeout); // Clear timeout if user types again
     } else {
-      isTyping(false);
+      setTyping(false);
     }
   }, [input]);
+
+  // useEffect(() => {
+  //   if (input) {
+  //     isTyping(true);
+  //   } else {
+  //     isTyping(false);
+  //   }
+  // }, [input]);
 
   async function isTyping(status) {
     try {

@@ -14,8 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { API } from "@/lib/api";
 import { toast } from "react-toastify";
+import PaymentButton from "@/components/PaymentButton";
+import Script from "next/script";
+import { useRouter } from "next/navigation";
 
 const GigDetail = ({ params }) => {
+  const router = useRouter();
   const [gig, setGigs] = useState({});
 
   const { id } = params;
@@ -23,7 +27,7 @@ const GigDetail = ({ params }) => {
   async function fetchData() {
     console.log("hererer");
     try {
-      const res = await API.getGig(id)
+      const res = await API.getGig(id);
       setGigs(res.data.attributes);
     } catch (error) {
       toast.error("Err while fetching gigs");
@@ -32,9 +36,59 @@ const GigDetail = ({ params }) => {
   useEffect(() => {
     fetchData();
   }, [id]);
+  console.log(gig, "gig detail is here");
+
+  const createOrder = async () => {
+    const res = await API.createOrder({
+      provider: "razorpay",
+      amount: gig?.fixedPrice,
+      gigId: id,
+      currency: gig?.amount,
+      metadata: {
+        title: gig?.title,
+      },
+    });
+
+    const paymentData = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      order_id: res.payment_url.order.id,
+
+      handler: async function (response) {
+        console.log(response, "dfasdfas");
+        if (!response.razorpay_signature) {
+          console.error("Missing razorpay_signature!");
+          return;
+        }
+        // verify payment
+        const res = await fetch(
+          "http://localhost:1337/api/verify-razorpay-order",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              orderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+            }),
+          }
+        );
+        const data = await res.json();
+        console.log(data);
+        if (data.isOk) {
+          // do whatever page transition you want here as payment was successful
+          router.push(`/payment-sucessfull`);
+        } else {
+          alert("Payment failed");
+        }
+      },
+    };
+
+    const payment = new window.Razorpay(paymentData);
+    payment.open();
+  };
 
   return (
     <>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
       {id ? (
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>
           {/* Hero Section */}
@@ -110,6 +164,7 @@ const GigDetail = ({ params }) => {
           </VStack>
 
           <Divider my={6} />
+          <PaymentButton createOrder={createOrder} price={gig.fixedPrice} />
         </Container>
       ) : (
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>

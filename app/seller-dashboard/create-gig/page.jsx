@@ -132,7 +132,12 @@ const CreateGig = () => {
               property == "subCategory" ||
               property == "services"
             ) {
-              data[property] = { connect: property == "services" ? values[property] : [values[property]] };
+              data[property] = {
+                connect:
+                  property == "services"
+                    ? values[property]
+                    : [values[property]],
+              };
             } else {
               data[property] = property.includes("Price")
                 ? Number(values[property])
@@ -211,9 +216,11 @@ const CreateGig = () => {
     setSubCategories([]);
     setServices([]);
     setAttributes([]);
+    console.log(data, "data");
     const filteredData = data
       ?.find((item) => item?.id == Formik.values.category)
       ?.subCategories?.map((item) => ({ label: item?.title, value: item?.id }));
+    console.log(filteredData, "filterdata");
     setSubCategories(filteredData);
   }, [Formik.values.category]);
 
