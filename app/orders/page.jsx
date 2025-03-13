@@ -17,6 +17,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -26,12 +27,21 @@ const page = () => {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
+  const currentRole = Cookies.get("currentRole");
 
   async function fetchOrders() {
     try {
       const res = await API.myOrders(selectedTab);
-      setOrders(res);
-      setFilteredOrders(res);
+      const user = JSON.parse(window.localStorage.getItem("user"));
+      if(currentRole === 'seller'){
+       const data = res.filter((item) => item.gig.seller?.id === user?.id)
+       setOrders(data);
+       setFilteredOrders(data );
+      } else {
+        const data = res.filter((item) => item.buyer?.id === user?.id)
+        setOrders(data);
+        setFilteredOrders(data);
+      }
     } catch (error) {
       toast.error("Err while fetching orders");
       console.log(error);
