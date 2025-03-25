@@ -45,8 +45,7 @@ export async function POST(req) {
       },
     });
   } catch (error) {
-    console.log(`Error while signup`);
-    console.log(error?.response?.data)
+    console.log(error?.response?.data);
     return new Response(error, { status: error?.response?.status || 500 });
   }
 }

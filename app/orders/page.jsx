@@ -22,26 +22,23 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const page = ({ params }) => {
-  const { type } = params;
-  console.log(type, "fkalskfdjalsjd");
+const page = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
   const currentRole = Cookies.get("currentRole");
-  const [filterByCatogeries, setFilterByCatogeries] = useState([]);
 
   async function fetchOrders() {
     try {
       const res = await API.myOrders(selectedTab);
       const user = JSON.parse(window.localStorage.getItem("user"));
-      if(currentRole === 'seller'){
-       const data = res.filter((item) => item.gig.seller?.id === user?.id)
-       setOrders(data);
-       setFilteredOrders(data );
+      if (currentRole === "seller") {
+        const data = res.filter((item) => item.gig.seller?.id === user?.id);
+        setOrders(data);
+        setFilteredOrders(data);
       } else {
-        const data = res.filter((item) => item.buyer?.id === user?.id)
+        const data = res.filter((item) => item.buyer?.id === user?.id);
         setOrders(data);
         setFilteredOrders(data);
       }
@@ -50,8 +47,6 @@ const page = ({ params }) => {
       console.log(error);
     }
   }
-
-  const data = orders.filter((item) => item.order_type === "buyer");
 
   const tabs = [
     { name: "All", value: "all" },
@@ -160,7 +155,7 @@ const page = ({ params }) => {
                       </Flex>
                     </Flex>
                   </Hide>
-                  {data?.map((order, index) => (
+                  {filteredOrders?.map((order, index) => (
                     <OrderCard key={index} order={order} />
                   ))}
                 </TabPanel>

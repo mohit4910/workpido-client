@@ -68,14 +68,27 @@ const ZoomImage = ({ src, alt, link, width, height, fontSize }) => {
 
 const page = ({ params }) => {
   const { id } = params;
+  console.log(id, "params");
   const [data, setData] = useState(null);
+  console.log(data, 9999);
 
   useEffect(() => {
-    const categories = JSON.parse(sessionStorage.getItem("categories"));
-    const category = categories?.find((item) => item?.id == id);
-    setData(category);
-  }, []);
+    // Ensure categories are parsed correctly
+    const categories = JSON.parse(sessionStorage.getItem("categories")) || [];
 
+    console.log(categories, "categories");
+
+    // Find the category based on the slug
+    const category = categories.find(
+      (item) => item?.title && item.title.toLowerCase() === id
+    );
+
+    console.log(category, "category");
+
+    setData(category);
+  }, [id]);
+
+  console.log(data, 99);
   return (
     <>
       <Box p={[4, 8, 16]} bgColor={"#FFF"}>
@@ -102,7 +115,9 @@ const page = ({ params }) => {
               </Box>
             </Hide>
             <Box flexGrow={1}>
-              <Text fontWeight={'medium'} fontSize={['xl', '3xl']}>{data?.title}</Text>
+              <Text fontWeight={"medium"} fontSize={["xl", "3xl"]}>
+                {data?.title}
+              </Text>
               <Text>{data?.title}</Text>
               <br />
               <Stack
@@ -150,7 +165,7 @@ const page = ({ params }) => {
                           ?.replace(/ /g, "-")}`}
                         width={["40vw", "23.75%"]}
                         height={["36", "36"]}
-                        fontSize={'sm'}
+                        fontSize={"sm"}
                       />
                     ))}
               </Stack>

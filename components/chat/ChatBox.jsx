@@ -63,8 +63,7 @@ export const ChatBox = ({ messages, addMessage, receiver, isTyping }) => {
       await API.sendOrder({ ...data });
       setOrder({ status: false });
     } catch (error) {
-      console.log(error);
-      toast.error("Error while sending your order");
+      toast.error(error, "Error while sending your order");
       setOrder({ status: false });
     }
   }

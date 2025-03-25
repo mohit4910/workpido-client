@@ -41,7 +41,7 @@ const GigDetail = ({ params }) => {
   const createOrder = async () => {
     const res = await API.createOrder({
       provider: "razorpay",
-      amount: gig?.fixedPrice,
+      amount: gig?.maxPrice,
       gigId: id,
       currency: gig?.amount,
       metadata: {
@@ -49,6 +49,7 @@ const GigDetail = ({ params }) => {
       },
     });
 
+    console.log(res, 999);
     const paymentData = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       order_id: res.payment_url.order.id,
@@ -164,7 +165,7 @@ const GigDetail = ({ params }) => {
           </VStack>
 
           <Divider my={6} />
-          <PaymentButton createOrder={createOrder} price={gig.fixedPrice} />
+          {/* <PaymentButton createOrder={createOrder} price={gig.maxPrice} /> */}
         </Container>
       ) : (
         <Container maxW={["full", "3xl", "5xl", "7xl"]}>

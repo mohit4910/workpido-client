@@ -18,11 +18,8 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    console.log(body)
-    const res = await axios.post(`${API_BASE_URL}/auth/local`, body);
 
-    console.log("Login Response")
-    console.log(res.data)
+    const res = await axios.post(`${API_BASE_URL}/auth/local`, body);
 
     const sessionToken = jwt.sign({ userId: res.data?.id }, JWT_SECRET, {
       algorithm: "HS256",
@@ -48,8 +45,6 @@ export async function POST(req) {
       },
     });
   } catch (error) {
-    console.log(`Error while login`);
-    console.log(error?.message)
     return new Response(error, { status: error?.response?.status || 500 });
   }
 }

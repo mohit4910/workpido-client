@@ -142,10 +142,15 @@ const DesktopLayout = ({ gig, bannerImageUrls, sellerAvatar }) => {
                 // fontWeight={"bold"}
                 textTransform={"uppercase"}
               >
-                Starting at{" "}
+                Starting at <span></span>
                 <span className="text-lg font-bold">
                   {gig?.seller?.currency?.symbol ?? "₹"}
-                  {gig?.minPrice}
+                  {/* {gig?.minPrice}{" "} */}
+                  {gig?.pricingModel == "plans"
+                    ? gig?.startingPrice
+                    : gig?.pricingModel == "fixed"
+                    ? gig?.fixedPrice
+                    : gig?.hourlyPrice}
                 </span>
               </Text>
             </Stack>

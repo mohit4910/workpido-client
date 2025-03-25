@@ -53,7 +53,7 @@ export default function WithSubnavigation() {
   const [loggedIn, setLoggedIn] = useState(null);
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
-  const [wallet, setWallet] = useState(0)
+  const [wallet, setWallet] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -68,7 +68,7 @@ export default function WithSubnavigation() {
   }, []);
 
   useEffect(() => {
-    if(!isLoggedIn) return
+    if (!isLoggedIn) return;
     (async () => {
       try {
         const res = await API.wallet();
@@ -189,19 +189,22 @@ export default function WithSubnavigation() {
                 spacing={6}
                 color={"#000"}
               >
-                <Hide below="md">
-                  <Button
-                    as={"a"}
-                    fontSize={"sm"}
-                    fontWeight={400}
-                    variant={"link"}
-                    _hover={"none"}
-                    href={"/manage-gigs"}
-                    color={"#111"}
-                  >
-                    Gigs
-                  </Button>
-                </Hide>
+                {currentRole !== "buyer" && (
+                  <Hide below="md">
+                    <Button
+                      as={"a"}
+                      fontSize={"sm"}
+                      fontWeight={400}
+                      variant={"link"}
+                      _hover={"none"}
+                      href={"/manage-gigs"}
+                      color={"#111"}
+                    >
+                      Gigs
+                    </Button>
+                  </Hide>
+                )}
+
                 <Hide below="md">
                   <Button
                     as={"a"}
@@ -285,7 +288,6 @@ const DesktopNav = ({ categories }) => {
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
-
     <Flex
       direction={"row"}
       justify={"space-between"}
@@ -309,7 +311,7 @@ const DesktopNav = ({ categories }) => {
                 py={2}
                 pt={3}
                 href={
-                  navItem?.frontendLink ??
+                  `/category/${navItem?.frontendLink}` ??
                   `/category/${navItem?.id}`
                 }
                 fontSize={"xs"}
@@ -383,7 +385,10 @@ const DesktopSubNav = ({ title, frontendLink, inheritedWidth, hasBorder }) => {
   return (
     <Box
       as="a"
-      href={frontendLink ?? `/gigs/${title?.toLowerCase()?.replace(/ /g, "-")}`}
+      href={
+        `/gigs/${frontendLink?.toLowerCase()?.replace(/ /g, "-")}` ??
+        `/gigs/${title?.toLowerCase()?.replace(/ /g, "-")}`
+      }
       role={"group"}
       display={"block"}
       px={6}
@@ -436,9 +441,7 @@ const MobileNavItem = ({ id, title, subCategories, frontendLink }) => {
           fontWeight={600}
           color={useColorModeValue("gray.600", "gray.200")}
           as="a"
-          href={
-            frontendLink ?? `/category/${id}`
-          }
+          href={frontendLink ?? `/category/${id}`}
         >
           {title}
         </Text>
@@ -464,7 +467,15 @@ const MobileNavItem = ({ id, title, subCategories, frontendLink }) => {
         >
           {subCategories?.length
             ? subCategories.map((child, key) => (
-                <Box as="a" key={key} py={2} href={child.frontendLink ?? `/gigs/${child?.title?.toLowerCase()?.replace(/ /g, "-")}`}>
+                <Box
+                  as="a"
+                  key={key}
+                  py={2}
+                  href={
+                    child.frontendLink ??
+                    `/gigs/${child?.title?.toLowerCase()?.replace(/ /g, "-")}`
+                  }
+                >
                   {child.title}
                 </Box>
               ))

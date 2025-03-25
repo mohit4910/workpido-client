@@ -108,11 +108,10 @@ const Catalog = () => {
   async function fetchCategories() {
     try {
       const res = await API.getAllCategories();
-      console.log(res);
+
       setCategories(res);
       sessionStorage.setItem("categories", JSON.stringify(res));
     } catch (error) {
-      console.log(error, "error");
       toast.warn("Couldn't fetch categories");
     }
   }
@@ -141,16 +140,14 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [freelancers, setFreelancers] = useState([]);
 
-  console.log(freelancers, "feee ");
-
   async function fetchUsers() {
     try {
       const res = await API.getUsers();
-      console.log(res);
+
       setFreelancers(res);
       // sessionStorage.setItem("categories", JSON.stringify(res));
     } catch (error) {
-      console.log(error, "error");
+      toast.error(error, "Something went Wrong");
       // toast.warn("Couldn't fetch categories");
     }
   }
