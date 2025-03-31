@@ -154,7 +154,8 @@ const Gigs = ({ params }) => {
         {/* Filters & Sorting */}
         <HStack w={"full"} justifyContent={"space-between"} mb={4}>
           <Text fontSize={"sm"} color={"gray.600"}>
-            {gigs?.length} {gigs?.length === 1 ? "service" : "services"} available
+            {gigs?.length} {gigs?.length === 1 ? "service" : "services"}{" "}
+            available
           </Text>
           <HStack gap={4}>
             {/* Layout Toggle */}

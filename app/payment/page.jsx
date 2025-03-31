@@ -1,5 +1,6 @@
 "use client";
 import { API } from "@/lib/api";
+import { API_BASE_URL } from "@/lib/constants";
 import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -83,7 +84,6 @@ const page = ({ params }) => {
         type: orderInfo?.type,
       },
     });
-    
 
     console.log("dfasdfasd", res.payment_url.order.id);
 
@@ -98,17 +98,18 @@ const page = ({ params }) => {
           return;
         }
         // verify payment
-        const res = await fetch(
-          "http://localhost:1337/api/verify-razorpay-order",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              orderId: response.razorpay_order_id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
-            }),
-          }
-        );
+        const res = await fetch(`${API_BASE_URL}/verify-razorpay-order`, {
+          method: "POST",
+          body: JSON.stringify({
+            orderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+            // amount: orderInfo?.amount,
+            // buyerId,
+            gigId: orderInfo?.gig,
+            // sellerId,
+          }),
+        });
         const data = await res.json();
         console.log(data);
         if (data.isOk) {
@@ -157,7 +158,7 @@ const page = ({ params }) => {
           gap={8}
           py={8}
         >
-          {/* <Button
+          <Button
             leftIcon={
               <FaStripeS
                 color={selectedPaymentGateway == "stripe" ? "#FFF" : "#6B71E3"}
@@ -184,7 +185,7 @@ const page = ({ params }) => {
             onClick={() => setSelectedPaymentGateway("paypal")}
           >
             Paypal
-          </Button> */}
+          </Button>
           <Button
             leftIcon={
               <SiRazorpay
