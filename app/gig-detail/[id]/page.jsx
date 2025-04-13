@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import PaymentButton from "@/components/PaymentButton";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/constants";
 
 const GigDetail = ({ params }) => {
   const router = useRouter();
@@ -62,7 +63,7 @@ const GigDetail = ({ params }) => {
         }
         // verify payment
         const res = await fetch(
-          "http://localhost:1337/api/verify-razorpay-order",
+          `${API_BASE_URL}/verify-razorpay-order`,
           {
             method: "POST",
             body: JSON.stringify({

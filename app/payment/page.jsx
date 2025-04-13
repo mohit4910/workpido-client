@@ -1,4 +1,5 @@
 "use client";
+import useAuth from "@/hooks/useAuth";
 import { API } from "@/lib/api";
 import { API_BASE_URL } from "@/lib/constants";
 import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
@@ -13,15 +14,28 @@ import { toast } from "react-toastify";
 
 const page = ({ params }) => {
   const { token } = params;
+    const {user} = useAuth();
   const router = useRouter();
 
-  const [orderInfo, setOrderInfo] = useState(null);
+  const [orderInfo, setOrderInfo] = useState({});
   const [selectedPaymentGateway, setSelectedPaymentGateway] = useState("");
+  console.log(orderInfo, 99)
+   async function fetchData(id) {
+      try {
+        const res = await API.getGigInfo(id);
+        setOrderInfo((pre) => ({...pre, ...res}));
+      } catch (error) {
+        console.log("Error while fetching gigs: ", error);
+        push("/not-found");
+      }
+    }
 
   useEffect(() => {
     if (Cookies.get("order")) {
       const parsedOrderInfo = JSON.parse(Cookies.get("order"));
-      setOrderInfo(parsedOrderInfo);
+      console.log(parsedOrderInfo, 'info')
+      const res = fetchData(parsedOrderInfo.gig)
+      setOrderInfo((pre) => ({...pre, ...parsedOrderInfo}));
     }
   }, []);
 
@@ -104,10 +118,10 @@ const page = ({ params }) => {
             orderId: response.razorpay_order_id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpaySignature: response.razorpay_signature,
-            // amount: orderInfo?.amount,
-            // buyerId,
+            amount: toString(orderInfo?.amount),
+            buyerId: user.id,
             gigId: orderInfo?.gig,
-            // sellerId,
+            sellerId: orderInfo.seller.id,
           }),
         });
         const data = await res.json();
