@@ -143,6 +143,7 @@ export default function Home() {
   async function fetchUsers() {
     try {
       const res = await API.getUsers();
+      console.log(res);
 
       setFreelancers(res);
       // sessionStorage.setItem("categories", JSON.stringify(res));

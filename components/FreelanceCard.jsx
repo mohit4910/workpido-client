@@ -53,9 +53,9 @@ const FreelanceCard = ({
           ))}
         </Flex>
 
-        <Button width="full" colorScheme="blue">
+        {/* <Button width="full" colorScheme="blue">
           {button_text}
-        </Button>
+        </Button> */}
       </Box>
     </Link>
   );

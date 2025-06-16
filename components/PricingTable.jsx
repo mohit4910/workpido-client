@@ -42,6 +42,7 @@ const EditableData = ({ defaultValue, onChange, isViewOnly }) => {
 };
 
 const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
+  console.log(isViewOnly);
   const [tableData, setTableData] = useState(null);
 
   useEffect(() => {
@@ -235,29 +236,32 @@ const PricingTable = ({ data, totalPlans, size, onUpdate, isViewOnly }) => {
             </Tbody>
           </Table>
         </TableContainer>
-        {isViewOnly ? null : (
-          <HStack justifyContent={"flex-end"} py={4}>
-            <Button
-              colorScheme="red"
-              fontWeight={"medium"}
-              fontSize={'sm'}
-              onClick={() =>
-                handleRowDelete(
-                  tableData?.attributes[tableData?.attributes?.length - 1]
-                )
-              }
-            >
-              Delete Last Row
-            </Button>
-            <Button
-              colorScheme="whatsapp"
-              fontWeight={"medium"}
-              onClick={() => handleRowAdd()}
-              fontSize={'sm'}
-            >
-              Add New Row
-            </Button>
-          </HStack>
+        {!isViewOnly ? null : (
+          <>
+            <HStack justifyContent={"flex-end"} py={4}>
+              <Button
+                colorScheme="red"
+                fontWeight={"medium"}
+                fontSize={"sm"}
+                onClick={() =>
+                  handleRowDelete(
+                    tableData?.attributes[tableData?.attributes?.length - 1]
+                  )
+                }
+              >
+                Delete Last Row
+              </Button>
+              <Button
+                colorScheme="whatsapp"
+                fontWeight={"medium"}
+                onClick={() => handleRowAdd()}
+                // fontSize={"sm"}
+                className="bg-black"
+              >
+                Add New Row
+              </Button>
+            </HStack>
+          </>
         )}
       </Box>
     </>

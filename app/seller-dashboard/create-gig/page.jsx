@@ -778,7 +778,7 @@ const CreateGig = () => {
                       onUpdate={(data) =>
                         Formik.setFieldValue("pricingTable", data)
                       }
-                      isViewOnly={false}
+                      isViewOnly={true}
                     />
                   </Box>
                 ) : null}

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import AppModal from "./AppModal";
-import { Heading, Stack, Text, Box, Button, HStack } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import * as Yup from "yup";
+import AppModal from "../AppModal";
+import { Form, Formik, ErrorMessage } from "formik";
+
+import { Stack, Button, HStack } from "@chakra-ui/react";
+import Input from "../Input";
 import { API } from "@/lib/api";
-import Input from "./Input";
 import { toast } from "react-toastify";
 import useApiHandler from "@/hooks/useApiHandler";
 import Cookies from "js-cookie";
-import SignInModal from "../components/signIn/SignInModal.jsx";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -17,14 +17,13 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string().required("Required"),
 });
 
-const SignupModal = () => {
-  const router = useRouter();
+const SignUpModal = ({ signUpIsOpen, setSignUpIsOpen }) => {
+  //   const router = useRouter();
   const { handleError } = useApiHandler();
   const [isOpen, setIsOpen] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [intent, setIntent] = useState("login");
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+    console.log(values, "values");
     // Checking if username is valid
     const isValid =
       /^[a-zA-Z][a-zA-Z0-9_]*$/.test(values?.username) &&
@@ -34,8 +33,9 @@ const SignupModal = () => {
       return;
     }
 
+    const res = await API.signup(values);
+    console.log(res);
     try {
-      const res = await API.signup(values);
       if (!res.jwt) {
         handleError({ message: "Verification mail sent" });
         return;
@@ -45,31 +45,20 @@ const SignupModal = () => {
       setIsOpen(false);
       window.location.replace("/seller-dashboard");
     } catch (error) {
-      console.log(error);
-      toast.error("Signup failed");
+      console.log(error)[1].error.message;
+      toast.error(error.message, "Signup failed");
       setFieldError("error", "An error occurred. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
-
   return (
-    <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        cursor={"pointer"}
-        display={{ base: "none", md: "inline-flex" }}
-        fontSize={"sm"}
-        fontWeight={"400"}
-        color={"white"}
-        bg={"brand.primary"}
-        _hover={{
-          bg: "green.300",
-        }}
+    <div>
+      <AppModal
+        title="Sign Up"
+        setIsOpen={setSignUpIsOpen}
+        isOpen={signUpIsOpen}
       >
-        Sign up
-      </Button>
-      <AppModal title="Sign Up" setIsOpen={setIsOpen} isOpen={isOpen}>
         <Formik
           initialValues={{
             email: "",
@@ -172,31 +161,15 @@ const SignupModal = () => {
                   type="submit"
                   isLoading={isSubmitting}
                 >
-                  Sign Up adasdasd
+                  Sign Up
                 </Button>
                 <ErrorMessage name="error" component="div" />
-                <p className="text-center">
-                  Already have an account?{" "}
-                  <span
-                    className="text-brand-link cursor-pointer"
-                    onClick={() => setOpen(true)}
-                  >
-                    Sign In
-                  </span>
-                </p>
               </Stack>
             </Form>
           )}
         </Formik>
       </AppModal>
-      <SignInModal
-        open={open}
-        setOpen={setOpen}
-        intent={intent}
-        setIntent={setIntent}
-      />
-    </>
+    </div>
   );
 };
-
-export default SignupModal;
+export default SignUpModal;

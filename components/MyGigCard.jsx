@@ -71,7 +71,8 @@ const MyGigCard = ({
   }, [banner]);
 
   return (
-    <Link href={`/gig-detail/${id}`}>
+    <>
+      {/* <Link href={`/gig-detail/${id}`}> */}
       <Box w={["full"]} bgColor={"#FFF"} rounded={4} boxShadow={"base"} my={4}>
         <Stack p={[4]} direction={["column", "row"]} gap={4}>
           <Image
@@ -215,7 +216,9 @@ const MyGigCard = ({
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Link>
+
+      {/* </Link> */}
+    </>
   );
 };
 

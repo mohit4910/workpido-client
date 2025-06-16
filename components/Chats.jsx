@@ -1,9 +1,11 @@
 import { API } from "@/lib/api";
 import { Avatar, Box, Flex, Image, Text, keyframes } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
+import useAuth from "@/hooks/useAuth";
 
 const Chats = () => {
   const [contacts, setContacts] = useState([]);
+  const { avatarUrl } = useAuth();
 
   useEffect(() => {
     fetchChats();
@@ -27,7 +29,11 @@ const Chats = () => {
           as={"a"}
           href={`/inbox/${user?.name}`}
         >
-          <Avatar size={'md'} src={user?.avatarUrl} name={user?.name} alt="" />
+          <Avatar
+            name={user.username} // This automatically uses the first letter as fallback
+            src={avatarUrl || undefined} // If imageUrl is empty or null, fallback to initials
+            size={"sm"}
+          />
           <Box>
             <Text className="font-medium text-md">{user?.name}</Text>
             <Text className="text-gray-700 text-xs">{user?.recentMessage}</Text>

@@ -9,7 +9,9 @@ import Input from "./Input";
 import { toast } from "react-toastify";
 import useAuth from "@/hooks/useAuth";
 import Cookies from "js-cookie";
-const SignupSchema = Yup.object().shape({
+import SignupModal from "./SignupModal";
+import SignUpModal from "./signUp/SignUpModal";
+export const SignupSchema = Yup.object().shape({
   identifier: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().required("Password is required"),
 });
@@ -18,6 +20,7 @@ const SigninModal = () => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [signUpIsOpen, setSignUpIsOpen] = useState(false);
   const [intent, setIntent] = useState("login");
 
   const handleSubmit = (values, { setSubmitting, setFieldError }) => {
@@ -51,7 +54,6 @@ const SigninModal = () => {
         console.log("response");
       });
   };
-  console.log(intent, "intent");
 
   return (
     <>
@@ -136,6 +138,15 @@ const SigninModal = () => {
                       Login
                     </Button>
                     <ErrorMessage name="error" component="div" />
+                    <div
+                      class="text-center text-sm text-brand-link cursor-pointer"
+                      bis_skin_checked="1"
+                    >
+                      <span>New to Kwork?</span>{" "}
+                      <span onClick={() => setSignUpIsOpen(true)}>
+                        Join now
+                      </span>
+                    </div>
                   </Stack>
                 </Form>
               ) : (
@@ -182,6 +193,11 @@ const SigninModal = () => {
           )}
         </Formik>
       </AppModal>
+      <SignUpModal
+        signUpIsOpen={signUpIsOpen}
+        setSignUpIsOpen={setSignUpIsOpen}
+      />
+      
     </>
   );
 };
